@@ -3,7 +3,7 @@ from django.views.generic.edit import FormMixin
 from django.urls import reverse, reverse_lazy
 from apps.publications.models import StoryPublication, StoryChapter, ResourcePublication, Tag
 from apps.users.models import CustomUser
-from apps.users.views import ListUserDataMenuPerfil
+from apps.users.views import ListUserPerfil
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.publications.forms import StoryCreationForm, StoryContinuationCreationForm, StoryEditForm, StoryChapterEditForm
@@ -17,43 +17,29 @@ from django.db.models import Count
 
 from django.core.files.storage import FileSystemStorage
 
-default_img = 'gallery/no-img.png'
+default_img = 'media/gallery/no-img.png'
 
-#listar las publicaciones creadas por un usuario
-class ListUserStories(ListUserDataMenuPerfil):
+#para resolver las url del menu se devuelve siempre el customuser, por eso lo abstraigo en esta funcion.
+#Asi, cada view que retorne un template que requiera al usuario que se visita, agregan este metodo a su get_context_data.
+def getDataCustomuser(model, self, usern, **kwargs):
+    user = get_object_or_404(CustomUser, username=usern)
+    context = super(model, self).get_context_data(**kwargs)
+    context.update({'customuser': user})
+    return context
+
+#listar las Stories creadas por un usuario
+class ListUserStories(LoginRequiredMixin, generic.ListView):
+    models = StoryPublication
     template_name = 'publications/story/story_list.html'
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super(ListUserStories, self).get_context_data(**kwargs)
-        user = get_object_or_404(CustomUser, username=self.kwargs.get('username'))
-        publications = StoryPublication.objects.filter(own_user = user, active=True)
-        conts = []
-        for x in publications:
-            ds = {}
-            if (x.continuatedBy.all().exists()):
-                ds.update({'quest_answ': x.continuatedBy.all()[0].quest_answ})
-            ds.update({'own_user': x.own_user})
-            ds.update({'title': x.title})
-            ds.update({'id': x.id})
-            ds.update({'active': x.active})
-            ds.update({'valoration': x.valoration})
-            ds.update({'views': x.views})
-            ds.update({'text_content': x.text_content})
-            isFirst = not(x.continuatedBy.all().exists())
-            if (isFirst):
-                    ds.update({'img_content_link': x.img_content_link.url})
-            else:
-                ds.update({'first_story': x.first_story})
-                if (x.first_story is None):
-                    ds.update({'img_content_link': x.img_content_link})
-                else:
-                    firstPub = get_object_or_404(StoryPublication, id=x.first_story)
-                    ds.update({'img_content_link': firstPub.img_content_link.url})
-            ds.update({'tag': x.tag})
-            conts.append(ds)
-        context.update({'list_pub': conts})
+    def get_queryset(self):
+        user = get_object_or_404(CustomUser, username=self.kwargs["username"])
+        qs = StoryPublication.objects.filter(own_user=user)
+        return qs
 
+    def get_context_data(self, **kwargs):
+        context = getDataCustomuser(ListUserStories, self, self.kwargs["username"], **kwargs)
         return context
 
 #retornar las continuaciones de una story
@@ -65,6 +51,7 @@ class StoryContinuations(LoginRequiredMixin, generic.ListView):
         qs = self.model.objects.filter(mainStory=self.kwargs["pk"], prevChapter__isnull = True)
         return qs
 
+#retornar las continuaciones de un chapter
 class ChapterContinuations(LoginRequiredMixin, generic.ListView):
     model = StoryChapter
     template_name = 'publications/story/story_list_previews.html'
@@ -72,109 +59,12 @@ class ChapterContinuations(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         qs = self.model.objects.filter(prevChapter = self.kwargs["pk"])
         return qs
-     
-
-#retornar las pre-stories de una story.
-'''class StoryPrevious(LoginRequiredMixin, generic.DetailView):
-    model = StoryPublication
-    template_name = 'publications/story/story_list_previews.html'
-
-    def get_query_set(self):
-        obj = self.get_object() #obtiene el object StoryPublication automaticamente por el pk de la url.
-        return obj.continuatedBy.all()
-
-    def get_context_data(self, **kwargs):
-        if (self.request.is_ajax()):
-            context = super(StoryPrevious, self).get_context_data(**kwargs)
-            conts = []
-            if (self.get_query_set().exists()):
-                x = self.get_query_set()[0];
-                ds = {}
-                ds.update({'own_user': x.baseStory.own_user})
-                ds.update({'title': x.baseStory.title})
-                if (x.baseStory.continuationFrom.all().exists()):
-                    ds.update({'answer': x.baseStory.continuationFrom.all()[0].quest_answ})
-                ds.update({'id': x.baseStory.id})
-                ds.update({'active': x.baseStory.active})
-                if (x.baseStory.active):
-                    ds.update({'valoration': x.baseStory.valoration})
-                    ds.update({'views': x.baseStory.views})
-                    ds.update({'text_content': x.baseStory.text_content})
-                    ds.update({'img_content_link': x.baseStory.img_content_link.url})
-                else:
-                    ds.update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                    ds.update({'img_content_link': default_img})
-                conts.append(ds)
-            context.update({'list_pub': conts})
-            return context
-        else:
-            context = super(StoryPrevious, self).get_context_data(**kwargs)
-            return context'''
-
-class StoryPrevious(LoginRequiredMixin, generic.DetailView):
-    model = StoryPublication
-    template_name = 'publications/story/story_list_previews.html'
-
-    def get_query_set(self):
-        obj = self.get_object() #obtiene el object StoryPublication automaticamente por el pk de la url.
-        return obj.continuatedBy.all()
-
-    def get(self, *args, **kwargs):
-        if (self.request.is_ajax()):
-            if (self.get_query_set().exists()):
-                publication = self.get_query_set()[0].baseStory
-                data =  dict()
-                if (publication.active):
-                    data['content_pub'] = model_to_dict(publication, exclude=['tag', 'storyContinuation', 'own_user, img_content_link'])
-                    data['content_pub'].update({'own_username': publication.own_user.username})
-                    data['content_pub'].update({'user_name': publication.own_user.first_name})
-                    data['content_pub'].update({'user_lastname': publication.own_user.last_name})
-                    data['content_pub'].update({'own_user': publication.own_user.id})
-                    data['content_pub'].update({'img_content_link': publication.img_content_link.url})
-                    data['content_pub'].update({'first_story': publication.first_story})
-
-                    isFirst = not(publication.continuatedBy.all().exists())
-                    data['content_pub'].update({'is_first': isFirst})
-                    if (isFirst):
-                        data['content_pub'].update({'img_content_link': publication.img_content_link.url})
-                    else:
-                        data['content_pub'].update({'first_story': publication.first_story})
-                        if (publication.first_story is None):
-                            data['content_pub'].update({'img_content_link': publication.img_content_link.url})
-                        else:
-                            firstPub = get_object_or_404(StoryPublication, id=publication.first_story)
-                            data['content_pub'].update({'img_content_link': firstPub.img_content_link.url})
-
-                    tags = []
-                    for x in publication.tag.all():
-                        tags.append(x.tag)
-                    data['content_pub'].update({'tags': tags})
-                    fromUser = self.request.user
-                    is_subscribed = fromUser.user2Pub.filter(pub = publication).exists();
-                    data['content_pub'].update({'is_subscribed': is_subscribed})
-                else:
-                    data['content_pub'] = model_to_dict(publication, exclude=['tag', 'storyContinuation', 
-                        'own_user', 'text_content', 'img_content_link'])
-                    data['content_pub'].update({'own_username': publication.own_user.username})
-                    data['content_pub'].update({'user_name': publication.own_user.first_name})
-                    data['content_pub'].update({'user_lastname': publication.own_user.last_name})
-                    data['content_pub'].update({'own_user': publication.own_user.id})
-                    data['content_pub'].update({'tags': []})
-                    data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                    data['content_pub'].update({'img_content_link': default_img})
-                return JsonResponse(data)
-            else:
-                return super().get(*args, **kwargs)
-        else:
-            return super().get(*args, **kwargs)
 
 
 #listar el contenido de una story. si es por ajax retorna un json, sino retorna el template correspondiente.
 class ListContentStory(LoginRequiredMixin, generic.DetailView):
     model = StoryPublication
     template_name = 'publications/story/story_display.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username' 
 
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
@@ -203,13 +93,14 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
         else:
             return super().get(*args, **kwargs)
 
-class ListContentChapter(LoginRequiredMixin, generic.ListView):
+#listar el contenido de un capitulo
+class ListContentChapter(LoginRequiredMixin, generic.DetailView):
     model = StoryChapter
     template_name = 'publications/story/story_display.html'
 
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
-            publication = get_object_or_404(StoryChapter, id=self.kwargs.get('pk'))
+            publication = self.get_object()
             data =  dict()
             data['content_pub'] = model_to_dict(publication, exclude=['tag', 'own_user'])
             data['content_pub'].update({'own_username': publication.own_user.username})
@@ -217,7 +108,6 @@ class ListContentChapter(LoginRequiredMixin, generic.ListView):
             data['content_pub'].update({'user_lastname': publication.own_user.last_name})
             data['content_pub'].update({'own_user': publication.own_user.id})
             data['content_pub'].update({'title': publication.mainStory.title})
-            data['content_pub'].update({'img_content_link': publication.mainStory.img_content_link.url})
 
             if (publication.active):
                 tags = []
@@ -225,9 +115,11 @@ class ListContentChapter(LoginRequiredMixin, generic.ListView):
                     tags.append(x.tag)
                 data['content_pub'].update({'tags': tags})
                 fromUser = self.request.user
+                data['content_pub'].update({'img_content_link': publication.mainStory.img_content_link.url})
             else:
                 data['content_pub'].update({'tags': []})
                 data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
+                data['content_pub'].update({'img_content_link': default_img})
             return JsonResponse(data)
         else:
             return super().get(*args, **kwargs)
@@ -266,7 +158,7 @@ class DeleteChapter(LoginRequiredMixin, generic.edit.DeleteView):
 
 
 #Editar story.
-class EditStory(ListUserDataMenuPerfil, generic.edit.UpdateView):
+class EditStory(LoginRequiredMixin, generic.edit.UpdateView):
     model = StoryPublication
     form_class = StoryEditForm
     template_name = 'publications/story/edit_story.html'
@@ -274,6 +166,10 @@ class EditStory(ListUserDataMenuPerfil, generic.edit.UpdateView):
     def get_success_url(self):
         username=self.kwargs['username']
         return reverse_lazy('user:user_profile', kwargs={'username': username})
+
+    def get_context_data(self, **kwargs):
+        context = getDataCustomuser(EditStory, self, self.kwargs["username"], **kwargs)
+        return context
 
     def get(self, *args, username, pk, **kwargs):
         story = self.get_object()
@@ -289,7 +185,8 @@ class EditStory(ListUserDataMenuPerfil, generic.edit.UpdateView):
             addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
 
-class EditStoryChapter(ListUserDataMenuPerfil, generic.edit.UpdateView):
+#editar chapter
+class EditStoryChapter(LoginRequiredMixin, generic.edit.UpdateView):
     model = StoryChapter
     form_class = StoryChapterEditForm
     template_name = 'publications/story/edit_story.html'
@@ -297,6 +194,10 @@ class EditStoryChapter(ListUserDataMenuPerfil, generic.edit.UpdateView):
     def get_success_url(self):
         username=self.kwargs['username']
         return reverse_lazy('user:user_profile', kwargs={'username': username})
+
+    def get_context_data(self, **kwargs):
+        context = getDataCustomuser(EditStoryChapter, self, self.kwargs["username"], **kwargs)
+        return context
 
     def get(self, *args, username, pk, **kwargs):
         chap = self.get_object()
@@ -314,9 +215,13 @@ class EditStoryChapter(ListUserDataMenuPerfil, generic.edit.UpdateView):
 
 
 #para dar de alta una Story
-class CreateStory(ListUserDataMenuPerfil, generic.CreateView):
+class CreateStory(LoginRequiredMixin, generic.CreateView):
     form_class = StoryCreationForm
     template_name = 'publications/story/create_story.html'
+
+    def get_context_data(self, **kwargs):
+        context = getDataCustomuser(CreateStory, self, self.kwargs["username"], **kwargs)
+        return context
 
     def form_valid(self, form):
         story = form.save(commit=False)
@@ -326,11 +231,19 @@ class CreateStory(ListUserDataMenuPerfil, generic.CreateView):
 
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
 
-#para dar de alta una continuacion de una Story  
-class CreateStoryContinuation(ListUserDataMenuPerfil, generic.CreateView):
+#para dar de alta un chapter. Esta clase requiere detail y create view. create para obtener
+#un formulario correspondiente al StoryContinuationCreationForm, junto con su form_isvalid().
+#detailview se requiere para obtener la StoryPublication a la que hace referencia el chapter.
+#La storyPublication se obtiene por el pk de la url, y django obtiene la story automaticamente.
+class CreateStoryContinuation(LoginRequiredMixin, generic.DetailView, generic.CreateView):
     model = StoryPublication
     form_class = StoryContinuationCreationForm
     template_name = 'publications/story/create_story_continuation.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = getDataCustomuser(CreateStoryContinuation, self, self.kwargs["username"], **kwargs)
+        return context
 
     def form_valid(self, form):
         story = form.save(commit=False)
@@ -351,7 +264,7 @@ class CreateStoryContinuation(ListUserDataMenuPerfil, generic.CreateView):
                 print("Errorrrrr "+e.message)
         addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
-
+    
 
 '''no se agregan tags de manera atomica entre una Story y el Tag. 
 Para eso usar el transaction.atomic, aunque no es critico perder tags...'''
@@ -439,15 +352,12 @@ class ListStories(LoginRequiredMixin, FormMixin, generic.ListView):
 #RESOURCES
 
 #listar los resources creados por un usuario
-class ListUserResources(ListUserDataMenuPerfil):
+class ListUserResources(LoginRequiredMixin, generic.DetailView):
     template_name = 'publications/resource/resource_list.html'
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
-        context = super(ListUserResources, self).get_context_data(**kwargs)
-        user = get_object_or_404(CustomUser, username=self.kwargs.get('username'))
-        resources = ResourcePublication.objects.filter(own_user = user, active=True)
-        context.update({'list_res': resources})
+        context = getDataCustomuser(ListUserResources, self, self.kwargs["username"], **kwargs)
         return context
 
 #listar el contenido de un resource
@@ -466,7 +376,7 @@ class JSONContentResource(LoginRequiredMixin, generic.DetailView):
 
 
 #Editar resource.
-class EditResource(ListUserDataMenuPerfil, generic.edit.UpdateView):
+class EditResource(ListUserPerfil, generic.edit.UpdateView):
     model = ResourcePublication
     form_class = ResourceEditForm
     template_name = 'publications/resource/edit_resource.html'
@@ -482,7 +392,7 @@ class EditResource(ListUserDataMenuPerfil, generic.edit.UpdateView):
 
 
 #para dar de alta un resource
-class CreateResource(ListUserDataMenuPerfil, generic.CreateView):
+class CreateResource(ListUserPerfil, generic.CreateView):
     form_class = ResourceCreationForm
     template_name = 'publications/resource/create_resource.html'
 

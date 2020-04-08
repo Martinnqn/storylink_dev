@@ -51,7 +51,7 @@
 
             <div class="row">
                 <div class="stories-preview col-12">
-                    {%if list_pub or chapters%}
+                    {%if storypublication_list or storychapters_list%}
                         {% include "publications/story/story_list_base.html" %}
                     {%else%}
                       {%if customuser.username != user.username%}

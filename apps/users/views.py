@@ -11,28 +11,24 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.contrib.auth.forms import AuthenticationForm
 
-
-    
-#Obtiene todos los datos necesarios para que el menu del perfil de un usuario funcione. 
-'''Todas las clases que utilicen un template que muestre el menu del usuario deben heredar de esta clase. 
-(Cualquier template que herede de users/profile_base.html)'''
-class ListUserDataMenuPerfil(LoginRequiredMixin, generic.DetailView):
+#retorna el perfil del usuario
+class ListUserPerfil(LoginRequiredMixin, generic.DetailView):
     model = CustomUser
     template_name = 'users/user_profile.html'
     slug_field = 'username'
-    slug_url_kwarg = 'username' 
+    slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
-        context = super(ListUserDataMenuPerfil, self).get_context_data(**kwargs)
+        context = super(ListUserPerfil, self).get_context_data(**kwargs)
         from_user = self.request.user
         to_user = get_object_or_404(CustomUser, username=self.kwargs.get('username'))
         is_following = from_user.from2To.filter(to_user = to_user).exists()
         context.update({'is_following': is_following})
         context.update({'customuser': to_user})
         publications = StoryPublication.objects.filter(own_user = to_user, active=True)
-        context.update({'list_pub': publications})
+        context.update({'storypublication_list': publications})
         chaps = StoryChapter.objects.filter(own_user = to_user, active=True)
-        context.update({'chapters': chaps})
+        context.update({'storychapter_list': chaps})
         return context
 
 #para listar los followers
@@ -46,7 +42,6 @@ class ListUserFollowers(LoginRequiredMixin, generic.DetailView):
         context = super(ListUserFollowers, self).get_context_data(**kwargs)
         followers = self.object.to2From.all()
         context.update({'followers': followers})
-        print(context)
         return context
 
 

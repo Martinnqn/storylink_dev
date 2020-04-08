@@ -29,39 +29,6 @@ body {
     font-size: 18px;
 }
 
-@media(min-width:768px) {
-    #collapsibleNavbarPrimary .input-group div{
-        height: 30px;
-    }
-
-    #collapsibleNavbarPrimary input{
-        height: 30px;
-    }
-
-    #collapsibleNavbarPrimary ul{
-        height: 30px;
-    }
-
-    .nav-hall {
-        margin-left: 75px;
-    }
-
-    #users-found {
-        top: 40px;
-        width: 264px;
-    }
-
-    /*.nav-hall a{
-        display: ruby-text;
-    }*/
-
-    #base-div{
-        min-height: 600px;
-    }
-
-}
-
-
 .btn-custom-1 {
     padding-top: 6px;
     display: block;
@@ -149,40 +116,6 @@ body {
     background: whitesmoke;
 }
 
-@media(max-width:900px) {
-    #container-form-create-account{
-        width: 60%;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        background: whitesmoke;
-    }
-}
-
-@media(max-width:768px) {
-    #users-found {
-        top: 85px;
-        width: 70%;
-    }
-
-    .nav-hall {
-        margin-top: 5px;
-    }
-
-    #base-div{
-        min-height: 500px;
-    }
-
-}
-
-@media(max-width:500px) {
-    #container-form-create-account{
-        width: 90%;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        background: whitesmoke;
-    }
-}
-
 a:hover{
     text-decoration: none;
 }
@@ -224,8 +157,8 @@ strong.hall{
 }
 
 #presentation-tree{
-	display: block;
-	margin: auto;
+    display: block;
+    margin: auto;
 }
 
 #footer{
@@ -279,3 +212,74 @@ strong.hall{
 .cookies__botones {
     float: right;
 }
+
+
+@media(min-width:768px) {
+    #collapsibleNavbarPrimary .input-group div{
+        height: 30px;
+    }
+
+    #collapsibleNavbarPrimary input{
+        height: 30px;
+    }
+
+    #collapsibleNavbarPrimary ul{
+        height: 30px;
+    }
+
+    .nav-hall {
+        margin-left: 75px;
+    }
+
+    #users-found {
+        top: 40px;
+        width: 264px;
+    }
+
+    /*.nav-hall a{
+        display: ruby-text;
+    }*/
+
+    #base-div{
+        min-height: 600px;
+    }
+
+}
+
+
+
+
+@media(max-width:900px) {
+    #container-form-create-account{
+        width: 60%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        background: whitesmoke;
+    }
+}
+
+@media(max-width:768px) {
+    #users-found {
+        top: 85px;
+        width: 70%;
+    }
+
+    .nav-hall {
+        margin-top: 5px;
+    }
+
+    #base-div{
+        min-height: 500px;
+    }
+
+}
+
+@media(max-width:500px) {
+    #container-form-create-account{
+        width: 90%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        background: whitesmoke;
+    }
+}
+

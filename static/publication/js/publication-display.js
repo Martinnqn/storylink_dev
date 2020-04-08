@@ -115,7 +115,7 @@ function showInfoChapter(url, user_id, evt) {
                 $("#content-image #img").html('<img alt="Publication image" class="img-thumbnail mx-auto d-block" src="'+cont.img_content_link+'">');
                 //$("#content-image #img").html('<img alt="Publication image" class="img-thumbnail mx-auto d-block" src="/../../static/imgs/img1.png">');
             }
-            $("#autor").html('<p>Autor: <a href="/user/'+cont.own_username+'/">'+cont.user_name+' '+cont.user_lastname+'</a></p>');
+            $("#autor").html('<p>Autor: <a href="/user/'+cont.own_username+'/">'+cont.own_username+'</a></p>');
 
             $("#title").html('<h4>'+limitText(cont.title, 35)+'</h4>');
             $("#publication-description").html('<h4>'+cont.title+'</h4> <p>'+cont.text_content+'</p>');

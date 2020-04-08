@@ -252,7 +252,32 @@ p.description {
 .answer h5{
     font-size: 15px;
 }
-/*Estilo de la previsualizacion de una story*/
+
+#scroll-previews .card-story {
+  -webkit-overflow-scrolling: touch;
+}
+
+.publication-container {
+    transition: all 0.5s ease-out;
+}
+
+.publication-container-readMode, .publication-description-readMode p{
+    transition: all 1s ease-in;
+
+}
+
+.main-actions a:hover{
+    color: white;
+}
+
+#content-previews h5{
+    background: white;
+    border-radius: 0 20px 0 0;
+    margin-bottom: 0;
+    width: 150px;
+}
+
+
 @media (min-width: 768px) {
 
     .publication-container {
@@ -305,10 +330,8 @@ p.description {
 
 
 
-/*Fin estilo previsualizacion story*/
 
 
-/*Cards*/
 @media (min-width: 1200px) {
     .card-story {
         margin: 20px;
@@ -415,7 +438,6 @@ p.description {
 
 }
 
-/*Ipad*/
 @media (max-width: 767px) {
     .content-story {
         line-height: 24px;
@@ -445,7 +467,6 @@ p.description {
 
 }
 
-/*varios cels*/
 @media (max-width: 445px) {
     .content-story {
         line-height: 20px;
@@ -503,26 +524,3 @@ p.description {
 
 }
 
-#scroll-previews .card-story {
-  -webkit-overflow-scrolling: touch;
-}
-
-.publication-container {
-    transition: all 0.5s ease-out;
-}
-
-.publication-container-readMode, .publication-description-readMode p{
-    transition: all 1s ease-in;
-
-}
-
-.main-actions a:hover{
-    color: white;
-}
-
-#content-previews h5{
-    background: white;
-    border-radius: 0 20px 0 0;
-    margin-bottom: 0;
-    width: 150px;
-}

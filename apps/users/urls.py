@@ -6,7 +6,7 @@ from apps.users.views import *
 app_name='user'
 
 urlpatterns = [
-    path('', ListUserDataMenuPerfil.as_view(), name='user_profile'),
+    path('', ListUserPerfil.as_view(), name='user_profile'),
     path('followers/', ListUserFollowers.as_view(), name='user_followers'),
     path('following/', ListUserFollowing.as_view(), name='user_following'),
     path('stories-subscription/', ListStoriesSubscription.as_view(), name='user_stories_subscription'),
