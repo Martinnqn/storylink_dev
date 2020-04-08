@@ -14,10 +14,9 @@
 
 {% include "publications/story/story_card.html" %}
 
-<a href="{% url 'user:pub:create_story' customuser.username%}" class="btn-create-story">Crear Storylink</a>
 <div class="row">
     <div class="stories-preview col-12">
-        {%if list_pub%}
+        {%if storypublication_list or storychapter_list%}
         {% include "publications/story/story_list_base.html" %}
         {%else%}
           {%if customuser.username != user.username%}

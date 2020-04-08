@@ -19,14 +19,6 @@ from django.core.files.storage import FileSystemStorage
 
 default_img = 'media/gallery/no-img.png'
 
-#para resolver las url del menu se devuelve siempre el customuser, por eso lo abstraigo en esta funcion.
-#Asi, cada view que retorne un template que requiera al usuario que se visita, agregan este metodo a su get_context_data.
-def getDataCustomuser(model, self, usern, **kwargs):
-    user = get_object_or_404(CustomUser, username=usern)
-    context = super(model, self).get_context_data(**kwargs)
-    context.update({'customuser': user})
-    return context
-
 #listar las Stories creadas por un usuario
 class ListUserStories(LoginRequiredMixin, generic.ListView):
     models = StoryPublication
@@ -39,7 +31,8 @@ class ListUserStories(LoginRequiredMixin, generic.ListView):
         return qs
 
     def get_context_data(self, **kwargs):
-        context = getDataCustomuser(ListUserStories, self, self.kwargs["username"], **kwargs)
+        context = super(ListUserStories, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
 #retornar las continuaciones de una story
@@ -168,7 +161,8 @@ class EditStory(LoginRequiredMixin, generic.edit.UpdateView):
         return reverse_lazy('user:user_profile', kwargs={'username': username})
 
     def get_context_data(self, **kwargs):
-        context = getDataCustomuser(EditStory, self, self.kwargs["username"], **kwargs)
+        context = super(EditStory, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
     def get(self, *args, username, pk, **kwargs):
@@ -196,8 +190,11 @@ class EditStoryChapter(LoginRequiredMixin, generic.edit.UpdateView):
         return reverse_lazy('user:user_profile', kwargs={'username': username})
 
     def get_context_data(self, **kwargs):
-        context = getDataCustomuser(EditStoryChapter, self, self.kwargs["username"], **kwargs)
+        context = super(EditStoryChapter, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
+
+
 
     def get(self, *args, username, pk, **kwargs):
         chap = self.get_object()
@@ -220,7 +217,8 @@ class CreateStory(LoginRequiredMixin, generic.CreateView):
     template_name = 'publications/story/create_story.html'
 
     def get_context_data(self, **kwargs):
-        context = getDataCustomuser(CreateStory, self, self.kwargs["username"], **kwargs)
+        context = super(CreateStory, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
     def form_valid(self, form):
@@ -228,7 +226,6 @@ class CreateStory(LoginRequiredMixin, generic.CreateView):
         story.own_user = self.request.user
         form.save()
         addTags(form.cleaned_data.get('tag').split(), story)
-
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
 
 #para dar de alta un chapter. Esta clase requiere detail y create view. create para obtener
@@ -240,9 +237,9 @@ class CreateStoryContinuation(LoginRequiredMixin, generic.DetailView, generic.Cr
     form_class = StoryContinuationCreationForm
     template_name = 'publications/story/create_story_continuation.html'
 
-
     def get_context_data(self, **kwargs):
-        context = getDataCustomuser(CreateStoryContinuation, self, self.kwargs["username"], **kwargs)
+        context = super(CreateStoryContinuation, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
     def form_valid(self, form):
@@ -357,7 +354,8 @@ class ListUserResources(LoginRequiredMixin, generic.DetailView):
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
-        context = getDataCustomuser(ListUserResources, self, self.kwargs["username"], **kwargs)
+        context = super(ListUserResources, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
 #listar el contenido de un resource

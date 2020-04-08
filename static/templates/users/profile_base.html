@@ -70,34 +70,6 @@
     <div class="" id="profile-content">
         {% block profile-content %}
         <div class="row justify-content-center">
-        <!--<div class="col-lg-3" id="profile-side-left">
-            {% block profile-side-left %}
-            <div class="container" id="profile-description">
-                {% block profile-description %}
-                <ul>
-                    <li>
-                        <a href="{% url 'user:user_profile' customuser.username %}">{{customuser.first_name}} {{customuser.last_name}}</a>
-                    </li>
-                    <li>
-                        {{customuser.description}}
-                    </li>      
-                    <li>
-                        {{customuser.tags}}
-                    </li>
-                    {%if user.username != customuser.username %}      
-                    <li>
-                        {%if is_following%}
-                        <a href="{%url 'user:user_unfollow' customuser.username customuser.id %}?next={{request.path}}">Dejar de seguir</a>
-                        {%else%}
-                        <a href="{%url 'user:user_follow' customuser.username customuser.id %}?next={{request.path}}">Seguir</a>
-                        {%endif%}
-                    </li>
-                    {%endif%}
-                </ul>
-                {%endblock%}
-            </div>
-            {%endblock%}
-        </div>-->
         <div class="col-lg-12" id="container-profile-body">
             <div class="container" id="profile-body">
                 {% block profile-body %}
