@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title-page %} {{customuser.username}}{% endblock %}
+{% block head-page %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'user/css/custom.css' %}">
+{%block head-page-extra%}{% endblock %}
+{% endblock %}
+{% block main-content %}
+{% block profile-menu %}
+
+<!-- navBar secundario -->
+<div class="temporal-div">
+    <nav class="temporal-nav">
+        <ul class="">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user:user_profile' customuser.username%}">Perfil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user:user_stories_subscription' customuser.username%}">Suscripciones</a>
+            </li>
+            {%if customuser.username == user.username %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user:pub:create_story' customuser.username%}">Crear Storylink</a>
+            </li>
+            {%endif%}
+        </ul>
+    </nav>
+    <nav id="nav-profile" class="navbar navbar-expand-md navbar-dark" >
+    <!-- Collapse button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbarSecundary">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbarSecundary">
+        <ul class="navbar-nav">
+            {%comment%}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'user:pub:user_stories_own' customuser.username%}">Publicaciones</a>
+            </li> 
+            <!--<li class="nav-item">
+                <a class="nav-link" href="{% url 'user:pub:user_resources_own' customuser.username%}">Recursos</a>
+            </li>--> 
+
+            {%if customuser.username == user.username %}
+            <li class="nav-item">
+                <a class="nav-link" href="#">Borradores</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Novedades</a>
+            </li>
+            <li class="nav-item">
+                <!--<a class="nav-link" href="{% url 'user:pub:create_resource' customuser.username%}">Crear Resource</a>
+                </li>-->
+                {%endif%}
+                {%endcomment%}
+                <li class="nav-item">
+                    <a class="" href="{% url 'user:user_followers' customuser.username%}">Seguidores</a>
+                </li> 
+                <li class="nav-item">
+                    <a class="" href="{% url 'user:user_following' customuser.username%}">Siguiendo</a>
+                </li>
+
+            </ul>
+        </div>
+    </nav>
+    </div>
+    {%endblock%}
+
+    <div class="" id="profile-content">
+        {% block profile-content %}
+        <div class="row justify-content-center">
+        <!--<div class="col-lg-3" id="profile-side-left">
+            {% block profile-side-left %}
+            <div class="container" id="profile-description">
+                {% block profile-description %}
+                <ul>
+                    <li>
+                        <a href="{% url 'user:user_profile' customuser.username %}">{{customuser.first_name}} {{customuser.last_name}}</a>
+                    </li>
+                    <li>
+                        {{customuser.description}}
+                    </li>      
+                    <li>
+                        {{customuser.tags}}
+                    </li>
+                    {%if user.username != customuser.username %}      
+                    <li>
+                        {%if is_following%}
+                        <a href="{%url 'user:user_unfollow' customuser.username customuser.id %}?next={{request.path}}">Dejar de seguir</a>
+                        {%else%}
+                        <a href="{%url 'user:user_follow' customuser.username customuser.id %}?next={{request.path}}">Seguir</a>
+                        {%endif%}
+                    </li>
+                    {%endif%}
+                </ul>
+                {%endblock%}
+            </div>
+            {%endblock%}
+        </div>-->
+        <div class="col-lg-12" id="container-profile-body">
+            <div class="container" id="profile-body">
+                {% block profile-body %}
+                {%endblock%}
+            </div>
+        </div>
+    </div>
+    {%endblock%}
+    
+
+</div>
+
+{% endblock %}

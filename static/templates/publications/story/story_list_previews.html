@@ -1,0 +1,34 @@
+{%if storychapter_list %}
+{% for chap in storychapter_list %}
+
+  <div class="card-story">
+    <div class="row content-story">
+        <div class="col-12 card-body">
+        <h3>
+          {%if chap.active %}
+              <a href="javascript: void(0)" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)'>{{chap.quest_answ}}
+              </a>
+            {%else%}
+            <a class="disabled-story" href="javascript: void(0)" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)'>{{chap.quest_answ}}
+              </a>
+          {%endif%}
+        </h3>
+        {%if chap.active %}
+          <p class="description">{{chap.text_content|truncatechars:200}}</p>
+          <div class="classification-story">
+            {%comment%}
+          <div class="valoration" data-toggle="tooltip" data-placement="top" title="Valoracion"><i class="material-icons">emoji_events</i> {{ chap.valoration}}</div>
+          <div class="views" data-toggle="tooltip" data-placement="top" title="Vistas"><i class="material-icons">remove_red_eye</i>{{chap.views}}</div>
+            {%endcomment%}
+        </div>
+        {%else%}
+          <p class="description">No se puede visualizar el contenido de esta Storylink.</p>
+          <div class="disabled-story">Esta Storylink fue eliminada.</div>
+        {%endif%}
+      </div>
+    </div>
+  </div>
+{% endfor %}
+{%else%}
+<div class="disabled-story"><h3>No hay Storylinks que continúen la trama.</h3></div>
+{%endif%}

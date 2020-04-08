@@ -1,0 +1,147 @@
+#title-profile-body {
+  display: flex;
+}
+
+#profile-description {
+  border-radius: 15px;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+}
+
+#profile-description ul{
+  list-style: none;
+}
+
+#profile-description ul li{
+  margin-top: 10px;
+}
+
+#profile-body {
+  border-radius: 15px;
+  background-color: white;
+  margin-top: 10px;
+}
+
+#profile-body ul{
+  list-style: none;
+}
+
+#profile-content {
+  border-radius: 15px;
+  margin-top: 25px;
+}
+
+
+@media (min-width:768px) {
+  #container-form-story{
+    width: 70%;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+
+  #nav-profile {
+    margin-bottom: 20px;
+    height: 40px;
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+
+  .temporal-nav {
+    margin-bottom: 20px;
+    height: 40px;
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+
+  .temporal-div {
+    height: 40px;
+  }
+}
+
+@media (max-width:980px) {
+  #profile-description {
+    margin-bottom: 20px;
+  }
+}
+
+.card-user {
+  float: left;
+  margin: 10px 10px 10px 0;
+  background: #cecece;
+  border-radius: 20px 20px 0 0;
+}
+
+.card-body-user {
+  text-align: center;
+}
+
+.card-body-user p{
+  font-size: 20px;
+  margin-bottom: 0;
+}
+
+.card-thumbnail{
+  padding: 0;
+  margin: auto;
+  width: 80px;
+}
+
+
+.disabled-story{
+  color: rgb(111,111,111);
+}
+
+#collapsibleNavbarSecundary {
+  justify-content: center;
+}
+
+#collapsibleNavbarSecundary ul li a{
+  display: block;
+  padding: .5rem 1rem;
+}
+
+.temporal-nav {
+  display: block;
+}
+
+.temporal-nav ul li {
+  float: left;
+}
+
+.temporal-nav ul {
+  list-style: none;
+}
+
+.temporal-div {
+  display: flex;
+  background-color: #97a9bd;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.temporal-div a{
+  color: white;
+}
+
+.temporal-div .nav-link {
+  color: white;
+}
+
+
+
+#img-preview-form{
+    width: 200px;
+}
+
+#container-profile-body{
+  margin-top: -10px;
+}
+
+.empy-pub{
+  color: rgb(111,111,111);
+}
+
+.img-perfil{
+  width: 90px;
+}

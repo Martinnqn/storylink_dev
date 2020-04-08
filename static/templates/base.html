@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title-page %}S{% endblock %}</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162832086-1"></script>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Material icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'base/css/custom.css' %}">
+    <link rel="icon"  type="image/png" href="{% static 'imgs/story_minim.png' %}" sizes="32x32">
+    {% block head-page %}{% endblock %}
+    
+</head>
+<body>  
+    <a id="scroll-to-top" href="#scroll-to-top"></a>
+    {%block primary-navbar%}
+    <div id="header-base">
+        <!-- navBar primario -->   
+        <nav id="primary-navbar" class="navbar navbar-expand-sm navbar-light">
+            <!-- Brand -->
+            <a class="navbar-brand" href="#"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
+            <!-- Collapse button -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbarPrimary">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Links -->            
+            {% if user.is_authenticated %}
+            <div class="collapse navbar-collapse" id="collapsibleNavbarPrimary">
+                <ul id="search-nav" class="navbar-nav">
+                    <li class="nav-item input-search">
+                        <form id="form-search" class="form-inline" action="">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="material-icons">search</i></span>
+                                </div>
+                                <input id="input-search" autocomplete="off" onkeyup="searchUser('{% url 'user:user_profile' user.username %}')" onfocus="searchUser('{% url 'user:user_profile' user.username %}')" type="text" class="form-control" placeholder="Nombre de usuario">
+                            </div>
+                        <div id="users-found"></div>
+                        </form>
+                    </li>
+                    <li class="nav-item nav-hall">
+                        <a class="nav-link" href="/">Hall</a>
+                    </li>
+                </ul>
+            </div>  
+            {%endif%}
+        </nav> 
+        <div id="login-div">
+            {% if user.is_authenticated %}
+            <ul id="login-nav" class="">         
+                <li class="nav-item">
+                    <a href="{%url 'user:user_profile' user.username %}">
+                        <img class="nav-img-perfil" src="{{ user.link_img_perfil.url }}" alt="img perfil">
+                        {{user.username}}
+                    </a>
+                </li>               
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}">Cerrar sesión</a>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="" href="{% url 'sign_up' %}">Registrarse</a>
+                </li>               
+                <li class="nav-item">
+                    <a class="" href="{% url 'login' %}">Iniciar Sesión</a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    {%endblock%} <!--primary-navbar-->
+    
+    <div id="base-div">
+    {% block main-content%}
+
+    {%endblock%} <!--main-content -->
+    {% block display-pub-detail %}
+    {% endblock %}
+    </div>
+
+    <div id="footer">
+        <img id="storylink-pin" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
+        <ul>
+            <li>Contacto: storylink@hotmail.com</li>
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Smooth Scroll to Link -->
+    <script src="{% static 'base/js/scroll-smooth.js' %}"></script>
+    <script src="{% static 'base/js/base.js' %}"></script>
+
+    {% block extra-script%}
+
+    {%endblock%} <!--extras scripts -->
+
+<section class="cookies">
+    <h4 class="cookies__titulo">Aceptar Cookies?</h4> 
+    <p class="cookies__texto">Usamos cookies para mejorar tu experiencia en la web.</p>
+    <div class="cookies__botones">
+        <a href="javascript: void(0)" class="cookies__boton cookies__boton--no">Declinar</a>
+        <a href="javascript: void(0)" class="cookies__boton cookies__boton--si">Aceptar</a>
+    </div>
+</section> 
+    
+</body>
+</html>

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title-page %}Crear cuenta{% endblock %}
+
+{% block main-content %}
+
+<div class="row">
+
+<div class="col-lg-7">
+<div id="presentation" class="container">
+  <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
+  <h2>Bienvenido a Storylink.club</h2>
+</div>
+<div class="container" id="presentation-items">
+  <ul>
+    <li><h5>Storylink es una plataforma desarrollada para <strong>escribir y leer historias!</strong></h5></li>
+    <li><h5>Una Storylink es una historia a la que pueden añadirse diferentes descenlaces y tramas.</li>
+    <li><h5>Crea Storylinks y añade alternativas para cada decisión importante en la trama, creando historias interactivas.</li>
+    <li><p> Promueve el desarrollo colaborativo de historias. ¿Te motiva que los personajes principales derroten al enemigo, o prefieres que los villanos se salgan con la suya? Quieres redimir a un personaje que tomó una mala decisión? <strong>Crea</strong> tu propia trama y <strong>compártelo</strong> con el resto de los usuarios de <strong>Storylink.club</strong></p> </li>
+    <li><p> En Storylink.club cada usuario es libre de <strong>crear</strong>  sus historias o de <strong>continuar</strong> historias de otros usuarios, aumentando las posibilidades para que cada lector pueda elegir la trama que más <strong>disfrute</strong>, o <strong>elegir</strong> cómo termina una historia!</p></li>
+  </ul>
+  
+</div>
+
+</div>
+  <div class="col-lg-5">
+    <div class="container" id="container-form-create-account">
+      <form method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+
+        {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field }}
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% for field in form.visible_fields %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            <!--el siguiente ifequal no hace nada pero lo dejo como ejemplo
+            {%ifequal field.id_for_label|stringformat:"s" "id_hashtag" %}
+            {%for x in form.fields.hashtag.choices%}
+            {{x}}
+            {%endfor%}
+            {%endifequal%}-->
+            {%if not field.field.required or field.id_for_label|stringformat:"s" == "id_link_img_perfil" %}
+                <span class="not-required-field">*</span>
+            {%endif%}
+            {% if form.is_bound %}
+              {% if field.errors %}
+                {% render_field field class="form-control is-invalid" %}
+                {% for error in field.errors %}
+                  <div class="invalid-feedback">
+                    {{ error }}
+                  </div>
+                {% endfor %}
+              {% else %}
+                {% render_field field class="form-control is-valid" %}
+              {% endif %}
+            {% else %}
+              {% render_field field class="form-control" %}
+            {% endif %}
+
+            {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <div class="row justify-content-center">
+        <button type="submit" class="btn-custom-2">Crear Cuenta</button>
+        </div>
+      	<small class="form-text text-muted">Si crea una cuenta asumimos que leyó y acepta los <a href="{% url 'term_priv'%}" target="_blank" >términos de uso y políticas de privacidad</a></small>
+      </form>
+      <small class="form-text text-muted">* Campo no obligatorio</small>
+    </div>
+    <div class="container" id="presentation-exp">
+      <p>Explora las Storylinks en nuestro <strong class="hall">Hall</strong></p>
+      <p>Las historias enlazadas formarán un árbol como el de la imagen!.</p>
+
+      <img id="presentation-tree" src="{% static 'imgs/ejemplo.png' %}" alt="">
+
+     <p>En esta <strong>cuarentena #YoMeQuedoEnCasaEscribiendo</strong> y <strong>#YoMeQuedoEnCasaLeyendo</strong> en <strong>#StoryLink.club</strong></p>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

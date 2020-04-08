@@ -1,0 +1,10 @@
+<div class="card-user ">
+    <div class="card-thumbnail">
+        <img alt="User image" class="img-thumbnail" src="{{user.link_img_perfil.url}}">
+    </div>
+    <div class="card-body-user">
+        <p>
+            <a href="{% url 'user:user_profile' user.username %}">{{user.username}}</a>
+        </p>
+    </div>
+</div>

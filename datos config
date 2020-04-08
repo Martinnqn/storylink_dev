@@ -1,0 +1,8 @@
+Base de Datos: nk_db
+User: nk_user
+Pw: 1234
+host: localhost
+
+Para crear un superusuario admin para acceder a 127.0.0.1:8000/admin/site o para loguearse en la pagina usar:
+$ python3 manage.py createsuperuser 
+(yo lo instale con pip3 a Django asique uso python3 porque otro no me anda)

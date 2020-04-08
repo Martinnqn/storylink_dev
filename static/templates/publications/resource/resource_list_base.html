@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="stories-preview col-md-12">
+
+    {% for res in list_res %}
+
+    <div class="card-story ">
+      <div class="row content-story">
+        <div class="col-4 card-thumbnail">
+          <img alt="Publication image" class="img-thumbnail" src="{{res.img_content_link}}">
+        </div>
+        <div class="col-8 card-body">
+          <h3>
+            <a href="javascript: void(0)" onClick='showInfoResource("{% url 'user:pub:res_content' res.own_user.username res.id %}", {{user.id}})'>{{res.title}}</a>
+          </h3>
+          <p class="description">{{res.text_content}}</p>
+          <div class="row justify-content-between classification-story">
+            <div class="col valoration"><i class="material-icons">emoji_events</i><span>Valoracion</span> {{ res.valoration}}</div>
+            <div class="col views"><i class="material-icons">remove_red_eye</i><span>Vistas</span> {{res.views}}</div>
+          </div>
+          <div class="tags-story">
+            {% for h in res.hashtag.all %}
+            <span>{{ h.tag }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,34 @@
+{%if storypublication_list%}
+    {% for pub in storypublication_list %}
+      <div class="card-story">
+        <div class="row content-story">
+            <div class="col-3 card-thumbnail">
+                <img alt="Publication image" class="img-thumbnail" src="{{pub.img_content_link.url}}">
+            </div>
+            <div class="col-9 card-body">
+            <h3>
+                <a href="javascript: void(0)" onClick='showInfoPub("{% url 'user:pub:story_content' pub.own_user.username pub.id %}", {{user.id}}, event)'>{{pub.title|truncatechars:35}}
+                </a>
+            </h3>
+            <div class="row answer-pub">
+              <div class="answer"><h5>{{pub.quest_answ}}</h5></div>
+            </div>
+            <p class="description">{{pub.text_content|truncatechars:150}}</p>
+            <div class="classification-story">
+                {%comment%}
+              <div class="valoration" data-toggle="tooltip" data-placement="top" title="Valoracion"><i class="material-icons">emoji_events</i> {{ pub.valoration}}</div>
+              <div class="views" data-toggle="tooltip" data-placement="top" title="Vistas"><i class="material-icons">remove_red_eye</i>{{pub.views}}</div>
+                {%endcomment%}
+            </div>
+            <div class="tags-story">
+              {% for h in pub.tag.all %}
+              <span>{{ h.tag }}</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+{%else%}
+    <div class="empy-pub"><h5>Aun no existen Storylinks, <a class="nav-link" href="{% url 'user:pub:create_story' user.username%}">¡Sé el primero en crear una!</a></h5></div>
+{%endif%}

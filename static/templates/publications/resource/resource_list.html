@@ -1,0 +1,15 @@
+{% extends "users/profile_base.html" %}
+{% load static %}
+
+{%block head-page-extra%}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'publication/css/custom.css' %}">
+<!-- Icons star CSS -->
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+{%endblock%}
+
+{% block profile-body %}
+
+{% include "publications/resource/resource_list_base.html" %}
+
+{% endblock %}

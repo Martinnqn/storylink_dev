@@ -1,0 +1,32 @@
+#list-story{
+    background-color: white;
+    border-radius: 15px;
+    min-height: 250px;
+}
+
+
+#content-filter {
+    border-radius: 15px;
+    background-color: white;
+    justify-content: center;
+}
+
+#hall-main{
+    margin-top: 20px;
+}
+
+.input-group{
+    justify-content: space-evenly;
+}
+
+.btn-custom-2 .material-icons {
+    display: block;
+}
+
+#list-story h3 {
+	text-align: center;
+}
+
+.empy-pub .nav-link{
+	display: inline-block;
+}

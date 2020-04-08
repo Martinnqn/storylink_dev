@@ -1,0 +1,14 @@
+{% extends "users/profile_base.html" %}
+{% load static %}
+
+{% block title-page %}Seguidores de {{customuser.first_name}} {{customuser.last_name}}{% endblock %}
+
+{% block profile-body %}
+<div class="row">
+    <div class="users-preview col">
+        {% for user in followers %}
+        {% include "users/user_card_base.html" with user=user.from_user %}
+        {% endfor %}
+    </div>
+</div>
+{%endblock%}

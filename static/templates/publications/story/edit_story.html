@@ -1,0 +1,61 @@
+{% extends "users/profile_base.html" %}
+{% load widget_tweaks %}
+
+{% block profile-body %}
+
+<div class="" id="container-form-story">
+  <div class="row justify-content-center">
+    <h5>Modificar Storylink</h5>
+  </div>
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {% if form.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control is-valid" %}
+        {% endif %}
+      {% else %}
+      {%ifequal field.id_for_label|stringformat:"s" "id_img_content_link"%}
+          <img id="img-preview-form" src="{{field.value.url}}" alt="{{field.value}}" />
+          {% render_field field class="form-control" %}
+        {%else%}
+          {% render_field field class="form-control" %}
+      {%endifequal%}
+      
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <div class="row justify-content-center">
+  <button type="submit" class="btn-custom-2">Guardar cambios</button>
+  </div>
+</form>
+</div>
+
+{% endblock %}
+

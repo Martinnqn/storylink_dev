@@ -1,0 +1,62 @@
+{% extends "users/profile_base.html" %}
+{% load widget_tweaks %}
+
+{% block profile-body %}
+
+<div class="" id="container-form-story">
+  <div class="row justify-content-center">
+    <h4>Escribe una Storylink!</h4>
+  </div>
+<form method="post" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {%comment%}
+      <!--el siguiente ifequal no hace nada pero lo dejo como ejemplo
+      {%ifequal field.id_for_label|stringformat:"s" "id_hashtag" %}
+      {%for x in form.fields.hashtag.choices%}
+      {{x}}
+      {%endfor%}
+      {%endifequal%}-->
+      {%endcomment%}
+      {% if form.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control is-valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
+  <div class="row justify-content-center">
+  <button type="submit" class="btn-custom-2">Crear Storylink</button>
+  </div>
+</form>
+</div>
+{% endblock %}
+

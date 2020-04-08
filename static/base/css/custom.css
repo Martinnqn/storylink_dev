@@ -1,0 +1,281 @@
+/*BASE CSS*/
+#main-content {
+    width: 900px;
+}
+
+body {
+    background-color: #ececec;
+    overflow-x: hidden;
+}
+
+#primary-navbar{
+    padding: 0;
+}
+
+
+#header-base .nav-hall a{
+    color:#ff6567;
+    padding: 0px;
+    font-size: 40px;
+    font-family: 'Dancing Script';
+    margin-top: -15px;
+    border-radius: 15px;  
+    height: 55px;      
+    width: 65px;      
+}
+
+
+#collapsibleNavbarPrimary .material-icons {
+    font-size: 18px;
+}
+
+@media(min-width:768px) {
+    #collapsibleNavbarPrimary .input-group div{
+        height: 30px;
+    }
+
+    #collapsibleNavbarPrimary input{
+        height: 30px;
+    }
+
+    #collapsibleNavbarPrimary ul{
+        height: 30px;
+    }
+
+    .nav-hall {
+        margin-left: 75px;
+    }
+
+    #users-found {
+        top: 40px;
+        width: 264px;
+    }
+
+    /*.nav-hall a{
+        display: ruby-text;
+    }*/
+
+    #base-div{
+        min-height: 600px;
+    }
+
+}
+
+
+.btn-custom-1 {
+    padding-top: 6px;
+    display: block;
+}
+
+.btn-custom-2 {
+    padding: 4px;
+    font-size: 16px;
+    background: #644e5b;
+    color: white;
+    border-radius: 4px;
+}
+
+.btn-custom-2 a{
+    color: white;
+}
+
+.btn-custom-2:hover a{
+    color: white;
+}
+
+#logo {
+    margin-left: 25px;
+}
+
+.nav-img-perfil{
+    height: 30px;
+    width: 30px;
+}
+
+#search-nav {
+    justify-content: center;
+}
+
+#login-div {
+    margin: auto;
+}
+
+#login-nav {
+    margin: 0px;
+}
+
+#login-nav li{
+    margin-left: 10px;
+    display: inline-flex;
+}
+
+#header-base {
+    display: flex;
+    background-color: #314455;
+}
+
+#header-base a{
+    color: white;
+}
+
+#users-found {
+    position: absolute;
+    background: white;
+    box-shadow: 0px 6px 6px rgb(111,111,111);
+    border-radius: 0 0px 10px 10px;
+    z-index: 20;
+}
+
+#users-found ul{
+    display: inline-block;
+}
+
+#users-found a{
+    color: black;
+}
+
+
+#container-form-create-account{
+    width: 80%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background: whitesmoke;
+}
+
+#container-form-login{
+    width: 250px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background: whitesmoke;
+}
+
+@media(max-width:900px) {
+    #container-form-create-account{
+        width: 60%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        background: whitesmoke;
+    }
+}
+
+@media(max-width:768px) {
+    #users-found {
+        top: 85px;
+        width: 70%;
+    }
+
+    .nav-hall {
+        margin-top: 5px;
+    }
+
+    #base-div{
+        min-height: 500px;
+    }
+
+}
+
+@media(max-width:500px) {
+    #container-form-create-account{
+        width: 90%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        background: whitesmoke;
+    }
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+@font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 400; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-regular.woff') format('woff')}
+@font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 500; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-500.woff') format('woff')}
+@font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 600; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-600.woff') format('woff')}
+@font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 700; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-700.woff') format('woff')}
+
+#img-portada{
+    margin-top: 25px;
+    width: 320px;
+}
+
+#presentation {
+    margin-top: 25px;
+    text-align: center;   
+}
+
+#presentation h2{
+    color: #644e5b;
+}
+
+#presentation-items {
+    margin-top: 50px;
+    text-align: left;   
+}
+
+
+strong.hall{
+    font-family: 'Dancing Script';
+    font-size: 30px;
+}
+
+
+#presentation p{
+    margin-top: 20px;
+    color: rgb(66,160,180);
+}
+
+#presentation-tree{
+	display: block;
+	margin: auto;
+}
+
+#footer{
+    width: 100%;
+    height: 45px;
+    background: black;
+    padding: 5px;
+    color: rgb(111,111,111);
+    font-size: 16px;
+    display: flex;
+}
+
+#footer ul{
+    list-style: none;
+    display: flex;
+    align-self: center;
+    margin: 0;
+}
+
+
+#footer #storylink-pin{
+    height: 35px;
+}
+
+
+.cookies {
+    width: 100%;
+    background: #314455;
+    padding: 5px;
+    color: white;
+    font-size: 16px;
+    display: block;
+    position: fixed;
+    bottom: 15px;
+}
+
+.cookies__texto {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+.cookies__boton--si {
+    padding: 4px;
+    font-size: 16px;
+    background: #52820d;;
+    color: white;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+
+.cookies__botones {
+    float: right;
+}

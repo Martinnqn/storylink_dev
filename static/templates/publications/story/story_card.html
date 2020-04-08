@@ -1,0 +1,134 @@
+<div id="display-pub-detail" class="">
+  <div class="publication-container" id="publication-container">
+    <!-- Header publicacion -->
+    <div class="row publication-container-title" id="publication-container-title">
+      <div class="col-10" id="title">
+      </div>
+      <div class="col-2 btn-header">
+        <div class="btn-close float-right" onclick="hideInfoPub()">
+          <svg class="feather">
+            <use xlink:href="/../../static/imgs/feather-sprite.svg#x" />
+          </svg>
+        </div>
+        <!---<div class="btn-share float-right" onclick="share()">
+          <svg class="feather">
+            <use xlink:href="/../../static/imgs/feather-sprite.svg#share-2" />
+          </svg>
+        </div>--> 
+      </div>
+    </div>
+    <a href="#link-to-body" id="link-to-body"></a>
+    <!-- Body publicacion -->
+    <div class="row" id="body-publication">
+      <!-- Datos publicacion -->
+      <div class="col-12" id="story-data">
+        <div class="row">
+          <div class="col-6" id="content-image">
+            <div class="" id="img"></div>
+          </div>
+          <div id="publication-data" class="col-6">
+            <div class="">
+              <div class="autor" id="autor">
+              </div>
+                <!--<div class="row justify-content-center time-location">
+                  <span>Ubicación en el tiempo:</span>
+                </div>
+                <div class="row justify-content-center time-location">
+                  <div class="container" id="graph"></div>
+                </div>-->
+              </div>
+              <div class="publication-btn-group" role="group" id="pub-owner">
+
+              </div>
+              {%comment%}
+              <div class="">
+                <div class="" id="valoration">
+                </div>
+                <div class="star-rating">
+                  <p>Valorala! 
+                    <span class="fa fa-star-o not-pressed" data-rating="1"></span>
+                    <span class="fa fa-star-o not-pressed" data-rating="2"></span>
+                    <span class="fa fa-star-o not-pressed" data-rating="3"></span>
+                    <span class="fa fa-star-o not-pressed" data-rating="4"></span>
+                    <span class="fa fa-star-o not-pressed" data-rating="5"></span>
+                    <input type="hidden" name="whatever1" class="rating-value" value="0">
+                  </p>
+                </div>  
+              </div>
+              {%endcomment%}
+              
+              <div id="subs-unsubs">
+                <p><a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
+                  Desuscribirse
+                </a></p>
+                <p><a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
+                  Suscribirse
+                </a></p>
+              </div>
+              {%comment%}
+              <div id="share-story">
+                <a class="btn-custom-1" href="javascript: void(0)" onclick="share()">
+                  Compartir
+                </a>
+              </div>
+              {%endcomment%}
+              <div id="btn-first-story">
+                <a id="first-story" href="javascript: void(0)">
+                  Ir al comienzo
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row publication-description-container">
+        <!-- Descripcion publicacion -->
+        <div class="col-12 publication-description" id="publication-description">
+        </div>
+      </div>
+      <!-- footer publicacion -->
+      <div class="row justify-content-between publication-container-footer">
+        <div class="container-fluid">
+          <!-- navBar footer -->   
+          <nav class="navbar justify-content-center navbar-expand-sm navbar-light">
+            <!-- Collapse button -->
+            <button class="navbar-toggler" type="button" id="btnNavCollapse" data-toggle="collapse" data-target="#collapsibleNavbarFooter">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="collapsibleNavbarFooter">
+              <ul class="container-fluid" id="publication-nav-footer">
+                <li class="nav-item">
+                  <a class="btn-custom-1 btn-previous" id="pre-story" href="javascript: void(0)">
+                    Anterior
+                  </a>
+                </li>
+                <ul class="main-actions">
+                <li class="nav-item">
+                  <a class="btn-custom-2" id="btnExtend" href="javascript: void(0)" onclick="extendStory()">
+                    Modo Lectura
+                  </a>  
+                  <a class="btn-custom-2" id="btnReduce" href="javascript: void(0)" onclick="reduceStory()">
+                    Modo tarjeta
+                  </a>                           
+                </li>
+                <li class="nav-item">
+                  <a class="btn-custom-2" href="#" id="create-continuation">
+                    Escribir continuación
+                  </a>
+                </li> 
+                </ul>    
+              </ul>
+            </div>
+          </nav> 
+        </div>
+      </div>
+    </div>
+  {%block mini-preview%}
+  <div id="content-previews">
+    <h5>Continuaciones</h5>
+    <div id="scroll-previews" class="row">
+    </div>
+  </div>
+  {% endblock %}
+</div>
