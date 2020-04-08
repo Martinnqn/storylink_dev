@@ -82,7 +82,8 @@ DATABASES = {
         'NAME': 'nk_db',
         'USER': 'nk_user',
         'HOST': 'localhost',
-        'PASSWORD': '1234'
+        'PASSWORD': '1234',
+        'client_encoding': 'UTF8',
     }
 }
 
