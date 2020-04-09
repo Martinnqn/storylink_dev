@@ -93,6 +93,12 @@ function showInfoPub(url, user_id, evt) {
 
             $("#pre-story").css({display:"none"})    
             $("#first-story").css({display:"none"})    
+            
+            if (cont.tags!=undefined){
+                for (var i = cont.tags.length - 1; i >= 0; i--) {
+                    $("#tags .tags-story").append('<span>'+cont.tags[i]+'</span>'); 
+                }
+            }
 
             $("#display-pub-detail").css({
                 'display': 'block',
@@ -181,6 +187,11 @@ function showInfoChapter(url, user_id, evt) {
             }
             $("#pre-story").css({display:"block"})   
 
+            if (cont.tags!=undefined){
+                for (var i = cont.tags.length - 1; i >= 0; i--) {
+                    $("#tags .tags-story").append('<span>'+cont.tags[i]+'</span>'); 
+                }
+            }
 
             $("#display-pub-detail").css({
                 'display': 'block',
