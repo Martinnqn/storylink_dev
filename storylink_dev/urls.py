@@ -34,7 +34,7 @@ urlpatterns = [
     #path('', TemplateView.as_view(template_name='hall/hall.html'), name='hall'), # pagina principal
     path('', ListStories.as_view(), name='hall'), # pagina principal
     path('admin/site/', admin.site.urls),
-    path('user/<slug:username>/', include('apps.users.urls')), #matchea con un string despues del .com/ y termina de procesarlo en el archivo urls de users
+    path('user/<str:username>/', include('apps.users.urls')), #matchea con un string despues del .com/ y termina de procesarlo en el archivo urls de users
     path('accounts/', include('django.contrib.auth.urls')), # para la administracion de la cuenta de usuario
     path('signup/', SignUpView.as_view(), name='sign_up'), 
     path('terminos_privacidad/', TemplateView.as_view(template_name='term_priv.html'),  name='term_priv'),   

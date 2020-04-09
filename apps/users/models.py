@@ -2,16 +2,33 @@ from django.db import models
 
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
+from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
+import re
 
 #from apps.publications.models import StoryPublication #import circular! solucionado con app_level.ModelName (publications.StoryPublication)
 
-# Create your models here.
+#funcion para validar si el usuario es unico (equalsIgnoreCase) y no contiene punto
+def unique_user(value):
+    print(value.format())
+    regex = re.compile('[.@\w]+$')
+    if (not regex.match(value)):
+        raise ValidationError(
+            _('No se permiten utilizar caracteres especiales como ", ?,¡, &, %%, ., comas, espacios, etc en los nombres de usuario.'),
+            params={'value': value},
+        )
+    exist = CustomUser.objects.filter(username__iexact=value).exists()
+    if (exist):
+        raise ValidationError(
+            _('El nombre de usuario "%(value)s" ya está en uso.'),
+            params={'value': value},
+        )
 
 # usuario
 class CustomUser(AbstractUser):
     link_img_perfil = models.ImageField(upload_to = 'gallery/profiles', default = 'gallery/no-img-profile.png')
     description = models.CharField(max_length=150, blank=True)
-    username = models.CharField(unique=True, max_length=20)
+    username = models.CharField(unique=True, max_length=35, validators=[unique_user])
     email = models.EmailField(unique=True)
     # a que usuario esta suscripto. Se usa un modelo intermedio para especificar los atributos de la tabla intermedia.
     user_subscription = models.ManyToManyField('self', through='UserSubscriptionModelAux', symmetrical=False)

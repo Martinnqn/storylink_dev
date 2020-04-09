@@ -1,8 +1,9 @@
 from django import forms
 from django.forms import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
-from django.utils.translation import gettext_lazy as _
+import re
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -13,24 +14,21 @@ class CustomUserCreationForm(UserCreationForm):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.fields['link_img_perfil'].label = "Imagen de perfil"
         self.fields['username'].label = "Nombre de usuario"
-        self.fields['username'].validators.append(unique_user)
+        self.fields['username'].help_text='El nombre de usuario puede contener letras, números, guiones, puntos y @.'
         self.fields['first_name']= forms.CharField(required = True) 
         self.fields['first_name'].label= "Nombre"
+        self.fields['first_name'].validators.append(only_chars)
         self.fields['last_name']= forms.CharField(required = True) 
         self.fields['last_name'].label= "Apellido"
+        self.fields['last_name'].validators.append(only_chars)
         self.fields['description'].label= "Cuéntanos sobre ti"
+        self.fields['description'].help_text = "150 caracteres como máximo"
 
-
-#validar si el usuario es unico y no contiene punto
-def unique_user(value):
-    if('.' in value):
+#para el nombre y apellido solo letras y espacios.
+def only_chars(value):
+    regex = re.compile('[a-zA-ZáéíóúÁÉÍÓÚ\s]+$')
+    if (not regex.match(value)):
         raise ValidationError(
-            _('No se permiten utilizar puntos "." en los nombres de usuario.'),
-            params={'value': value},
-        )
-    exist = CustomUser.objects.filter(username__iexact=value).exists()
-    if (exist):
-        raise ValidationError(
-            _('El nombre de usuario "%(value)s" ya está en uso.'),
+            _('Solo se permiten letras.'),
             params={'value': value},
         )

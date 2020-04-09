@@ -17,7 +17,7 @@ from django.db.models import Count
 
 from django.core.files.storage import FileSystemStorage
 
-default_img = 'media/gallery/no-img.png'
+default_img = 'gallery/no-img.png'
 
 #listar las Stories creadas por un usuario
 class ListUserStories(LoginRequiredMixin, generic.ListView):
@@ -62,26 +62,35 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             publication = self.get_object()
+            own_user = publication.own_user
             data =  dict()
             data['content_pub'] = model_to_dict(publication, exclude=['tag', 'own_user', 'img_content_link'])
-            data['content_pub'].update({'own_username': publication.own_user.username})
-            data['content_pub'].update({'user_name': publication.own_user.first_name})
-            data['content_pub'].update({'user_lastname': publication.own_user.last_name})
-            data['content_pub'].update({'own_user': publication.own_user.id})
+            data['content_pub'].update({'own_username': own_user.username})
+            data['content_pub'].update({'user_name': own_user.first_name})
+            data['content_pub'].update({'user_lastname': own_user.last_name})
+            data['content_pub'].update({'own_user': own_user.id})
+            data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
+            data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_story', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_story', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_unsubscribe': reverse_lazy('user:pub:unsubs_story', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_story', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'active': publication.active})
 
             if (publication.active):
                 tags = []
                 for x in publication.tag.all():
                     tags.append(x.tag)
                 data['content_pub'].update({'tags': tags})
-                data['content_pub'].update({'img_content_link': publication.img_content_link.url})
+                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(publication.img_content_link.url)})
                 fromUser = self.request.user
                 is_subscribed = fromUser.user2Pub.filter(pub = publication).exists();
                 data['content_pub'].update({'is_subscribed': is_subscribed})
             else:
                 data['content_pub'].update({'tags': []})
                 data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                data['content_pub'].update({'img_content_link': default_img})
+                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
             return JsonResponse(data)
         else:
             return super().get(*args, **kwargs)
@@ -94,13 +103,29 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             publication = self.get_object()
+            own_user = publication.own_user
+            mainStory = publication.mainStory
             data =  dict()
             data['content_pub'] = model_to_dict(publication, exclude=['tag', 'own_user'])
-            data['content_pub'].update({'own_username': publication.own_user.username})
-            data['content_pub'].update({'user_name': publication.own_user.first_name})
-            data['content_pub'].update({'user_lastname': publication.own_user.last_name})
-            data['content_pub'].update({'own_user': publication.own_user.id})
-            data['content_pub'].update({'title': publication.mainStory.title})
+            data['content_pub'].update({'own_username': own_user.username})
+            data['content_pub'].update({'user_name': own_user.first_name})
+            data['content_pub'].update({'user_lastname': own_user.last_name})
+            data['content_pub'].update({'own_user': own_user.id})
+            data['content_pub'].update({'title': mainStory.title})
+            data['content_pub'].update({'question': publication.quest_answ})
+            data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
+            data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_chapt', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_chapter', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.username, 'pk': mainStory.id, 'pkchapter': publication.id})})
+            data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_chap', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_first_story': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.username, 'pk': mainStory.id})})
+            prev =publication.prevChapter
+            if (prev):
+                data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.username, 'pk': publication.prevChapter.id})})
+            else:
+                data['content_pub'].update({'url_prev_chapter': None})
+
+            data['content_pub'].update({'active': publication.active})
 
             if (publication.active):
                 tags = []
@@ -108,11 +133,11 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
                     tags.append(x.tag)
                 data['content_pub'].update({'tags': tags})
                 fromUser = self.request.user
-                data['content_pub'].update({'img_content_link': publication.mainStory.img_content_link.url})
+                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(mainStory.img_content_link.url)})
             else:
                 data['content_pub'].update({'tags': []})
                 data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                data['content_pub'].update({'img_content_link': default_img})
+                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
             return JsonResponse(data)
         else:
             return super().get(*args, **kwargs)
@@ -120,9 +145,9 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
 
 #Eliminar story. No se eliminan, se ponen inactivas
 class DeleteStory(LoginRequiredMixin, generic.edit.DeleteView):
-    def get(self, request, username, id):
+    def get(self, request, username, pk):
         fromUser = request.user
-        story = StoryPublication.objects.get(id=id)
+        story = StoryPublication.objects.get(id=pk)
         if (story.own_user == fromUser):
             story.active=False
             story.save(update_fields=['active'])
@@ -136,8 +161,8 @@ class DeleteStory(LoginRequiredMixin, generic.edit.DeleteView):
 
 #Eliminar chapter. No se eliminan, se ponen inactivos
 class DeleteChapter(LoginRequiredMixin, generic.edit.DeleteView):
-    def get(self, request, username, id):
-        story = StoryChapter.objects.get(id=id)
+    def get(self, request, username, pk):
+        story = StoryChapter.objects.get(id=pk)
         if (story.own_user == self.request.user):
             story.active=False
             story.save(update_fields=['active'])
@@ -282,7 +307,7 @@ def addTags(tags, story):
 
 #agregar suscripcion de user a story.
 class SubscribeStory(LoginRequiredMixin, generic.edit.DeleteView):
-    def get(self, request, username, id):
+    def get(self, request, username, pk):
         fromUser = self.request.user
         toStory = StoryPublication.objects.get(id=id)
         fromUser.pub_subscription.add(toStory);
@@ -294,7 +319,7 @@ class SubscribeStory(LoginRequiredMixin, generic.edit.DeleteView):
 
 #remover suscripcion de user a story.
 class UnsubscribeStory(LoginRequiredMixin, generic.edit.DeleteView):
-    def get(self, request, username, id):
+    def get(self, request, username, pk):
         fromUser = self.request.user
         toStory = StoryPublication.objects.get(id=id)
         fromUser.pub_subscription.remove(toStory);

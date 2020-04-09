@@ -36,54 +36,59 @@ function showInfoPub(url, user_id, evt) {
         complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            //$("#publication-container-title #title").html('<h4>'+cont.user_name+' '+cont.user_lastname+'-Story</h4>');
             if (cont.img_content_link!=undefined){
-                $("#content-image #img").html('<img alt="Publication image" class="img-thumbnail mx-auto d-block" src="'+cont.img_content_link+'">');
-                //$("#content-image #img").html('<img alt="Publication image" class="img-thumbnail mx-auto d-block" src="/../../static/imgs/img1.png">');
+                $("#header-image").attr('src',cont.img_content_link);
+                $("#header-image").attr('alt',cont.own_username);
             }
-            $("#autor").html('<p>Autor: <a href="/user/'+cont.own_username+'/">'+cont.own_username+'</a></p>');
+            $("#img-owner").attr('src',cont.own_user_image);
+            $("#img-owner").attr('alt',cont.own_username);
 
             if (cont.active && cont.own_user == user_id){
-                $("#pub-owner").css({'display': 'block'});
-                $("#pub-owner").html("<p><a class='btn-edit' href='/user/"+cont.own_username+"/publication/edit-story/"+cont.id+"'>Editar</a>"+
-                    "<a class='btn-delete' href='/user/"+cont.own_username+"/publication/delete-story/"+cont.id+"'>Eliminar</a></p>");
+                $("#btn-edit").attr('href',cont.url_edit);
+                $("#btn-delete").attr('href',cont.url_delete);
+                $("#card-options-owner").css({'display': 'block'});
             }else{
-                $("#pub-owner").css({'display': 'none'});
-                $("#pub-owner").html('');
+                $("#btn-edit").attr('href','');
+                $("#btn-delete").attr('href','');
+                $("#card-options-owner").css({'display': 'none'});
             }
-            $("#title").html('<h4>'+limitText(cont.title, 35)+'</h4>');
-            console.log("text content "+cont.text_content)
-            $("#publication-description").html('<h4>'+cont.title+'</h4> <p>'+cont.text_content+'</p>');
-            $("#valoration").html(`<p>Valoración: `+cont.valoration+`</p>`);
+
+            $("#publication-outer-title").html(cont.title);
+
+            $("#publication-title").html(cont.title);
+            $("#publication-content").html(cont.text_content);
+
             if (cont.active){
-                $("#subscribe-story").attr('onclick', `subUnsubToStory('/user/`+cont.own_username+`/publication/subscribe/`+cont.id+`')`);
-                $("#unsubscribe-story").attr('onclick', `subUnsubToStory('/user/`+cont.own_username+`/publication/unsubscribe/`+cont.id+`')`);
                 if (cont.own_user != user_id){
                     if (cont.is_subscribed){
+                        $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
                         $("#unsubscribe-story").css({display:'inline-block'});
+                        $("#subscribe-story").attr('onclick', '');
                         $("#subscribe-story").css({display:'none'});
 
                     }else{
+                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
                         $("#subscribe-story").css({display:'inline-block'});
                         $("#unsubscribe-story").css({display:'none'});
+                        $("#unsubscribe-story").attr('onclick', '');
                     }
                 }else{
+                    $("#unsubscribe-story").attr('onclick', '');
+                    $("#subscribe-story").attr('onclick', '');
                     $("#subscribe-story").css({display:'none'});
                     $("#unsubscribe-story").css({display:'none'});
                 }
 
-                $(".star-rating").css({display:'block'});
-                $("#share-story").css({display:'block'});
-
+                $("#create-continuation").attr('href',cont.url_continuate);
                 $("#create-continuation").css({display:'block'});
-                $("#create-continuation").attr('href','/user/'+cont.own_username+'/publication/'+cont.id+'/create-story');
 
             }else{
+                $("#create-continuation").attr('href','javascript: void(0)');
+                $("#subscribe-story").attr('onclick', '');
+                $("#subscribe-story").attr('onclick', '');
                 $("#create-continuation").css({display:'none'});
                 $("#subscribe-story").css({display:'none'});
                 $("#unsubscribe-story").css({display:'none'});
-                $(".star-rating").css({display:'none'});
-                $("#share-story").css({display:'none'});
             }
 
             $("#pre-story").css({display:"none"})    
@@ -92,7 +97,7 @@ function showInfoPub(url, user_id, evt) {
             $("#display-pub-detail").css({
                 'display': 'block',
             });
-            showStoriesPreview('/user/'+cont.own_username+'/publication/continuations/'+cont.id);
+            showStoriesPreview(cont.url_continuations);
             $("body").css({'overflow-y': 'hidden'});
             /*para scroll hasta el div*/
             /*document.querySelector('#link-to-body').scrollIntoView({ 
@@ -102,6 +107,7 @@ function showInfoPub(url, user_id, evt) {
   });
 }
 
+
 function showInfoChapter(url, user_id, evt) {
     $.ajax({
         url:  url,
@@ -110,58 +116,76 @@ function showInfoChapter(url, user_id, evt) {
         complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            //$("#publication-container-title #title").html('<h4>'+cont.user_name+' '+cont.user_lastname+'-Story</h4>');
             if (cont.img_content_link!=undefined){
-                $("#content-image #img").html('<img alt="Publication image" class="img-thumbnail mx-auto d-block" src="'+cont.img_content_link+'">');
-                //$("#content-image #img").html('<img alt="Publication image" class="img-thumbnail mx-auto d-block" src="/../../static/imgs/img1.png">');
+                $("#header-image").attr('src',cont.img_content_link);
+                $("#header-image").attr('alt',cont.own_username);
             }
-            $("#autor").html('<p>Autor: <a href="/user/'+cont.own_username+'/">'+cont.own_username+'</a></p>');
+            $("#img-owner").attr('src',cont.own_user_image);
+            $("#img-owner").attr('alt',cont.own_username);
 
-            $("#title").html('<h4>'+limitText(cont.title, 35)+'</h4>');
-            $("#publication-description").html('<h4>'+cont.title+'</h4> <p>'+cont.text_content+'</p>');
-            $("#valoration").html(`<p>Valoración: `+cont.valoration+`</p>`);
-            
+            if (cont.active && cont.own_user == user_id){
+                $("#btn-edit").attr('href',cont.url_edit);
+                $("#btn-delete").attr('href',cont.url_delete);
+                $("#card-options-owner").css({'display': 'block'});
+            }else{
+                $("#btn-edit").attr('href','');
+                $("#btn-delete").attr('href','');
+                $("#card-options-owner").css({'display': 'none'});
+            }
+
+
+            $("#publication-title").html(cont.question);
+            $("#publication-content").html(cont.text_content);
+
             if (cont.active){
-                if (cont.own_user == user_id){
-                    $("#pub-owner").css({'display': 'block'});
-                    $("#pub-owner").html("<p><a class='btn-edit' href='/user/"+cont.own_username+"/publication/edit-chapter/"+cont.id+"'>Editar</a>"+
-                        "<a class='btn-delete' href='/user/"+cont.own_username+"/publication/delete-chapter/"+cont.id+"'>Eliminar</a></p>");
+                if (cont.own_user != user_id){
+                    if (cont.is_subscribed){
+                        $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
+                        $("#unsubscribe-story").css({display:'inline-block'});
+                        $("#subscribe-story").attr('onclick', '');
+                        $("#subscribe-story").css({display:'none'});
+
+                    }else{
+                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
+                        $("#subscribe-story").css({display:'inline-block'});
+                        $("#unsubscribe-story").css({display:'none'});
+                        $("#unsubscribe-story").attr('onclick', '');
+                    }
                 }else{
-                    $("#pub-owner").css({'display': 'none'});
-                    $("#pub-owner").html('');
+                    $("#unsubscribe-story").attr('onclick', '');
+                    $("#subscribe-story").attr('onclick', '');
+                    $("#subscribe-story").css({display:'none'});
+                    $("#unsubscribe-story").css({display:'none'});
                 }
-                $("#subscribe-story").css({display:'none'});
-                $("#unsubscribe-story").css({display:'none'});
 
-                $(".star-rating").css({display:'block'});
-                $("#share-story").css({display:'block'});
-
+                $("#create-continuation").attr('href',cont.url_continuate);
                 $("#create-continuation").css({display:'block'});
-                $("#create-continuation").attr('href','/user/'+cont.own_username+'/publication/'+cont.mainStory+'/'+cont.id+'/create-story');
 
             }else{
+                $("#create-continuation").attr('href','javascript: void(0)');
+                $("#subscribe-story").attr('onclick', '');
+                $("#subscribe-story").attr('onclick', '');
                 $("#create-continuation").css({display:'none'});
                 $("#subscribe-story").css({display:'none'});
                 $("#unsubscribe-story").css({display:'none'});
-                $(".star-rating").css({display:'none'});
-                $("#share-story").css({display:'none'});
             }
 
+
+            $("#first-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
+            $("#first-story").css({display:"block"});    
+
+            if (cont.url_prev_chapter==null){
+                $("#pre-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
+            }else{
+                $("#pre-story").attr('onclick',`showInfoChapter('`+cont.url_prev_chapter+`','`+user_id+`')`);
+            }
             $("#pre-story").css({display:"block"})   
 
-            $("#first-story").attr('onclick',`showInfoPub('/user/`+cont.own_username+`/publication/story-content/`+cont.mainStory+`',`+user_id+`)`); 
-            $("#first-story").css({display:"block"})    
-
-            if (cont.prevChapter==null){
-                $("#pre-story").attr('onclick',`showInfoPub('/user/`+cont.own_username+`/publication/story-content/`+cont.mainStory+`',`+user_id+`)`);
-            }else{
-                $("#pre-story").attr('onclick',`showInfoChapter('/user/`+cont.own_username+`/publication/chapter-content/`+cont.prevChapter+`',`+user_id+`)`);
-            }
 
             $("#display-pub-detail").css({
                 'display': 'block',
             });
-            showStoriesPreview('/user/'+cont.own_username+'/publication/continuations-chapter/'+cont.id);
+            showStoriesPreview(cont.url_continuations);
             $("body").css({'overflow-y': 'hidden'});
             /*para scroll hasta el div*/
             /*document.querySelector('#link-to-body').scrollIntoView({ 
@@ -214,8 +238,8 @@ function showStoriesPreview(url) {
             /*document.querySelector('#scroll-previews').scrollIntoView({ 
               behavior: 'smooth' 
           });*/
-        }
-    });
+      }
+  });
 }
 
 
