@@ -1,62 +1,74 @@
-<div id="display-pub-detail" class="">
-  <div class="publication-container" id="publication-container">
-    <div class="" id="publication-container-header">
-      <div class="publication-header" id="publication-header">
-        <img id="header-image" class="header-image" src="" alt="">
-        <div id="pub-owner">
-          <img src="" id="img-owner" class="img-autor-mini" alt="">
-          <div class="row" id="card-options-owner">
-            <a id="btn-delete" class='btn-delete col-6'>Eliminar</a>
-            <a id="btn-edit" class='btn-edit col-6'>Editar</a>
-          </div>
-        </div>
-      </div>  
-    </div>
-    <div class="container" id="body-publication">
-      <div class="displacement-menu">
+{%load static%}
+<div id="display-pub-detail" class="row">
+  <div class="btn-close" onclick="hideInfoPub()">
+    Volver al hall
+  </div>
+  <div class="content-card col-12 col-lg-6">
+    <div class="">
+      <div class="displacement-menu ">
         <a id="first-story" href="javascript: void(0)">
           Ir al comienzo
         </a>
-        <a class="btn-custom-1 btn-previous" id="pre-story" href="javascript: void(0)">
-          Anterior
+          <a class="btn-custom-1 btn-previous" id="pre-story" href="javascript: void(0)">
+          Storylink Anterior
         </a>
       </div>
-      <div class="publication-description-container">
-        <div class="publication-description" id="publication-description">
-          <p id="publication-title"></p>
-          <p id="publication-content"></p>
+      <div class="content-pub">
+      <h3 id="title-pub-detail"></h3>
+      <div class="publication-container" id="publication-container">
+        <div class="" id="publication-container-header">
+          <div class="publication-header" id="publication-header">
+            <img id="header-image" class="header-image" src="" alt="">
+            <div id="pub-owner">
+              <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
+              <div class="row" id="card-options-owner">
+                <a id="btn-delete" class='btn-delete col-6'>Eliminar</a>
+                <a id="btn-edit" class='btn-edit col-6'>Editar</a>
+              </div>
+            </div>
+          </div>  
+        </div>
+        <div class="" id="body-publication">
+          <div class="publication-description-container">
+            <div class="publication-description" id="publication-description">
+              <p id="publication-title"></p>
+              <p id="publication-content"></p>
+            </div>
+          </div>
+        </div>
+        <div id="card-options">
+            <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
+              Desuscribirse 
+            </a>
+            <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
+              Suscribirse
+            </a>
+            <a class="btn-custom-2" href="#" id="create-continuation">
+              Continuar Storylink
+            </a>
+            <button type="button" class="btn-custom-2" data-toggle="modal" onclick="extendStory()" data-target="#story-read-mode">
+              Leer
+            </button>
+        </div>
+        <div class="container" id="tags">
+          <div class="tags-story">
+            
+          </div>
         </div>
       </div>
-      <div id="card-options">
-        <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
-          Desuscribirse 
-        </a>
-        <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
-          Suscribirse
-        </a>
-        <a class="btn-custom-2" href="#" id="create-continuation">
-          Continuar Storylink
-        </a>
-        <a class="btn-custom-2" id="btnExtend" href="javascript: void(0)" onclick="extendStory()">
-          Leer
-        </a>  
-        <a class="btn-custom-2" id="btnReduce" href="javascript: void(0)" onclick="reduceStory()">
-          Modo tarjeta
-        </a> 
-      </div>
-    </div>
-    <div class="container" id="tags">
-      <div class="tags-story">
-        
       </div>
     </div>
   </div>
-</div>
-{%block mini-preview%}
-<div id="content-previews">
-  <h5>Continuaciones</h5>
-  <div id="scroll-previews" class="">
+  {%block mini-preview%}
+  <div id="content-previews" class="col-12 col-lg-6">
+    <h5>Continuaciones</h5>
+    <div id="scroll-previews" class="">
+    </div>
   </div>
+  {% endblock %} 
 </div>
+
+{%block modal-read-mode%}
+      {% include "publications/story/read_story.html" %}
 {% endblock %}
-</div>
+

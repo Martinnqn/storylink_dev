@@ -76,6 +76,7 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'url_unsubscribe': reverse_lazy('user:pub:unsubs_story', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_story', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.username})})
             data['content_pub'].update({'active': publication.active})
 
             if (publication.active):
@@ -119,6 +120,8 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.username, 'pk': mainStory.id, 'pkchapter': publication.id})})
             data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_chap', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_first_story': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.username, 'pk': mainStory.id})})
+            data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.username})})
+            
             prev =publication.prevChapter
             if (prev):
                 data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.username, 'pk': publication.prevChapter.id})})

@@ -42,6 +42,7 @@ function showInfoPub(url, user_id, evt) {
             }
             $("#img-owner").attr('src',cont.own_user_image);
             $("#img-owner").attr('alt',cont.own_username);
+            $("#link-autor-profile").attr('href',cont.url_autor);
 
             if (cont.active && cont.own_user == user_id){
                 $("#btn-edit").attr('href',cont.url_edit);
@@ -53,7 +54,7 @@ function showInfoPub(url, user_id, evt) {
                 $("#card-options-owner").css({'display': 'none'});
             }
 
-            $("#publication-outer-title").html(cont.title);
+            $("#title-pub-detail").html(cont.title);
 
             $("#publication-title").html(cont.title);
             $("#publication-content").html(cont.text_content);
@@ -91,8 +92,7 @@ function showInfoPub(url, user_id, evt) {
                 $("#unsubscribe-story").css({display:'none'});
             }
 
-            $("#pre-story").css({display:"none"})    
-            $("#first-story").css({display:"none"})    
+            $(".displacement-menu").css({'display':"none"});
             
             if (cont.tags!=undefined){
                 for (var i = cont.tags.length - 1; i >= 0; i--) {
@@ -101,7 +101,7 @@ function showInfoPub(url, user_id, evt) {
             }
 
             $("#display-pub-detail").css({
-                'display': 'block',
+                'display': 'flex',
             });
             showStoriesPreview(cont.url_continuations);
             $("body").css({'overflow-y': 'hidden'});
@@ -139,6 +139,7 @@ function showInfoChapter(url, user_id, evt) {
                 $("#card-options-owner").css({'display': 'none'});
             }
 
+            $("#title-pub-detail").html(cont.title);
 
             $("#publication-title").html(cont.question);
             $("#publication-content").html(cont.text_content);
@@ -178,14 +179,14 @@ function showInfoChapter(url, user_id, evt) {
 
 
             $("#first-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
-            $("#first-story").css({display:"block"});    
 
             if (cont.url_prev_chapter==null){
                 $("#pre-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
             }else{
                 $("#pre-story").attr('onclick',`showInfoChapter('`+cont.url_prev_chapter+`','`+user_id+`')`);
             }
-            $("#pre-story").css({display:"block"})   
+
+            $(".displacement-menu").css({'display':"block"});
 
             if (cont.tags!=undefined){
                 for (var i = cont.tags.length - 1; i >= 0; i--) {
@@ -194,7 +195,7 @@ function showInfoChapter(url, user_id, evt) {
             }
 
             $("#display-pub-detail").css({
-                'display': 'block',
+                'display': 'flex',
             });
             showStoriesPreview(cont.url_continuations);
             $("body").css({'overflow-y': 'hidden'});
@@ -255,41 +256,10 @@ function showStoriesPreview(url) {
 
 
 function extendStory() {
-    $("#story-data").css({display:'none'});
-    $("#display-pub-detail").css({
-        'background':'rgba(0,0,0,0.95)',
-    });
-
-    $("#publication-container").removeClass("publication-container");
-    $("#publication-container").addClass("publication-container-readMode");
-    $("#publication-description").removeClass("publication-description");
-    $("#publication-description").addClass("publication-description-readMode");
-
-    $("#body-publication").css({'display':'none'});
-    $("#title").css({'visibility':'hidden'});
-
-    $("#btnExtend").css({display:'none'});
-    $("#btnReduce").css({display:'block'});
+    $("#title-read-mode").html($("#publication-title").text())
+    $(".content-read-mode").html($("#publication-content").text());
 }
 
-function reduceStory() {
-    $("#display-pub-detail").css({
-        'background':'rgba(0,0,0,0.6)',
-    });
-    $("#story-data").css({display:'block'});
-    $("#publication-container").removeClass("publication-container-readMode");
-    $("#publication-container").addClass("publication-container");
-    $("#publication-description").removeClass("publication-description-readMode");
-    $("#publication-description").addClass("publication-description");
-    
-    $("#body-publication").css({'display':'block',});
-    $("#title").css({'visibility':'visible'});
-
-    $("#btnExtend").css({display:'block'});
-    $("#btnReduce").css({display:'none'});
-
-
-}
 
 function limitText(text, maxLength){
     limite_text = text;
