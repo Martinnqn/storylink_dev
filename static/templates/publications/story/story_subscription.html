@@ -1,6 +1,8 @@
 {% extends "users/profile_base.html" %}
 {% load static %}
-
+{%comment%}
+Lista las storylinks a las que se suscribio un usuario.
+{%endcomment%}
 
 {%block head-page-extra%}
 <!-- Custom CSS -->
@@ -14,10 +16,11 @@
 
 {% include "publications/story/story_card.html" %}
 
+<div class="container">
 <div class="row">
     <div class="stories-preview col-12">
         {%if storypublication_list%}
-        {% include "publications/story/story_list_base.html" %}
+        {% include "publications/story/list_stories.html" %}
         {%else%}
           {%if customuser.username != user.username%}
               <div class="empy-pub"><h5>No hay suscripciones a Storylinks!</h5></div>
@@ -26,6 +29,24 @@
           {%endif%}
         {%endif%}
     </div>
+</div>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Primera</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+        {% endif %}
+    </span>
+</div>
 </div>
 
 {% endblock %}

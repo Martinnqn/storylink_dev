@@ -22,26 +22,30 @@
     </div>
     <div class="col-lg-6" id="container-profile-body">
         <div class="container" id="list-story">
-        <h3>Explora las Storylinks!</h3>
+        <h3 class="title-h3">Explora las Storylinks!</h3>
             <div class="row">
                 <div class="stories-preview col-12">
-                    {% include "hall/story_list_paginated.html" %}
+                    {%if storypublication_list%}
+                        {% include "publications/story/list_stories.html" %}
+                    {%else%}
+                        <div class="empy-pub"><h5>Aun no existen Storylinks, <a class="nav-link" href="{% url 'user:pub:create_story' user.username%}">¡Sé el primero en crear una!</a></h5></div>
+                    {%endif%}
                 </div>
             </div>
             <div class="pagination">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        <a href="?page=1">&laquo; Primera</a>
+                        <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
                     {% endif %}
 
                     <span class="current">
-                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
                     </span>
 
                     {% if page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}">next</a>
-                        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                        <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
                     {% endif %}
                 </span>
             </div>

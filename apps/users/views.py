@@ -60,16 +60,19 @@ class ListUserFollowing(LoginRequiredMixin, generic.DetailView):
 
 
 #para listar las subscripciones a stories de un usuario
-class ListStoriesSubscription(LoginRequiredMixin, generic.DetailView):
+class ListStoriesSubscription(LoginRequiredMixin, generic.ListView):
     template_name = 'publications/story/story_subscription.html'
-    model = CustomUser
-    slug_field = 'username'
-    slug_url_kwarg = 'username' 
+    models = StoryPublication
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = get_object_or_404(CustomUser, username=self.kwargs["username"])
+        qs = user.pub_subscription.filter(active=True)
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(ListStoriesSubscription, self).get_context_data(**kwargs)
-        pub_sub = self.object.pub_subscription.filter(active=True)
-        context.update({'list_pub': pub_sub})
+        context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
 #agregar seguidor a user.

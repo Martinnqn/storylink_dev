@@ -52,7 +52,7 @@
             <div class="row">
                 <div class="stories-preview col-12">
                     {%if storypublication_list or storychapter_list%}
-                        {% include "publications/story/story_list_base.html" %}
+                        {% include "publications/story/list_stories_chapters.html" %}
                     {%else%}
                       {%if customuser.username != user.username%}
                         <div class="empy-pub"><h5>{{customuser.username}} no ha escrito ninguna Storylink!</h5></div>

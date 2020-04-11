@@ -1,8 +1,12 @@
+{%comment%}
+Formato de tarjeta de una publicacion
+{%endcomment%}
 {%load static%}
+<div class="container">
 <div id="display-pub-detail" class="row">
-  <div class="btn-close" onclick="hideInfoPub()">
-    Volver al hall
-  </div>
+  <button class="btn-close" onclick="hideInfoPub()">
+    Volver <span class="material-icons">close</span>
+  </button>
   <div class="content-card col-12 col-lg-6">
     <div class="">
       <div class="displacement-menu ">
@@ -18,13 +22,16 @@
       <div class="publication-container" id="publication-container">
         <div class="" id="publication-container-header">
           <div class="publication-header" id="publication-header">
+           <div class="dropdown" id="card-options-owner">
+              <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
+                <div class="dropdown-content">
+                <a id="btn-delete" class='btn-delete'>Eliminar</a>
+                <a id="btn-edit" class='btn-edit'>Editar</a>
+                </div>
+            </div>
             <img id="header-image" class="header-image" src="" alt="">
             <div id="pub-owner">
               <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
-              <div class="row" id="card-options-owner">
-                <a id="btn-delete" class='btn-delete col-6'>Eliminar</a>
-                <a id="btn-edit" class='btn-edit col-6'>Editar</a>
-              </div>
             </div>
           </div>  
         </div>
@@ -67,8 +74,9 @@
   </div>
   {% endblock %} 
 </div>
+</div>
 
 {%block modal-read-mode%}
-      {% include "publications/story/read_story.html" %}
+      {% include "publications/story/read_story_modal.html" %}
 {% endblock %}
 

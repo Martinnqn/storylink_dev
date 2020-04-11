@@ -1,5 +1,7 @@
 {% extends "base.html" %}
-
+{%comment%}
+Deprecated! Formato tarjeta de una publicacion para visualizarla a traves de un enlace.
+{%endcomment%}
 {% load static %}
 {% block title-page %}
 Story - {{storypublication.own_user.first_name}}  {{storypublication.own_user.last_name}}
@@ -21,6 +23,7 @@ Story - {{storypublication.own_user.first_name}}  {{storypublication.own_user.la
             </h3>-->
         </div>
         <div class="col-4">
+            <div class="container">
             <div class="row">
                 <div class="container-fluid">
                     <!-- navBar header -->   
@@ -46,9 +49,11 @@ Story - {{storypublication.own_user.first_name}}  {{storypublication.own_user.la
                     </nav>
                 </div>
             </div>
+            </div>
         </div>
     </div>
     <!-- Body publicacion -->
+    <div class="container">
     <div class="row">
         <!-- Datos publicacion -->
         <div class="col-12 col-sm-3">
@@ -112,6 +117,7 @@ Story - {{storypublication.own_user.first_name}}  {{storypublication.own_user.la
             </h2>
             {{storypublication.text_content}}
         </div>
+    </div>
     </div>
     <!-- footer publicacion -->
     <div class="row justify-content-between publication-container-footer">

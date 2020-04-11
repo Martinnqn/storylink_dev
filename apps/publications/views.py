@@ -14,15 +14,16 @@ from django.forms.models import model_to_dict
 from django.db import transaction, IntegrityError
 from django.db.models import Q
 from django.db.models import Count
+from django.conf import settings
 
 from django.core.files.storage import FileSystemStorage
 
-default_img = 'gallery/no-img.png'
+default_img = settings.MEDIA_URL+'/gallery/no-img.png'
 
 #listar las Stories creadas por un usuario
 class ListUserStories(LoginRequiredMixin, generic.ListView):
     models = StoryPublication
-    template_name = 'publications/story/story_list.html'
+    template_name = 'publications/story/publications_user.html'
     paginate_by = 10
 
     def get_queryset(self):
@@ -38,7 +39,7 @@ class ListUserStories(LoginRequiredMixin, generic.ListView):
 #retornar las continuaciones de una story
 class StoryContinuations(LoginRequiredMixin, generic.ListView):
     model = StoryChapter
-    template_name = 'publications/story/story_list_previews.html'
+    template_name = 'publications/story/list_chapters_preview.html'
 
     def get_queryset(self):
         qs = self.model.objects.filter(mainStory=self.kwargs["pk"], prevChapter__isnull = True)
@@ -47,7 +48,7 @@ class StoryContinuations(LoginRequiredMixin, generic.ListView):
 #retornar las continuaciones de un chapter
 class ChapterContinuations(LoginRequiredMixin, generic.ListView):
     model = StoryChapter
-    template_name = 'publications/story/story_list_previews.html'
+    template_name = 'publications/story/list_chapters_preview.html'
 
     def get_queryset(self):
         qs = self.model.objects.filter(prevChapter = self.kwargs["pk"])
@@ -124,7 +125,7 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             
             prev =publication.prevChapter
             if (prev):
-                data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.username, 'pk': publication.prevChapter.id})})
+                data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:chapter_content', kwargs={'username': own_user.username, 'pk': publication.prevChapter.id})})
             else:
                 data['content_pub'].update({'url_prev_chapter': None})
 
@@ -312,24 +313,23 @@ def addTags(tags, story):
 class SubscribeStory(LoginRequiredMixin, generic.edit.DeleteView):
     def get(self, request, username, pk):
         fromUser = self.request.user
-        toStory = StoryPublication.objects.get(id=id)
+        toStory = get_object_or_404(StoryPublication, id = pk)
         fromUser.pub_subscription.add(toStory);
         data = dict()
         data.update({'is_subscribed': True})
-        data.update({'username': username})
-        data.update({'story_id': id})
+        data.update({'story_id': pk})
         return JsonResponse(data)
 
 #remover suscripcion de user a story.
 class UnsubscribeStory(LoginRequiredMixin, generic.edit.DeleteView):
     def get(self, request, username, pk):
         fromUser = self.request.user
-        toStory = StoryPublication.objects.get(id=id)
+        toStory = get_object_or_404(StoryPublication, id = pk)
         fromUser.pub_subscription.remove(toStory);
         data = dict()
         data.update({'is_subscribed': False})
         data.update({'username': username})
-        data.update({'story_id': id})
+        data.update({'story_id': pk})
         return JsonResponse(data)
 
 #HALL

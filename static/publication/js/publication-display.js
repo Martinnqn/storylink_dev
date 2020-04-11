@@ -47,7 +47,7 @@ function showInfoPub(url, user_id, evt) {
             if (cont.active && cont.own_user == user_id){
                 $("#btn-edit").attr('href',cont.url_edit);
                 $("#btn-delete").attr('href',cont.url_delete);
-                $("#card-options-owner").css({'display': 'block'});
+                $("#card-options-owner").css({'display': 'inline-block'});
             }else{
                 $("#btn-edit").attr('href','');
                 $("#btn-delete").attr('href','');
@@ -128,11 +128,12 @@ function showInfoChapter(url, user_id, evt) {
             }
             $("#img-owner").attr('src',cont.own_user_image);
             $("#img-owner").attr('alt',cont.own_username);
+            $("#link-autor-profile").attr('href',cont.url_autor);
 
             if (cont.active && cont.own_user == user_id){
                 $("#btn-edit").attr('href',cont.url_edit);
                 $("#btn-delete").attr('href',cont.url_delete);
-                $("#card-options-owner").css({'display': 'block'});
+                $("#card-options-owner").css({'display': 'inline-block'});
             }else{
                 $("#btn-edit").attr('href','');
                 $("#btn-delete").attr('href','');
@@ -209,7 +210,6 @@ function showInfoChapter(url, user_id, evt) {
 
 function hideInfoPub() {
     $("#display-pub-detail").css({'display': 'none'});
-    $("#scroll-previews").css({'display': 'none'});
     $("body").css({'overflow-y': 'scroll'});
 }
 
@@ -241,11 +241,6 @@ function showStoriesPreview(url) {
         complete: function  (data) {
             cont = data.responseText;
             $("#scroll-previews").html(cont);
-            $("#scroll-previews").css({
-                display:'flex',
-                opacity: '1',
-                transition: 'opacity 1s linear',
-            });
             /*para scrollear hasta el div*/
             /*document.querySelector('#scroll-previews').scrollIntoView({ 
               behavior: 'smooth' 
