@@ -32,14 +32,14 @@ $("body").click(function (event) {
     }
 })
 
-
+/*para salir del search de users*/
 $('body').on('keydown', function (e) {
     if (e.which == 27) {
         $("#users-found").html("");
     }
 });
 
-
+/*Para gestionar las cookies*/
 document.addEventListener('DOMContentLoaded', () => {
 
     let cookies = () => {

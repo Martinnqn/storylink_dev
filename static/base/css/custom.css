@@ -24,6 +24,10 @@ body {
     width: 65px;      
 }
 
+.title-center{
+    text-align: center;
+}
+
 
 #collapsibleNavbarPrimary .material-icons {
     font-size: 18px;

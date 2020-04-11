@@ -15,6 +15,7 @@ body {
 
 .publication-container {
     color: black;
+    border-radius: 25px;
 }
 
 
@@ -137,7 +138,6 @@ ul{
 
 #scroll-previews {
     position: relative;
-    background: white;
     padding: 5px;
     margin-bottom: 10px;
 }
@@ -155,6 +155,7 @@ ul{
     border-width: 3px;
     border-color: whitesmoke;
     margin-top: 10px;
+    background: white;
 }
 
 
@@ -199,6 +200,7 @@ p.description {
 
 .publication-container {
     transition: all 0.5s ease-out;
+    border-radius: 40px;
 }
 
 
@@ -211,23 +213,18 @@ p.description {
     background: whitesmoke;
 }
 
-#content-previews h5{
-    text-align: center;
-}
-
 #display-pub-detail {
     transition: all 1s ease-in-out;
     display: none;
     z-index: 10;
     position: fixed;
-    background: rgba(0,0,0,0.85);
+    background: #314455F1;
     top:0;
     left:0;
     width: 100%;
     height: 100%;
     overflow-y: scroll;
     margin: 0px;
-    
 }
 
 #publication-header{
@@ -235,10 +232,10 @@ p.description {
 }
 
 #header-image {
-    height: 250px;
+    height: 190px;
     width: 100%;
-    margin-top: -60px;
     border-bottom: 1px solid;
+    border-radius: 40px 40px 0 0;
 }
 
 #img-owner{
@@ -295,11 +292,16 @@ p.description {
 
 .displacement-menu {
     padding: 2px;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .displacement-menu a{
-    font-size: 15px;
+    color: white;
+    font-size: 18px;
+    text-decoration: underline;
 }
+
 
 #title-pub-detail {
     display: block;
@@ -397,7 +399,6 @@ p.description {
     margin-top: 0;
 }
 
-
 @media (min-width: 992px) {
 
     .publication-container {
@@ -406,11 +407,10 @@ p.description {
 
     #content-previews {
         height: 580px;
-        background: whitesmoke;
         max-width: 500px;
         margin-bottom: auto;
         margin-top: auto;
-        overflow-y: scroll;
+        border-radius: 25px;
     }
 
     .btn-create-story {
@@ -434,19 +434,6 @@ p.description {
         padding: 0;
     }
 
-    .displacement-menu{
-        float: left;
-        margin-top: 50%;
-        margin-bottom: auto;
-        margin-left: -200px;
-    }
-
-    .displacement-menu a{
-        color: white;
-        font-size: 18px;
-        text-decoration: underline;
-    }
-
     .content-card {
         display: flex;
         justify-content: flex-end;
@@ -457,6 +444,8 @@ p.description {
     /*Previsualizacion de chapters*/
     #scroll-previews {
         display: block;
+        overflow-y: scroll;
+        height: 500px;
     }
     #scroll-previews .card-story {
         float: none;
@@ -465,7 +454,6 @@ p.description {
     #scroll-previews .card-story .content-story {
         line-height: 24px;
         font-size: 14px;
-        min-height: 100%;
     }
 
 
