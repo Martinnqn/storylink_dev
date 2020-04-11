@@ -61,17 +61,17 @@ function showInfoPub(url, user_id, evt) {
 
             if (cont.active){
                 if (cont.own_user != user_id){
-                    if (cont.is_subscribed){
+                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
                         $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
+                    if (cont.is_subscribed){
                         $("#unsubscribe-story").css({display:'inline-block'});
-                        $("#subscribe-story").attr('onclick', '');
+                        //$("#subscribe-story").attr('onclick', '');
                         $("#subscribe-story").css({display:'none'});
 
                     }else{
-                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
                         $("#subscribe-story").css({display:'inline-block'});
                         $("#unsubscribe-story").css({display:'none'});
-                        $("#unsubscribe-story").attr('onclick', '');
+                        //$("#unsubscribe-story").attr('onclick', '');
                     }
                 }else{
                     $("#unsubscribe-story").attr('onclick', '');
@@ -81,7 +81,7 @@ function showInfoPub(url, user_id, evt) {
                 }
 
                 $("#create-continuation").attr('href',cont.url_continuate);
-                $("#create-continuation").css({display:'block'});
+                $("#create-continuation").css({display:'flex'});
 
             }else{
                 $("#create-continuation").attr('href','javascript: void(0)');
@@ -148,17 +148,17 @@ function showInfoChapter(url, user_id, evt) {
 
             if (cont.active){
                 if (cont.own_user != user_id){
-                    if (cont.is_subscribed){
                         $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
+                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
+                    if (cont.is_subscribed){
                         $("#unsubscribe-story").css({display:'inline-block'});
-                        $("#subscribe-story").attr('onclick', '');
+                        //$("#subscribe-story").attr('onclick', '');
                         $("#subscribe-story").css({display:'none'});
 
                     }else{
-                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
                         $("#subscribe-story").css({display:'inline-block'});
                         $("#unsubscribe-story").css({display:'none'});
-                        $("#unsubscribe-story").attr('onclick', '');
+                        //$("#unsubscribe-story").attr('onclick', '');
                     }
                 }else{
                     $("#unsubscribe-story").attr('onclick', '');
@@ -168,7 +168,7 @@ function showInfoChapter(url, user_id, evt) {
                 }
 
                 $("#create-continuation").attr('href',cont.url_continuate);
-                $("#create-continuation").css({display:'block'});
+                $("#create-continuation").css({display:'flex'});
 
             }else{
                 $("#create-continuation").attr('href','javascript: void(0)');
@@ -270,7 +270,7 @@ function limitText(text, maxLength){
 /*para salir del search de users*/
 $('body').on('keydown', function (e) {
     if (e.which == 27) {
-        $("#display-pub-detail").css({"display": "none"});
+        hideInfoPub();
     }
 });
 

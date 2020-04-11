@@ -8,7 +8,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
     <div class="container">
     <div class="row content-story">
         <div class="col-12 card-body">
-        <h3>
+        <h5>
           {%if chap.active %}
               <a href="javascript: void(0)" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)'>{{chap.quest_answ}}
               </a>
@@ -16,7 +16,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
             <a class="disabled-story" href="javascript: void(0)" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)'>{{chap.quest_answ}}
               </a>
           {%endif%}
-        </h3>
+        </h5>
         <div id="pub-owner">
             <a id="link-autor-profile" href=""><img src="{{chap.own_user.link_img_perfil.url}}" id="img-owner" class="img-autor-mini" alt="{{chap.own_user.username}}"></a>
         </div>

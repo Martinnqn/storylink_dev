@@ -159,14 +159,6 @@ ul{
 }
 
 
-.card-body h3 a {
-    color: black;
-}
-
-.card-body h3 a:hover {
-    text-decoration-line: underline; 
-}
-
 
 p.description {
     height: 120px;
@@ -200,7 +192,7 @@ p.description {
 
 .publication-container {
     transition: all 0.5s ease-out;
-    border-radius: 40px;
+    border-radius: 25px;
 }
 
 
@@ -211,6 +203,14 @@ p.description {
 #content-previews {
     height: 540px;
     background: whitesmoke;
+}
+
+#create-continuation {
+    justify-content: center;
+}
+
+#create-continuation a{
+    display: inline-flex;
 }
 
 #display-pub-detail {
@@ -235,7 +235,7 @@ p.description {
     height: 190px;
     width: 100%;
     border-bottom: 1px solid;
-    border-radius: 40px 40px 0 0;
+    border-radius: 25px 25px 0 0;
 }
 
 #img-owner{
@@ -280,7 +280,8 @@ p.description {
 
 .tags-story span {
     font-size: 10px;
-    background: #ff656757;
+    color: rgb(111,111,111);
+    background: whitesmoke;
     padding: 5px;
     border-radius: 15px;
     margin: 3px;
@@ -451,6 +452,11 @@ p.description {
         float: none;
     }
 
+    #scroll-previews .card-story #img-owner{
+        width: 40px;
+        height: 40px;
+    }
+
     #scroll-previews .card-story .content-story {
         line-height: 24px;
         font-size: 14px;
@@ -607,7 +613,7 @@ p.description {
 
     .tags-story span {
         font-size: 10px;
-        background: lightblue;
+        background: #6a6a6a57;
         padding: 2px;
         border-radius: 5px;
     }

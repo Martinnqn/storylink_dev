@@ -5,7 +5,7 @@ Formato de tarjeta de una publicacion
 <div class="container">
 <div id="display-pub-detail" class="row">
   <button class="btn-close" onclick="hideInfoPub()">
-    Volver <span class="material-icons">close</span>
+    Minimizar <span class="material-icons">settings_backup_restore</span>
   </button>
   <div class="content-card col-12 col-lg-6">
     <div class="">
@@ -42,9 +42,6 @@ Formato de tarjeta de una publicacion
             <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
               Suscribirse
             </a>
-            <a class="btn-custom-2" href="#" id="create-continuation">
-              Continuar Storylink
-            </a>
             <button type="button" class="btn-custom-2" data-toggle="modal" onclick="extendStory()" data-target="#story-read-mode">
               Leer
             </button>
@@ -70,6 +67,13 @@ Formato de tarjeta de una publicacion
   <div id="content-previews" class="col-12 col-lg-6">
     <h3 class="title-center">Continuaciones</h3>
     <div id="scroll-previews" class="">
+    </div>
+    <div class="container">
+      <div id="create-continuation" class="row">
+        <a class="btn-custom-2" href="#" id="btn-create-continuation">
+          Continuar Storylink <span class="material-icons">rate_review</span>
+        </a>
+      </div>
     </div>
   </div>
   {% endblock %} 

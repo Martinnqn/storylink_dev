@@ -118,6 +118,8 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
             data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_chapt', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_chapter', kwargs={'username': own_user.username, 'pk': publication.id})})
+            data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.username, 'pk': mainStory.id})})
+            data['content_pub'].update({'url_unsubscribe': reverse_lazy('user:pub:unsubs_story', kwargs={'username': own_user.username, 'pk': mainStory.id})})
             data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.username, 'pk': mainStory.id, 'pkchapter': publication.id})})
             data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_chap', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_first_story': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.username, 'pk': mainStory.id})})
@@ -138,6 +140,9 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
                 data['content_pub'].update({'tags': tags})
                 fromUser = self.request.user
                 data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(mainStory.img_content_link.url)})
+                fromUser = self.request.user
+                is_subscribed = fromUser.user2Pub.filter(pub = mainStory).exists();
+                data['content_pub'].update({'is_subscribed': is_subscribed})
             else:
                 data['content_pub'].update({'tags': []})
                 data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
@@ -328,7 +333,6 @@ class UnsubscribeStory(LoginRequiredMixin, generic.edit.DeleteView):
         fromUser.pub_subscription.remove(toStory);
         data = dict()
         data.update({'is_subscribed': False})
-        data.update({'username': username})
         data.update({'story_id': pk})
         return JsonResponse(data)
 

@@ -41,7 +41,8 @@ body {
 .btn-custom-2 {
     padding: 4px;
     font-size: 16px;
-    background: #883d69;
+    /*background: #883d69;*/
+    background: #ff6567;
     color: white;
     border-radius: 16px;
 }

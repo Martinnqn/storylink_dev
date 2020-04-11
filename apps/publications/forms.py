@@ -52,7 +52,7 @@ class StoryContinuationCreationForm(ModelForm):
 
 
 class StoryEditForm(ModelForm):
-    tag = forms.CharField(label='Tags', widget=forms.TextInput())
+    tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryPublication
         fields = ('title', 'text_content', 'img_content_link')
@@ -70,7 +70,7 @@ class StoryEditForm(ModelForm):
         #self.fields['img_content_link'].label = "Portada actual"
 
 class StoryChapterEditForm(ModelForm):
-    tag = forms.CharField(label='Tags', widget=forms.TextInput())
+    tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryChapter
         fields = ('quest_answ', 'text_content')
