@@ -47,6 +47,10 @@ body {
     border-radius: 16px;
 }
 
+.btn-custom-2:hover {
+    box-shadow: -0px 0px 6px #ff6567;
+}
+
 .btn-custom-2 a{
     color: white;
 }

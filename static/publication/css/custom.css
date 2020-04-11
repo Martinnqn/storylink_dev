@@ -16,6 +16,7 @@ body {
 .publication-container {
     color: black;
     border-radius: 25px;
+    overflow-y: hidden;
 }
 
 
@@ -211,6 +212,8 @@ p.description {
 
 #create-continuation a{
     display: inline-flex;
+    position: absolute;
+    bottom: 2px;
 }
 
 #display-pub-detail {
@@ -273,11 +276,6 @@ p.description {
 }
 
 
-#tags {
-    position: absolute;
-    bottom: 3px;
-}
-
 .tags-story span {
     font-size: 10px;
     color: rgb(111,111,111);
@@ -285,6 +283,7 @@ p.description {
     padding: 5px;
     border-radius: 15px;
     margin: 3px;
+    display: inline-block;
 }
 
 .tags-story {
@@ -328,6 +327,7 @@ p.description {
     background: bottom;
     display: inline-flex;
 }
+
 
 
 /*dropwdown menu opciones story-card*/
@@ -403,7 +403,7 @@ p.description {
 @media (min-width: 992px) {
 
     .publication-container {
-        height: 400px;
+        max-height: 450px;
     }
 
     #content-previews {
@@ -616,6 +616,7 @@ p.description {
         background: #6a6a6a57;
         padding: 2px;
         border-radius: 5px;
+        display: inline-block;
     }
 
     .main-actions li{

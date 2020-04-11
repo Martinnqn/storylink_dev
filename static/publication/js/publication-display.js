@@ -80,14 +80,14 @@ function showInfoPub(url, user_id, evt) {
                     $("#unsubscribe-story").css({display:'none'});
                 }
 
-                $("#create-continuation").attr('href',cont.url_continuate);
-                $("#create-continuation").css({display:'flex'});
+                $("#btn-create-continuation").attr('href',cont.url_continuate);
+                $("#btn-create-continuation").css({display:'flex'});
 
             }else{
-                $("#create-continuation").attr('href','javascript: void(0)');
+                $("#btn-create-continuation").attr('href','javascript: void(0)');
                 $("#subscribe-story").attr('onclick', '');
                 $("#subscribe-story").attr('onclick', '');
-                $("#create-continuation").css({display:'none'});
+                $("#btn-create-continuation").css({display:'none'});
                 $("#subscribe-story").css({display:'none'});
                 $("#unsubscribe-story").css({display:'none'});
             }
@@ -147,7 +147,7 @@ function showInfoChapter(url, user_id, evt) {
             $("#publication-content").html(cont.text_content);
 
             if (cont.active){
-                if (cont.own_user != user_id){
+                if (cont.own_first_story != user_id){
                         $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
                         $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
                     if (cont.is_subscribed){
@@ -167,14 +167,14 @@ function showInfoChapter(url, user_id, evt) {
                     $("#unsubscribe-story").css({display:'none'});
                 }
 
-                $("#create-continuation").attr('href',cont.url_continuate);
-                $("#create-continuation").css({display:'flex'});
+                $("#btn-create-continuation").attr('href',cont.url_continuate);
+                $("#btn-create-continuation").css({display:'flex'});
 
             }else{
-                $("#create-continuation").attr('href','javascript: void(0)');
+                $("#btn-create-continuation").attr('href','javascript: void(0)');
                 $("#subscribe-story").attr('onclick', '');
                 $("#subscribe-story").attr('onclick', '');
-                $("#create-continuation").css({display:'none'});
+                $("#btn-create-continuation").css({display:'none'});
                 $("#subscribe-story").css({display:'none'});
                 $("#unsubscribe-story").css({display:'none'});
             }
@@ -269,7 +269,7 @@ function limitText(text, maxLength){
 
 /*para salir del search de users*/
 $('body').on('keydown', function (e) {
-    if (e.which == 27) {
+    if (e.which == 27 && !$('#story-read-mode').attr('aria-modal')) {
         hideInfoPub();
     }
 });
