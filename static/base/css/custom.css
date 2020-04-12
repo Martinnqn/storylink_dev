@@ -1,11 +1,8 @@
 /*BASE CSS*/
-#main-content {
-    width: 900px;
-}
-
 body {
     background-color: #ececec;
     overflow-x: hidden;
+    margin: 0
 }
 
 #page-container {
@@ -138,9 +135,9 @@ a:hover{
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 500; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-500.woff') format('woff')}
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 600; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-600.woff') format('woff')}
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 700; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-700.woff') format('woff')}
-@font-face { 
-    font-family: 'avenir';
-    src: url('../../fonts/avenir/AvenirLTStd-Book.otf')}
+@font-face { font-family: 'avenir-book'; font-style: normal; font-weight: 200; src: url('../../fonts/avenir/AvenirLTStd-Book.otf')}
+@font-face { font-family: 'avenir-medium'; font-style: normal; font-weight: 700; src: url('../../fonts/avenir/AvenirLTStd-Medium.otf')}
+@font-face { font-family: 'avenir-roman'; font-style: normal; font-weight: 500; src: url('../../fonts/avenir/AvenirLTStd-Roman.otf')}
 
 #img-portada{
     margin-top: 25px;
@@ -233,7 +230,7 @@ strong.hall{
 }
 
 
-@media(min-width:768px) {
+@media(min-width:992px) {
     #collapsibleNavbarPrimary .input-group div{
         height: 30px;
     }

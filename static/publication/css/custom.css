@@ -3,7 +3,14 @@ body {
     position: relative;
 }
 
+#publication-container {
+    font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+}
 
+
+#publication-container a{
+    font-family: "avenir-medium","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+}
 
 .publication-container {
     margin-top: 20px;
@@ -144,7 +151,6 @@ ul{
 #scroll-previews {
     position: relative;
     padding: 5px;
-    margin-bottom: 10px;
 }
 
 
@@ -154,7 +160,7 @@ ul{
 }
 
 .card-story {
-    font-family: "Source Sans Pro","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+    font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
     border-bottom-style: solid;
     border-right-style: solid;
     border-width: 3px;
@@ -163,6 +169,9 @@ ul{
     background: white;
 }
 
+.card-story a{
+    font-family: "avenir-medium","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+}
 
 
 p.description {
@@ -212,15 +221,17 @@ p.description {
 
 #create-continuation {
     justify-content: center;
+    margin-bottom: 20px;
 }
 
 #create-continuation a{
     display: inline-flex;
-    position: absolute;
-    bottom: 2px;
 }
 
 #display-pub-detail {
+    overflow-x: hidden;
+    margin-right: auto;
+    margin-left: auto;
     transition: all 1s ease-in-out;
     display: none;
     z-index: 10;
@@ -231,7 +242,6 @@ p.description {
     width: 100%;
     height: 100%;
     overflow-y: scroll;
-    margin: 0px;
     -webkit-animation: opactiyTransition 0.3s ease-in 1 normal;
     -moz-animation: opactiyTransition 0.3s ease-in 1 normal;
     animation: opactiyTransition 0.3s ease-in 1 normal;
@@ -295,7 +305,7 @@ p.description {
 
 
 .tags-story span {
-    font-size: 10px;
+    font-size: 11px;
     color: rgb(111,111,111);
     background: whitesmoke;
     padding: 5px;
@@ -327,11 +337,6 @@ p.description {
     text-align: center;
 }
 
-.content-pub {
-    margin: auto;
-    width: 450px;
-}
-
 /*Color de fondo del modal en mode-read*/
 .modal-backdrop.show{
     opacity: 1;
@@ -340,6 +345,7 @@ p.description {
 #title-read-mode {
     text-align: center;
     margin: auto;
+    font-family: 'avenir-medium';
 }
 
 .modal-header .close {
@@ -349,7 +355,7 @@ p.description {
 .content-read-mode {
     padding: 8px;
     line-height: 24px;
-    font-family: 'avenir';
+    font-family: 'avenir-book';
     font-size: 18px;
 }
 
@@ -357,12 +363,15 @@ p.description {
     max-width: 100%;
 }
 
+.modal-footer {
+    justify-content: center;
+}
+
 .btn-close {
     color: white;
     position: fixed;
     right: 20px;
     cursor: pointer;
-    background: bottom;
     display: inline-flex;
 }
 
@@ -470,6 +479,13 @@ p.description {
     .publication-container-footer li{
         display: inline-grid;
     }
+
+
+    .content-pub {
+        margin: auto;
+        width: 450px;
+    }
+
 
     .btn-header {
         padding: 0;
@@ -581,7 +597,7 @@ p.description {
 
 
 }*/
-
+/*
 @media (max-width: 767px) {
     .content-story {
         line-height: 24px;
@@ -608,12 +624,21 @@ p.description {
 
     }
 
-}
+}*/
 
-@media (max-width: 445px) {
+@media (max-width: 992px) {
+    .btn-close {
+        position: relative;
+        margin-top: 15px;
+        margin-left: 80%;
+    }
+    .content-pub{
+        margin-top: 35px;
+    }
+
     .content-story {
         line-height: 20px;
-        font-size: 12px;
+        font-size: 16px;
         min-height: 100%;
     }
 
@@ -621,17 +646,22 @@ p.description {
         font-size: 16px;
     }
 
+    #content-previews {
+        height: auto;
+    }
 
     #scroll-previews{
         padding: 5px;
+        width: 100%;
+        overflow-x: auto;
+        display: flex;
     }
 
     #scroll-previews .card-story {
-        width: 310px;
-        flex: 0 0 auto;
+        min-width: 310px;
     }
 
-    #scroll-previews .card-body {
+    /*#scroll-previews .card-body {
         padding: 10px;
     }
 
@@ -662,7 +692,6 @@ p.description {
     .main-actions li{
         margin-bottom: 3px;
         display: grid;
-    }
+    }*/
 
 }
-
