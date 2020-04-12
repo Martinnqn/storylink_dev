@@ -56,7 +56,7 @@ function showInfoPub(url, user_id, evt) {
 
             $("#title-pub-detail").html(cont.title);
 
-            $("#publication-title").html(cont.title);
+            $("#title-read-mode").html(cont.title);
             $("#publication-content").html(cont.text_content);
 
             if (cont.active){
@@ -143,7 +143,7 @@ function showInfoChapter(url, user_id, evt) {
 
             $("#title-pub-detail").html(cont.title);
 
-            $("#publication-title").html(cont.question);
+            $("#title-read-mode").html(cont.question);
             $("#publication-content").html(cont.text_content);
 
             if (cont.active){
@@ -211,7 +211,13 @@ function showInfoChapter(url, user_id, evt) {
 }
 
 function hideInfoPub() {
-    $("#display-pub-detail").css({'display': 'none'});
+    $("#display-pub-detail").css({
+        'opacity': '0',
+    })
+    setTimeout(function(){ $("#display-pub-detail").css({
+        'display': 'none',
+        'opacity': '1',
+    })}, 400);
     $("body").css({'overflow-y': 'scroll'});
 }
 
@@ -253,7 +259,7 @@ function showStoriesPreview(url) {
 
 
 function extendStory() {
-    $("#title-read-mode").html($("#publication-title").text())
+    //$("#title-read-mode").html($("#publication-title").text())
     $(".content-read-mode").html($("#publication-content").text());
 }
 

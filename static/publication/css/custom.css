@@ -42,6 +42,10 @@ body {
     display: flex;
 }
 
+.card-story .card-thumbnail{
+    margin: auto;
+}
+
 
 
 .publication-description {
@@ -228,6 +232,20 @@ p.description {
     height: 100%;
     overflow-y: scroll;
     margin: 0px;
+    -webkit-animation: opactiyTransition 0.3s ease-in 1 normal;
+    -moz-animation: opactiyTransition 0.3s ease-in 1 normal;
+    animation: opactiyTransition 0.3s ease-in 1 normal;
+
+}
+
+@-webkit-keyframes opactiyTransition {
+  from {
+    opacity: 0;
+  }
+  
+  to {
+    opacity: 0.9;
+  }
 }
 
 #publication-header{
@@ -319,6 +337,26 @@ p.description {
     opacity: 1;
 }
 
+#title-read-mode {
+    text-align: center;
+    margin: auto;
+}
+
+.modal-header .close {
+    margin: 0;
+}
+
+.content-read-mode {
+    padding: 8px;
+    line-height: 24px;
+    font-family: 'avenir';
+    font-size: 18px;
+}
+
+.modal-dialog {
+    max-width: 100%;
+}
+
 .btn-close {
     color: white;
     position: fixed;
@@ -353,6 +391,7 @@ p.description {
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
+    border: 1px solid black;
   display: none;
   position: absolute;
   background-color: #f9f9f9;
@@ -399,6 +438,7 @@ p.description {
 .card-story #pub-owner #img-owner{
     margin-top: 0;
 }
+
 
 @media (min-width: 992px) {
 

@@ -10,8 +10,8 @@
 {% endblock %}
 
 {% block profile-content %}
-<div class="row justify-content-center">
-    <div class="col-lg-3" id="profile-side-left">
+<div class="row">
+    <div class="col-sm-12 col-lg-4" id="profile-side-left">
         {% block profile-side-left %}
         <div class="container" id="profile-description">
             {% block profile-description %}
@@ -42,7 +42,7 @@
         </div>
         {%endblock%}
     </div>
-    <div class="col-lg-6" id="container-profile-body">
+    <div class="col-sm-12 col-lg-8" id="container-profile-body">
         <div class="container" id="profile-body">
             {% block profile-body %}
             <div id="title-profile-body" class="justify-content-center">

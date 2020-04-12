@@ -8,6 +8,11 @@ body {
     overflow-x: hidden;
 }
 
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
 #primary-navbar{
     padding: 0;
 }
@@ -133,6 +138,9 @@ a:hover{
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 500; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-500.woff') format('woff')}
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 600; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-600.woff') format('woff')}
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 700; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-700.woff') format('woff')}
+@font-face { 
+    font-family: 'avenir';
+    src: url('../../fonts/avenir/AvenirLTStd-Book.otf')}
 
 #img-portada{
     margin-top: 25px;
@@ -178,6 +186,8 @@ strong.hall{
     color: rgb(111,111,111);
     font-size: 16px;
     display: flex;
+    position: relative;
+    margin-top: 20px;
 }
 
 #footer ul{
