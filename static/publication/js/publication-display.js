@@ -35,6 +35,7 @@ function showInfoPub(url, user_id, evt) {
         dataType:  'text/json',
         complete: function  (data) {
             //console.log(data.responseText);
+            history.pushState(undefined, undefined, url);
             cont = JSON.parse(data.responseText).content_pub;
             if (cont.img_content_link!=undefined){
                 $("#header-image").attr('src',cont.img_content_link);
@@ -106,10 +107,6 @@ function showInfoPub(url, user_id, evt) {
             });
             showStoriesPreview(cont.url_continuations);
             $("body").css({'overflow-y': 'hidden'});
-            /*para scroll hasta el div*/
-            /*document.querySelector('#link-to-body').scrollIntoView({ 
-              behavior: 'smooth' 
-          });*/
       }
   });
 }
@@ -202,10 +199,6 @@ function showInfoChapter(url, user_id, evt) {
             });
             showStoriesPreview(cont.url_continuations);
             $("body").css({'overflow-y': 'hidden'});
-            /*para scroll hasta el div*/
-            /*document.querySelector('#link-to-body').scrollIntoView({ 
-              behavior: 'smooth' 
-          });*/
       }
   });
 }
@@ -217,7 +210,7 @@ function hideInfoPub() {
     setTimeout(function(){ $("#display-pub-detail").css({
         'display': 'none',
         'opacity': '1',
-    })}, 400);
+    })}, 450);
     $("body").css({'overflow-y': 'scroll'});
 }
 

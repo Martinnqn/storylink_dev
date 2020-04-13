@@ -170,7 +170,8 @@ ul{
 }
 
 .card-story a{
-    font-family: "avenir-medium","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+    font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+    font-size: 26px;
 }
 
 
@@ -504,8 +505,11 @@ p.description {
         overflow-y: scroll;
         height: 500px;
     }
-    #scroll-previews .card-story {
-        float: none;
+
+    #story-list-flotante .stories-preview .card-story {
+        float: left;
+        max-width: 400px;
+        margin: 10px;
     }
 
     #scroll-previews .card-story #img-owner{
@@ -518,115 +522,17 @@ p.description {
         font-size: 14px;
     }
 
+    .modal-content {
+        max-width: 800px;
+        margin: auto;
+    }
+
 
 }
 
-/*
-@media (min-width: 1200px) {
-    .card-story {
-        margin: 20px;
-        width: 515px;
-    }
-
-}
-
-@media (min-width: 992px) and (max-width: 1199px) {
-    .card-story {
-        width: 445px;
-    }
-
-    .content-story h3{
-        font-size: 26px;
-    }
-
-}*/
-
-/*@media (min-width: 768px) {
 
 
-    .classification-story .material-icons{
-        margin-right: 5px;
-    }
-
-
-    .classification-story .material-icons {
-        font-size: 20px;
-    }
-
-    .btn-delete, .btn-edit {
-    }
-
-
-    .card-story {
-        width: 510px;
-        float: left;
-        margin-left: 10px; 
-    }
-
-    .card-body {
-        padding: 4px;
-    }
-
-
-    .content-story {
-        line-height: 24px;
-        font-size: 14px;
-        min-height: 100%;
-    }
-
-    .content-story h3{
-        font-size: 22px;
-    }
-
-
-    #scroll-previews .card-story {
-        width: 350px;
-        flex: 0 0 auto;
-    }
-
-
-    #scroll-previews .answer p{
-        font-size: 15px;
-    }
-
-
-    .card-thumbnail img{
-        height: 200px;
-        max-height: 200px;
-    }
-
-
-}*/
-/*
-@media (max-width: 767px) {
-    .content-story {
-        line-height: 24px;
-        font-size: 12px;
-        min-height: 100%;
-    }
-
-    .content-story h3{
-        font-size: 18px;
-    }
-
-
-    #scroll-previews .card-story {
-        width: 350px;
-        flex: 0 0 auto;
-    }
-
-
-    #scroll-previews .answer p{
-        font-size: 10px;
-    }
-
-    #btn-previous {
-
-    }
-
-}*/
-
-@media (max-width: 992px) {
+@media (max-width: 991px) {
     .btn-close {
         position: relative;
         margin-top: 15px;
@@ -634,6 +540,9 @@ p.description {
     }
     .content-pub{
         margin-top: 35px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .content-story {
@@ -648,6 +557,7 @@ p.description {
 
     #content-previews {
         height: auto;
+        min-height: 350px;
     }
 
     #scroll-previews{
@@ -660,38 +570,5 @@ p.description {
     #scroll-previews .card-story {
         min-width: 310px;
     }
-
-    /*#scroll-previews .card-body {
-        padding: 10px;
-    }
-
-
-    #scroll-previews .answer p{
-        font-size: 10px;
-    }
-
-    .card-thumbnail {
-        height: 200px;
-        max-height: 200px;
-    }
-
-    #publication-nav-footer {
-        display: flex;
-        list-style: none;
-    }
-
-
-    .tags-story span {
-        font-size: 10px;
-        background: #6a6a6a57;
-        padding: 2px;
-        border-radius: 5px;
-        display: inline-block;
-    }
-
-    .main-actions li{
-        margin-bottom: 3px;
-        display: grid;
-    }*/
 
 }
