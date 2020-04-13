@@ -11,22 +11,22 @@
 
 {% block main-content %}
 <div id="top"></div>
-<div id="hall-main" class="">
+<div id="hall-main" class="container">
 {% block hall %}
     <div class="row justify-content-center" >
-    <div class="col-lg-3" id="filter">
+    <div class="col-lg-5" id="filter">
         <div class="container" id="content-filter">
         Buscador Storylinks:
             {% include "hall/form.html" %}
         </div>
     </div>
-    <div class="col-lg-6" id="container-profile-body">
+    <div class="col-lg-7" id="container-list-hall">
         <div class="container" id="list-story">
         <h3 class="title-center">Explora las Storylinks!</h3>
             <div class="row">
                 <div class="stories-preview col-12">
                     {%if storypublication_list%}
-                        {% include "publications/story/list_stories.html" %}
+                        {% include "publications/story/list_stories_chapters.html" %}
                     {%else%}
                         <div class="empy-pub"><h5>Aun no existen Storylinks, <a class="nav-link" href="{% url 'user:pub:create_story' user.username%}">¡Sé el primero en crear una!</a></h5></div>
                     {%endif%}

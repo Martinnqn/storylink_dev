@@ -1,181 +1,37 @@
-{% extends "base.html" %}
-{%comment%}
-Deprecated! Formato tarjeta de una publicacion para visualizarla a traves de un enlace.
-{%endcomment%}
+{% extends "users/profile_base.html" %}
+
 {% load static %}
-{% block title-page %}
-Story - {{storypublication.own_user.first_name}}  {{storypublication.own_user.last_name}}
-{% endblock %}
-{% block head-page %}
+{% block title-page %}{{customuser.first_name}} {{customuser.last_name}}{% endblock %}
+{% block head-page-extra %}
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{% static 'publication/css/custom.css' %}">
 <!-- Icons star CSS -->
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<script>
+    js_user_id = "{{user.id}}";
+</script>
 {% endblock %}
 
-{% block main-content %}
-<div class="container publication-container">
-    <!-- Header publicacion -->
-    <div class="row publication-container-title">
-        <div class="col-8">
-            <!--<h3>
-                {{storypublication.own_user.first_name}}  {{storypublication.own_user.last_name}} - Story.
-            </h3>-->
-        </div>
-        <div class="col-4">
-            <div class="container">
-            <div class="row">
-                <div class="container-fluid">
-                    <!-- navBar header -->   
-                    <nav class="navbar navbar-expand-sm navbar-light">
-                        <!-- Collapse button -->
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbarHeader">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="collapsibleNavbarHeader">
-                            <ul class="container-fluid justify-content-end navbar-nav">
-                                <li class="nav-item">
-                                    <button class="btn btn-primary btn-block" type="button">
-                                        share
-                                    </button> 
-                                </li>
-                                <li class="nav-item">
-                                    <button class="btn btn-primary btn-close btn-block" type="button">
-                                        close
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-    <!-- Body publicacion -->
-    <div class="container">
-    <div class="row">
-        <!-- Datos publicacion -->
-        <div class="col-12 col-sm-3">
-            {%ifequal storypublication.img_content_link|stringformat:"s" "" %}
-            <div class="row">
-                <div class="col-12">
-                    <img alt="Publication image" class="img-thumbnail mx-auto d-block" src="{{storypublication.img_content_link}}">
 
-                </div>
-            </div>
-            {%endifequal%}
-            <div class="row">
-                <div class="col-12">
-                    <div id="publication-data" class="container justify-content-center">
-                        <div class="container">
-                            <div class="row justify-content-center autor">
-                                <span>Autor:{{storypublication.own_user.first_name}} {{storypublication.own_user.last_name}}</span>
-                            </div>
-                            <div class="row justify-content-center time-location">
-                                <span>Ubicación en el tiempo:</span>
-                            </div>
-                            <div class="row justify-content-center time-location">
-                                <div class="container" id="graph"></div>
-                            </div>
-                        </div>
-                        {%if storypublication.own_user.id == user.id  %}
-                        <div class="row justify-content-center publication-btn-group" role="group">
-                            <a class="btn btn-warning" href="{% url 'user:pub:edit_story' storypublication.own_user.username storypublication.id %}">
-                                Editar
-                            </a> 
-                            <a class="btn btn-danger" href="{% url 'user:pub:delete_story' storypublication.own_user.username storypublication.id %}">
-                                Eliminar
-                            </a> 
-                        </div>
-                        {%endif%}
-                        <div class="container">
-                            <div class="row justify-content-center">
-                                <p>
-                                    <span>Valoración: <span id="publication-valoration">{{storypublication.valoration}}</span></span>
-                                </p>
-                            </div>
-                            <div class="row justify-content-center star-rating">
-                                <p>
-                                    <span class="fa fa-star-o not-pressed" data-rating="1"></span>
-                                    <span class="fa fa-star-o not-pressed" data-rating="2"></span>
-                                    <span class="fa fa-star-o not-pressed" data-rating="3"></span>
-                                    <span class="fa fa-star-o not-pressed" data-rating="4"></span>
-                                    <span class="fa fa-star-o not-pressed" data-rating="5"></span>
-                                    <input type="hidden" name="whatever1" class="rating-value" value="0">
-                                </p>
-                            </div>  
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Descripcion publicacion -->
-        <div class="col-12 col-sm-9 publication-description">
-            <h2>
-                {{storypublication.title}}.
-            </h2>
-            {{storypublication.text_content}}
-        </div>
-    </div>
-    </div>
-    <!-- footer publicacion -->
-    <div class="row justify-content-between publication-container-footer">
-        <div class="container-fluid">
-            <!-- navBar footer -->   
-            <nav class="navbar justify-content-center navbar-expand-sm navbar-light">
-                <!-- Collapse button -->
-                <button class="navbar-toggler" type="button" id="btnNavCollapse" data-toggle="collapse" data-target="#collapsibleNavbarFooter">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <!-- Links -->
-                <div class="collapse navbar-collapse" id="collapsibleNavbarFooter">
-                    <ul class="container-fluid navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <div class="justify-content-start">
-                                <a class="btn btn-secondary btn-previous btn-block" href="#">
-                                    Anterior
-                                </a>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            {%if is_subscribed %}
-                            <a class="btn btn-danger btn-block" href="{% url 'user:pub:unsubs_story' storypublication.own_user.username storypublication.id %}">
-                                Desuscribirse
-                            </a>
-                            {%else%}
-                            <a class="btn btn-primary btn-block" href="{% url 'user:pub:subs_story' storypublication.own_user.username storypublication.id %}">
-                                Suscribirse
-                            </a> 
-                            {%endif%}
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-primary btn-block" href="#">
-                                Leer
-                            </a>                           
-                        </li>    
-                        <li class="nav-item">
-                            <a class="btn btn-primary btn-block" href="#">
-                                Crear continuación
-                            </a>
-                        </li> 
-                        <li class="nav-item">
-                            <div class="justify-content-end">
-                                <a class="btn btn-secondary btn-next btn-block" href="#">
-                                    Siguiente
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </nav> 
-        </div>
+{% block profile-body %}
+<div id="title-profile-body" class="justify-content-center">
+    <h4> <a href="{% url 'user:user_profile' customuser.username%}">Ver más publicaciones de {{customuser.username}}</a></h4>
+</div>
+
+<div class="row">
+    <div class="stories-preview col-12">
+            {% include "publications/story/card_chapter.html" %}
+            {% include "publications/story/card_story.html" %}
     </div>
 </div>
+{%endblock%}
+
+{%block display-pub-detail%}
+
+{% include "publications/story/story_card.html" %}
 
 {%endblock%}
 
-{% block extra-script%}
-<!-- Rating publication JS -->
+{%block extra-script%}
 <script src="{% static 'publication/js/publication-display.js' %}"></script>
-{%endblock%} <!--extras scripts -->
+{% endblock %}

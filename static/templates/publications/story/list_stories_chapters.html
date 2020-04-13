@@ -2,6 +2,11 @@
 Lista las storylinks y los chapters a traves de las listas storypublication_list y storychapter_list
 {%endcomment%}
 
-{% include "publications/story/list_stories.html" %}
-{% include "publications/story/list_chapters.html" %}
 
+{% for storypublication in storypublication_list %}
+{% include "publications/story/card_story.html" %}
+{% endfor %}
+
+{% for storychapter in storychapter_list %}
+{% include "publications/story/card_chapter.html" %}
+{% endfor %}

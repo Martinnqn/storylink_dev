@@ -1,0 +1,27 @@
+{%comment%}
+Crea un card-story con el contenido de una story a partir de la variable storypublication.
+{%endcomment%}
+{%if storypublication%}
+  <div class="container card-story">
+    <div class="row content-story">
+        <div class="col-3 card-thumbnail">
+            <img alt="Publication image" class="img-thumbnail" src="{{storypublication.img_content_link.url}}">
+        </div>
+        <div class="col-9 card-body">
+        <h3>
+            <a href="javascript: void(0)" onClick='showInfoPub("{% url 'user:pub:story_content' storypublication.own_user.username storypublication.id %}", {{user.id}}, event)'>{{storypublication.title|truncatechars:35}}
+            </a>
+        </h3>
+        <div class="answer-pub">
+          <div class="answer"><h5>{{storypublication.quest_answ}}</h5></div>
+        </div>
+        <p class="description">{{storypublication.text_content|truncatechars:150}}</p>
+        <div class="tags-story">
+          {% for h in storypublication.tag.all %}
+          <span>{{ h.tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{%endif%}

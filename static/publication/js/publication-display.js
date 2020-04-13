@@ -35,7 +35,7 @@ function showInfoPub(url, user_id, evt) {
         dataType:  'text/json',
         complete: function  (data) {
             //console.log(data.responseText);
-            history.pushState(undefined, undefined, url);
+            history.pushState(undefined, undefined, url+'?mode=theater');
             cont = JSON.parse(data.responseText).content_pub;
             if (cont.img_content_link!=undefined){
                 $("#header-image").attr('src',cont.img_content_link);
@@ -119,6 +119,7 @@ function showInfoChapter(url, user_id, evt) {
         dataType:  'text/json',
         complete: function  (data) {
             //console.log(data.responseText);
+            history.pushState(undefined, undefined, url+'?mode=theater');
             cont = JSON.parse(data.responseText).content_pub;
             if (cont.img_content_link!=undefined){
                 $("#header-image").attr('src',cont.img_content_link);
@@ -266,13 +267,39 @@ function limitText(text, maxLength){
     return limite_text;
 }
 
-/*para salir del search de users*/
+/*para salir del modo theater*/
 $('body').on('keydown', function (e) {
     if (e.which == 27 && !$('#story-read-mode').attr('aria-modal')) {
         hideInfoPub();
     }
 });
 
-/*$('#collapsibleNavbarFooter').on('shown.bs.collapse', function () {
-  this.scrollIntoView({behavior: 'smooth'});
-});*/
+/*funcion para obtener un arreglo con los parametros de la url*/
+function getParameters() {
+  var res=[];
+  if (location.search){
+    location.search.substr(1).split("&").forEach(function(param) {
+        var s = param.split("="), //separamos llave/valor
+        ll = s[0],
+        v =  decodeURIComponent(s[1]);
+        res.push([ll,v]); //si es nula, quiere decir que no tiene valor, solo textual
+      });
+  }
+  return res;
+}
+
+/*Para mostrar el modo teatro si se visita una publicacion invocando el get.*/
+$(document).ready(function() {
+    var params = getParameters();
+    for (var i = params.length - 1; i >= 0; i--) {
+        if (params[i][0]=='mode' && params[i][1]=='theater'){
+            if (location.pathname.split('/')[4]){
+                if (location.pathname.split('/')[5]){
+                    if (js_user_id){
+                        showInfoPub(location.pathname, js_user_id);
+                    }
+                }
+            }
+        }
+    }
+});

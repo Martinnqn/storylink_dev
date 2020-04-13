@@ -20,7 +20,7 @@ Lista las storylinks a las que se suscribio un usuario.
 <div id="story-list-flotante" class="row">
     <div class="stories-preview col-12">
         {%if storypublication_list%}
-        {% include "publications/story/list_stories.html" %}
+        {% include "publications/story/list_stories_chapters.html" %}
         {%else%}
           {%if customuser.username != user.username%}
               <div class="empy-pub"><h5>No hay suscripciones a Storylinks!</h5></div>

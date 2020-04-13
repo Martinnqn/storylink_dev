@@ -1,0 +1,27 @@
+{%comment%}
+Crea un card-story con el contenido de un chapter a partir de la variable storychapter.
+{%endcomment%}
+{%if storychapter%}
+  <div class="container card-story">
+    <div class="row content-story">
+        <div class="col-3 card-thumbnail">
+            <img alt="Publication image" class="img-thumbnail" src="{{storychapter.mainStory.img_content_link.url}}">
+        </div>
+        <div class="col-9 card-body">
+        <h3>
+            <a href="javascript: void(0)" onClick='showInfoChapter("{% url 'user:pub:chapter_content' storychapter.own_user.username storychapter.id %}", {{user.id}}, event)'>{{storychapter.mainStory.title|truncatechars:35}}
+            </a>
+        </h3>
+        <div class="answer-pub">
+          <div class="answer"><h5>{{storychapter.quest_answ}}</h5></div>
+        </div>
+        <p class="description">{{storychapter.text_content|truncatechars:150}}</p>
+        <div class="tags-story">
+          {% for h in storychapter.tag.all %}
+          <span>{{ h.tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+{%endif%}

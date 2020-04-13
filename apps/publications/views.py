@@ -60,6 +60,11 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
     model = StoryPublication
     template_name = 'publications/story/story_display.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ListContentStory, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
+        return context
+
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             publication = self.get_object()
@@ -102,6 +107,11 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
     model = StoryChapter
     template_name = 'publications/story/story_display.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ListContentChapter, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username':self.kwargs["username"]}})
+        return context
+        
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             publication = self.get_object()
