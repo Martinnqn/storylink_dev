@@ -31,9 +31,9 @@
                 {%if user.username != customuser.username %}      
                 <li>
                     {%if is_following%}
-                    <a href="{%url 'user:user_unfollow' customuser.username customuser.id %}?next={{request.path}}">Dejar de seguir</a>
+                    <a href="{%url 'user:user_unfollow' customuser.username %}">Dejar de seguir</a>
                     {%else%}
-                    <a href="{%url 'user:user_follow' customuser.username customuser.id %}?next={{request.path}}">Seguir</a>
+                    <a href="{%url 'user:user_follow' customuser.username %}">Seguir</a>
                     {%endif%}
                 </li>
                 {%endif%}

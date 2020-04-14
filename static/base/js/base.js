@@ -7,7 +7,7 @@ function searchUser(url) {
             complete: function  (data) {
                 if (data.status==200){
                     users = JSON.parse(data.responseText).users_found;
-                    var x = "<ul class=''>";
+                    var x = "<ul class='list-users-found'>";
                     for (var i = 0; i <= users.length - 1; i++) {
                         x+="<li><a href='"+users[i].url+"'>"+users[i].username+"</a></li>";
                     }

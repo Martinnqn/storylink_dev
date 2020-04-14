@@ -3,15 +3,18 @@
 {% load widget_tweaks %}
 
 {% block title-page %}Crear cuenta{% endblock %}
+{% block head-page %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
+{% endblock %}
 
 {% block main-content %}
-
+<div class="container">
+  <h1 class="title-welcome">Bienvenido a Storylink.club</h1>
 <div class="row">
-
 <div class="col-lg-7">
 <div id="presentation" class="container">
   <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
-  <h2>Bienvenido a Storylink.club</h2>
 </div>
 <div class="container" id="presentation-items">
   <ul>
@@ -27,6 +30,7 @@
 </div>
   <div class="col-lg-5">
     <div class="container" id="container-form-create-account">
+      <h3>Crear una cuenta</h3>
       <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
 
@@ -91,5 +95,6 @@
 
     </div>
   </div>
+</div>
 </div>
 {% endblock %}

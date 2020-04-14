@@ -81,9 +81,9 @@ class FollowUser(LoginRequiredMixin, generic.DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username' 
 
-    def get(self, request, username, id):
+    def get(self, request, username):
         self.request.user.user_subscription.add(self.get_object());
-        return redirect(request.GET.get('next'))#agregar seguidor a user.
+        return redirect(reverse_lazy('user:user_profile', kwargs={'username': username}))
 
 #unfollow user
 class UnfollowUser(LoginRequiredMixin, generic.DetailView):
@@ -91,9 +91,9 @@ class UnfollowUser(LoginRequiredMixin, generic.DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username' 
 
-    def get(self, request, username, id):
+    def get(self, request, username):
         self.request.user.user_subscription.remove(self.get_object());
-        return redirect(request.GET.get('next'))
+        return redirect(reverse_lazy('user:user_profile', kwargs={'username': username}))
 
 #para dar de alta un usuario
 class SignUpView(generic.CreateView):

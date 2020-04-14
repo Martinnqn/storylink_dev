@@ -104,28 +104,10 @@ body {
     z-index: 20;
 }
 
-#users-found ul{
-    display: inline-block;
-}
-
 #users-found a{
     color: black;
 }
 
-
-#container-form-create-account{
-    width: 80%;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    background: whitesmoke;
-}
-
-#container-form-login{
-    width: 250px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    background: whitesmoke;
-}
 
 a:hover{
     text-decoration: none;
@@ -142,37 +124,6 @@ a:hover{
 #img-portada{
     margin-top: 25px;
     width: 320px;
-}
-
-#presentation {
-    margin-top: 25px;
-    text-align: center;   
-}
-
-#presentation h2{
-    color: #644e5b;
-}
-
-#presentation-items {
-    margin-top: 50px;
-    text-align: left;   
-}
-
-
-strong.hall{
-    font-family: 'Dancing Script';
-    font-size: 30px;
-}
-
-
-#presentation p{
-    margin-top: 20px;
-    color: rgb(66,160,180);
-}
-
-#presentation-tree{
-    display: block;
-    margin: auto;
 }
 
 #footer{
@@ -229,6 +180,18 @@ strong.hall{
     float: right;
 }
 
+#users-found {
+    top: 31px;
+    width: 264px;
+}
+
+.list-users-found li{
+    height: 35px;
+    margin-left: 10px;
+    border-bottom: 1px solid gray;
+    align-items: center;
+    display: flex;
+}
 
 @media(min-width:992px) {
     #collapsibleNavbarPrimary .input-group div{
@@ -239,19 +202,10 @@ strong.hall{
         height: 30px;
     }
 
-    #collapsibleNavbarPrimary ul{
-        height: 30px;
-    }
 
     .nav-hall {
         margin-left: 75px;
     }
-
-    #users-found {
-        top: 40px;
-        width: 264px;
-    }
-
     /*.nav-hall a{
         display: ruby-text;
     }*/
@@ -265,19 +219,10 @@ strong.hall{
 
 
 
-@media(max-width:900px) {
-    #container-form-create-account{
-        width: 60%;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        background: whitesmoke;
-    }
-}
-
-@media(max-width:768px) {
+@media(max-width:575px) {
     #users-found {
-        top: 85px;
-        width: 70%;
+        top: 80px;
+        width: 100%;
     }
 
     .nav-hall {
@@ -288,14 +233,5 @@ strong.hall{
         min-height: 500px;
     }
 
-}
-
-@media(max-width:500px) {
-    #container-form-create-account{
-        width: 90%;
-        margin-top: 25px;
-        margin-bottom: 25px;
-        background: whitesmoke;
-    }
 }
 

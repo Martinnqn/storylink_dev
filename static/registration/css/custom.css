@@ -1,0 +1,77 @@
+.msg-create-acc {
+    display: inline;
+}
+
+.title-welcome {
+    text-align: center;
+    margin-top: 25px;
+}
+
+
+strong.hall{
+    font-family: 'Dancing Script';
+    font-size: 30px;
+    color: #ff6567;
+}
+
+#container-form-create-account{
+    width: 80%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background: whitesmoke;
+}
+
+#container-form-create-account h3 {
+    text-align: center;
+}
+
+#container-form-login{
+    width: 265px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    background: whitesmoke;
+}
+
+#presentation {
+    margin-top: 25px;
+    text-align: center;
+}
+
+#presentation h2{
+    color: #644e5b;
+}
+
+#presentation-items {
+    margin-top: 50px;
+    text-align: left;
+}
+
+#presentation p{
+    margin-top: 20px;
+    color: rgb(66,160,180);
+}
+
+#presentation-tree{
+    display: block;
+    margin: auto;
+}
+
+@media(max-width:900px) {
+    #container-form-create-account{
+        width: 60%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        background: whitesmoke;
+    }
+}
+
+
+@media(max-width:500px) {
+    #container-form-create-account{
+        width: 90%;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        background: whitesmoke;
+    }
+}
+

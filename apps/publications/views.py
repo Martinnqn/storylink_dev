@@ -171,12 +171,7 @@ class DeleteStory(LoginRequiredMixin, generic.edit.DeleteView):
         if (story.own_user == fromUser):
             story.active=False
             story.save(update_fields=['active'])
-            if (request.GET.get('next')):
-                red = request.GET.get('next')
-            else:
-                red = reverse_lazy('user:user_profile', kwargs={'username': username})
-        else:
-            red = reverse_lazy('user:user_profile', kwargs={'username': username})
+        red = reverse_lazy('user:user_profile', kwargs={'username': username})
         return redirect(red)
 
 #Eliminar chapter. No se eliminan, se ponen inactivos
@@ -186,12 +181,7 @@ class DeleteChapter(LoginRequiredMixin, generic.edit.DeleteView):
         if (story.own_user == self.request.user):
             story.active=False
             story.save(update_fields=['active'])
-            if (request.GET.get('next')):
-                red = request.GET.get('next')
-            else:
-                red = reverse_lazy('user:user_profile', kwargs={'username': username})
-        else:
-            red = reverse_lazy('user:user_profile', kwargs={'username': username})
+        red = reverse_lazy('user:user_profile', kwargs={'username': username})
         return redirect(red)
 
 

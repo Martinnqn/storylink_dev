@@ -3,8 +3,13 @@
 {% load widget_tweaks %}
 
 {% block title-page %}Iniciar sesión{% endblock %}
+{% block head-page %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
+{% endblock %}
 
 {% block main-content %}
+<div class="container">
 <div class="row">
 
 <div class="col-lg-7">
@@ -76,7 +81,7 @@
         <button type="submit" class="btn-custom-2">Iniciar sesión</button>
         </div>
       </form>
-      <small class="form-text text-muted">Si aún no tienes una cuenta <a href="{% url 'sign_up' %}">Crea una</a></small>
+      <small class="form-text text-muted msg-create-acc">Si aún no tienes una cuenta </small> <a href="{% url 'sign_up' %}">Crea una</a>
     </div>
     <div class="container" id="presentation-exp">
        <p>Explora las Storylinks en nuestro <strong class="hall">Hall</strong></p>
@@ -89,5 +94,5 @@
     </div>
   </div>
 </div>
-
+</div>
 {% endblock %}
