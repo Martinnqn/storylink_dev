@@ -66,7 +66,7 @@ class ResourcePublication(models.Model):
 
 # Tags
 class Tag(models.Model):
-    tag = models.CharField(max_length=45)
+    tag = models.CharField(max_length=80)
     creation_date_time = models.DateField(auto_now_add=True)
 
     def __str__(self):

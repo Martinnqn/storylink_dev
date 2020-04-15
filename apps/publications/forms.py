@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from django_bleach.forms import BleachField
 from ckeditor.fields import RichTextField
 from ckeditor.widgets import CKEditorWidget
+import bleach
+from django.utils.html import conditional_escape, escape
 
 '''Nota para saber: agregar el field tag en la definicion de la clase, permite obtener un campo
 llamado tag con id = id_tag, pero que no esta asociado al campo tag del modelo. Esto para
@@ -21,13 +23,13 @@ class StoryCreationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.fields['title'].label = "Título"
+        self.fields['title'].max_length= 120
         self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Storylink"
         self.fields['tag'].help_text='''Los tags ayudan a los lectores a encontrar las Storylinks de su interés.
          Puedes probar con "ficcion", "terror", "storyAventura", "cienciaFiccion", "storyLove", "storyKid", etc.
          Los tags se separan con espacios, y pueden tener máximo 80 caracteres.'''
         self.fields['img_content_link'].label = "Agregar Portada"
-        
 
 class StoryContinuationCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
@@ -55,7 +57,6 @@ class StoryContinuationCreationForm(ModelForm):
         continuar la trama con una pregunta: "¿Romper cuarentena?" o "¿#yoMeQuedoEnCasa?". También puede escribirse en
         forma de subtítulo, sin embargo hacerlo en forma de pregunta resulta mas interactivo para el lector.'''
 
-
 class StoryEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
@@ -73,6 +74,7 @@ class StoryEditForm(ModelForm):
         self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Story"
         self.fields['title'].label = "Título"
+        self.fields['title'].max_length= 120
         #self.fields['img_content_link'].label = "Portada actual"
 
 class StoryChapterEditForm(ModelForm):
@@ -90,7 +92,6 @@ class StoryChapterEditForm(ModelForm):
         self.fields['quest_answ'].label = 'Pregunta decisiva para el lector'
         self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Story"
-
 
 
 #Resources

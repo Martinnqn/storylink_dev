@@ -54,10 +54,9 @@ function showInfoPub(url, user_id, evt) {
                 $("#btn-delete").attr('href','');
                 $("#card-options-owner").css({'display': 'none'});
             }
+            $("#title-pub-detail").text(cont.title);
 
-            $("#title-pub-detail").html(cont.title);
-
-            $("#title-read-mode").html(cont.title);
+            $("#title-read-mode").text(cont.title);
             $("#publication-content").html(cont.text_content);
             $(".content-read-mode").html(cont.text_content);
 
@@ -98,9 +97,7 @@ function showInfoPub(url, user_id, evt) {
             
             $("#tags .tags-story").empty();
             if (cont.tags!=undefined){
-                for (var i = cont.tags.length - 1; i >= 0; i--) {
-                    $("#tags .tags-story").append('<span>'+cont.tags[i]+'</span>'); 
-                }
+                makeTags($("#tags .tags-story"), cont.tags)
             }
 
             $("#display-pub-detail").css({
@@ -140,9 +137,9 @@ function showInfoChapter(url, user_id, evt) {
                 $("#card-options-owner").css({'display': 'none'});
             }
 
-            $("#title-pub-detail").html(cont.title);
+            $("#title-pub-detail").text(cont.title);
 
-            $("#title-read-mode").html(cont.question);
+            $("#title-read-mode").text(cont.question);
             $("#publication-content").html(cont.text_content);
             $(".content-read-mode").html(cont.text_content);
 
@@ -192,9 +189,7 @@ function showInfoChapter(url, user_id, evt) {
 
             $("#tags .tags-story").empty();
             if (cont.tags!=undefined){
-                for (var i = cont.tags.length - 1; i >= 0; i--) {
-                    $("#tags .tags-story").append('<span>'+cont.tags[i]+'</span>'); 
-                }
+                makeTags($("#tags .tags-story"), cont.tags)
             }
 
             $("#display-pub-detail").css({
@@ -204,6 +199,13 @@ function showInfoChapter(url, user_id, evt) {
             $("body").css({'overflow-y': 'hidden'});
       }
   });
+}
+
+//recibe un array de tags y los convierte en string html safe.
+function makeTags(cont, array) {
+    for (var i = array.length - 1; i >= 0; i--) {
+        cont.append($("<span></span>").text(array[i]));
+    }
 }
 
 function hideInfoPub() {
