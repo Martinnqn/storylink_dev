@@ -1,5 +1,13 @@
 {% extends "users/profile_base.html" %}
+{% load static %}
 {% load widget_tweaks %}
+{% load bleach_tags %}
+
+{%block head-page-extra%}
+    <script>window.CKEDITOR_BASEPATH = "{% static 'ckeditor/ckeditor/' %}";</script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+{%endblock%}
 
 {% block profile-body %}
 
@@ -9,7 +17,6 @@
   </div>
 <form method="post" enctype="multipart/form-data" novalidate>
   {% csrf_token %}
-
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
   {% endfor %}

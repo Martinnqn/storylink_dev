@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.publications',
     'widget_tweaks',
+    'django_bleach',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -131,12 +133,92 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     'static/',
 ]
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-#NEW
+
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-#FIN NEW
+
+
+#configuracion django-bleach
+
+# Which HTML tags are allowed
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'ul', 'li' 'ol', 'em', 'strong', 'span', 's']
+
+# Which HTML attributes are allowed
+BLEACH_ALLOWED_ATTRIBUTES = ['style']
+
+# Which CSS properties are allowed in 'style' attributes (assuming style is
+# an allowed attribute)
+BLEACH_ALLOWED_STYLES = ['text-decoration', 'color', 'background-color', 'text-align']
+
+# Which protocols (and pseudo-protocols) are allowed in 'src' attributes
+# (assuming src is an allowed attribute)
+BLEACH_ALLOWED_PROTOCOLS = []
+
+# Strip unknown tags if True, replace with HTML escaped characters if False
+BLEACH_STRIP_TAGS = False
+
+# Strip HTML comments, or leave them in.
+BLEACH_STRIP_COMMENTS = False
+
+BLEACH_DEFAULT_WIDGET = 'ckeditor.widgets.CKEditorWidget'
+
+#configuracion ckeditor 
+CKEDITOR_CONFIGS = {
+    'default': {
+        #'skin': 'moono',
+        'toolbar_Basic': [
+            ['Source', '-', 'Bold', 'Italic']
+        ],
+        'toolbar_YourCustomToolbarConfig': [
+            {'name': 'clipboard', 'items': ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat']},
+            {'name': 'paragraph',
+             'items': ['NumberedList', 'BulletedList', '-', '-', 'Blockquote', '-',
+                       'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
+            {'name': 'styles', 'items': ['Styles']},
+            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'tools', 'items': ['Maximize']},
+            {'name': 'about', 'items': ['About']},
+            '/',  # put this to force next toolbar on new line
+            {'name': 'yourcustomtools', 'items': [
+                # put the name of your editor.ui.addButton here
+                'Preview',
+                'Source'
+            ]},
+        ],
+        'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+        # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+        # 'height': 291,
+         'width': '100%',
+        # 'filebrowserWindowHeight': 725,
+        # 'filebrowserWindowWidth': 940,
+         'toolbarCanCollapse': True,
+        # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join([
+            #'uploadimage', # the upload image feature
+            # your extra plugins here
+            #'div',
+            #'autolink',
+            #'autoembed',
+            #'embedsemantic',
+            #'autogrow',
+            # 'devtools',
+            #'widget',
+            #'lineutils',
+            #'clipboard',
+            #'dialog',
+            #'dialogui',
+            #'elementspath'
+        ]),
+    }
+}
+

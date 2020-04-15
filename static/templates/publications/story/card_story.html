@@ -15,7 +15,7 @@ Crea un card-story con el contenido de una story a partir de la variable storypu
         <div class="answer-pub">
           <div class="answer"><h5>{{storypublication.quest_answ}}</h5></div>
         </div>
-        <p class="description">{{storypublication.text_content|truncatechars:150}}</p>
+        <div class="description">{{storypublication.text_content|safe|truncatechars:150}}</div>
         <div class="tags-story">
           {% for h in storypublication.tag.all %}
           <span>{{ h.tag }}</span>

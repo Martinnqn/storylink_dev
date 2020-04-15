@@ -175,7 +175,7 @@ ul{
 }
 
 
-p.description {
+.description {
     height: 120px;
     overflow-y: hidden;
     word-wrap: break-word;

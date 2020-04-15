@@ -21,7 +21,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
             <a id="link-autor-profile" href=""><img src="{{chap.own_user.link_img_perfil.url}}" id="img-owner" class="img-autor-mini" alt="{{chap.own_user.username}}"></a>
         </div>
         {%if chap.active %}
-          <p class="description">{{chap.text_content|truncatechars:200}}</p>
+          <div class="description">{{chap.text_content|safe|truncatechars:200}}</div>
           <div class="tags-story">
             {%for t in chap.tag.all %}
             <span>{{ t.tag }}</span>

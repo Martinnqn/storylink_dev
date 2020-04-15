@@ -25,6 +25,10 @@ strong.hall{
     text-align: center;
 }
 
+#container-form-login h3 {
+    text-align: center;
+}
+
 #container-form-login{
     width: 265px;
     margin-top: 25px;

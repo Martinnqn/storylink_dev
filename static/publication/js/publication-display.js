@@ -59,6 +59,7 @@ function showInfoPub(url, user_id, evt) {
 
             $("#title-read-mode").html(cont.title);
             $("#publication-content").html(cont.text_content);
+            $(".content-read-mode").html(cont.text_content);
 
             if (cont.active){
                 if (cont.own_user != user_id){
@@ -143,6 +144,7 @@ function showInfoChapter(url, user_id, evt) {
 
             $("#title-read-mode").html(cont.question);
             $("#publication-content").html(cont.text_content);
+            $(".content-read-mode").html(cont.text_content);
 
             if (cont.active){
                 if (cont.own_first_story != user_id){
@@ -254,7 +256,7 @@ function showStoriesPreview(url) {
 
 function extendStory() {
     //$("#title-read-mode").html($("#publication-title").text())
-    $(".content-read-mode").html($("#publication-content").text());
+    //$(".content-read-mode").html($("#publication-content").text());
 }
 
 
@@ -296,6 +298,9 @@ $(document).ready(function() {
             if (location.pathname.split('/')[4]){
                 if (location.pathname.split('/')[5]){
                     if (js_user_id){
+                        if (location.pathname.split('/')[4]=='chapter-content'){
+                        showInfoChapter(location.pathname, js_user_id);
+                        }else if (location.pathname.split('/')[4]=='story-content')
                         showInfoPub(location.pathname, js_user_id);
                     }
                 }

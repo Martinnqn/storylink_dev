@@ -2,6 +2,9 @@ from django.forms import ModelForm
 from django import forms
 from .models import StoryPublication, ResourcePublication, StoryChapter
 from django.shortcuts import get_object_or_404
+from django_bleach.forms import BleachField
+from ckeditor.fields import RichTextField
+from ckeditor.widgets import CKEditorWidget
 
 '''Nota para saber: agregar el field tag en la definicion de la clase, permite obtener un campo
 llamado tag con id = id_tag, pero que no esta asociado al campo tag del modelo. Esto para
@@ -18,6 +21,7 @@ class StoryCreationForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.fields['title'].label = "Título"
+        self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Storylink"
         self.fields['tag'].help_text='''Los tags ayudan a los lectores a encontrar las Storylinks de su interés.
          Puedes probar con "ficcion", "terror", "storyAventura", "cienciaFiccion", "storyLove", "storyKid", etc.
@@ -39,6 +43,7 @@ class StoryContinuationCreationForm(ModelForm):
         if (kwargs.get('instance', None)):
             self.initial['title'] = kwargs.get('instance').title
         self.initial['text_content'] = ""
+        self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Story"
         self.fields['tag'].initial = ""
         self.fields['tag'].help_text='''Los tags ayudan a los lectores a encontrar las Storylinks de su interés.
@@ -65,6 +70,7 @@ class StoryEditForm(ModelForm):
         fpub = kwargs.get('instance', None);
         if (fpub):
             self.initial['tag'] = " ".join([t.tag for t in fpub.tag.all()])
+        self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Story"
         self.fields['title'].label = "Título"
         #self.fields['img_content_link'].label = "Portada actual"
@@ -82,7 +88,9 @@ class StoryChapterEditForm(ModelForm):
         if (fpub):
             self.initial['tag'] = " ".join([t.tag for t in fpub.tag.all()])
         self.fields['quest_answ'].label = 'Pregunta decisiva para el lector'
+        self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Story"
+
 
 
 #Resources
