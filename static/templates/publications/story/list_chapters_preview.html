@@ -18,7 +18,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
           {%endif%}
         </h5>
         <div id="pub-owner">
-            <a id="link-autor-profile" href=""><img src="{{chap.own_user.link_img_perfil.url}}" id="img-owner" class="img-autor-mini" alt="{{chap.own_user.username}}"></a>
+            <a id="link-autor-profile" href="{% url 'user:user_profile' chap.own_user.username %}"><img src="{{chap.own_user.link_img_perfil.url}}" id="img-owner" class="img-autor-mini" alt="{{chap.own_user.username}}"></a>
         </div>
         {%if chap.active %}
           <div class="description">{{chap.text_content|safe|truncatechars:200}}</div>
