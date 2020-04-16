@@ -5,12 +5,12 @@ from django.contrib.auth.models import AbstractUser
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 import re
+from django.contrib.auth.models import AbstractUser, UserManager
 
 #from apps.publications.models import StoryPublication #import circular! solucionado con app_level.ModelName (publications.StoryPublication)
 
 #funcion para validar si el usuario es unico (equalsIgnoreCase) y no contiene punto
 def unique_user(value):
-    print(value.format())
     regex = re.compile('[.@\w]+$')
     if (not regex.match(value)):
         raise ValidationError(
@@ -24,8 +24,15 @@ def unique_user(value):
             params={'value': value},
         )
 
+
+class CustomUserManager(UserManager):
+    def get_by_natural_key(self, username):
+        case_insensitive_username_field = '{}__iexact'.format(self.model.USERNAME_FIELD)
+        return self.get(**{case_insensitive_username_field: username})
+
 # usuario
 class CustomUser(AbstractUser):
+    objects = CustomUserManager()
     link_img_perfil = models.ImageField(upload_to = 'gallery/profiles', default = 'gallery/no-img-profile.png')
     description = models.CharField(max_length=150, blank=True)
     username = models.CharField(unique=True, max_length=35, validators=[unique_user])
