@@ -181,17 +181,17 @@ CKEDITOR_CONFIGS = {
             {'name': 'basicstyles',
              'items': ['Bold', 'Italic', 'Underline', 'Strike', '-', 'RemoveFormat']},
             {'name': 'paragraph',
-             'items': ['NumberedList', 'BulletedList', '-', '-', 'Blockquote', '-',
+             'items': ['NumberedList', 'BulletedList',
                        'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
-            {'name': 'styles', 'items': ['Styles']},
+            {'name': 'styles', 'items': []},
             {'name': 'colors', 'items': ['TextColor', 'BGColor']},
             {'name': 'tools', 'items': ['Maximize']},
             {'name': 'about', 'items': ['About']},
-            '/',  # put this to force next toolbar on new line
+            #'/',  # put this to force next toolbar on new line
             {'name': 'yourcustomtools', 'items': [
                 # put the name of your editor.ui.addButton here
                 'Preview',
-                'Source'
+                #'Source'
             ]},
         ],
         'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here

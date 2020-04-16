@@ -57,6 +57,7 @@ function showInfoPub(url, user_id, evt) {
             $("#title-pub-detail").text(cont.title);
 
             $("#title-read-mode").text(cont.title);
+            $("#publication-title").text('');
             $("#publication-content").html(cont.text_content);
             $(".content-read-mode").html(cont.text_content);
 
@@ -140,6 +141,7 @@ function showInfoChapter(url, user_id, evt) {
             $("#title-pub-detail").text(cont.title);
 
             $("#title-read-mode").text(cont.question);
+            $("#publication-title").text(cont.question);
             $("#publication-content").html(cont.text_content);
             $(".content-read-mode").html(cont.text_content);
 
