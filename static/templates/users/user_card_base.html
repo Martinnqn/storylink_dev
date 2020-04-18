@@ -1,6 +1,10 @@
 <div class="card-user ">
     <div class="card-thumbnail">
-        <img alt="User image" class="img-thumbnail" src="{{user.link_img_perfil.url}}">
+    {% if user.social_auth.get.provider == 'facebook' %}
+        <img class="img-thumbnail" src="{{ user.social_auth.get.extra_data.link_img_perfil.data.url }}" alt="User image">
+    {%else%}
+        <img class="img-thumbnail" src="{{ user.link_img_perfil.url }}" alt="img perfil">
+    {%endif%}
     </div>
     <div class="card-body-user">
         <p>

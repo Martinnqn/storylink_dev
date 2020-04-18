@@ -1,0 +1,28 @@
+<h3>Debe introducir un email para poder continuar</h3>
+ <div id="email-required-modal" class="modal fade">
+        <form method="post" role="form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <input type="hidden" name="partial_token" value="{{ partial_token }}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Email required</h4>
+              </div>
+
+              <div class="modal-body">
+                <p>An email address is required.</p>
+                <div class="form-group">
+                  <label class="control-label" for="email">Email address:</label>
+                  <input class="form-control" id="email" type="email" name="email" value="" autofocus />
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button type="cancel" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Continue</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>

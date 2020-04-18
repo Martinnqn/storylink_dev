@@ -83,6 +83,12 @@
         </div>
       </form>
       <small class="form-text text-muted msg-create-acc">Si aún no tienes una cuenta </small> <a href="{% url 'sign_up' %}">Crea una</a>
+      <span class="text-muted">o inicia sesión con Facebook</span>
+      <hr>
+      <div class="row justify-content-center">
+        <a href="{%url 'social:begin' 'facebook' %}" class="facebook-button">Iniciar Sesión con Facebook</a>
+      </div>
+    </div>
     </div>
     <div class="container" id="presentation-exp">
        <p>Explora las Storylinks en nuestro <strong class="hall">Hall</strong></p>

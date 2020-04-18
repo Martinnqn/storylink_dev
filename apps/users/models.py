@@ -33,7 +33,7 @@ class CustomUserManager(UserManager):
 # usuario
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
-    link_img_perfil = models.ImageField(upload_to = 'gallery/profiles', default = 'gallery/no-img-profile.png')
+    link_img_perfil = models.ImageField(upload_to = 'gallery/profiles', default = 'gallery/no-img-profile.png', max_length=350)
     description = models.CharField(max_length=150, blank=True)
     username = models.CharField(unique=True, max_length=35, validators=[unique_user])
     email = models.EmailField(unique=True)

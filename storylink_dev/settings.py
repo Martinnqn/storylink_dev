@@ -25,7 +25,7 @@ SECRET_KEY = '6-v$$swa_e8*9i4ga#37#w&c$tr5_&#cjy!d^ymf*i@s2wsct+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.39']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.39', 'localhost']
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_bleach',
     'ckeditor',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -52,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'storylink_dev.urls'
@@ -67,6 +69,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -93,7 +97,14 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = []
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+]
 '''
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -142,7 +153,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
 
 #configuracion django-bleach
 
@@ -221,4 +231,58 @@ CKEDITOR_CONFIGS = {
         ]),
     }
 }
+
+#para inicio sesion facebook
+AUTHENTICATION_BACKENDS=(
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+    )
+
+
+SOCIAL_AUTH_FACEBOOK_KEY = '1606554956167156'
+SOCIAL_AUTH_FACEBOOK_SECRET = '93ef55779217814620b94a889c9a5ad1'
+
+SOCIAL_AUTH_USER_MODEL = 'users.CustomUser'
+
+#para forzar a pedir el email
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {       # add this
+  'fields': 'id, name, email, picture.type(large)'
+}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [                 # add this
+    ('name', 'name'),
+    ('email', 'email'),
+    ('picture', 'link_img_perfil'),
+]
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
+SOCIAL_AUTH_LOGIN_URL = '/'
+SOCIAL_AUTH_BACKEND_ERROR_URL = '/'
+LOGIN_ERROR_URL= '/'
+
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+#por las dudas no entendi por que, pero es bueno setear la siguiente variable
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'email']
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'apps.users.pipeline.require_email',
+    #'apps.users.pipeline.check_unique_username',
+    'social_core.pipeline.user.get_username',
+    #'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
+
 

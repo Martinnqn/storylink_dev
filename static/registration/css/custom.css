@@ -21,8 +21,8 @@ strong.hall{
     background: whitesmoke;
 }
 
-#container-form-create-account h3 {
-    text-align: center;
+.form-create-user {
+    display: none;
 }
 
 #container-form-login h3 {
@@ -60,6 +60,35 @@ strong.hall{
     margin: auto;
 }
 
+
+.facebook-button {
+    margin: 10px;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    background-color:#1877f2;
+    display: inline-block;
+    border-radius: 5px;
+    border: solid 1px #283e6b;
+    box-shadow: inset 0px 1px rgba(255,255,255,0.2);
+    text-shadow: 0px 1px rgba(0,0,0,0.4);
+    font-weight: bold;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.3s;
+}
+
+.facebook-button:hover {
+  background-image:-webkit-linear-gradient(#4466ac, #34518e);
+  color:white;
+}
+
+.facebook-button:active {
+    box-shadow: inset 0px 5px 15px rgba(0,0,0,0.3), 0px 1px rgba(255,255,255,0.2);
+}
+
 @media(max-width:900px) {
     #container-form-create-account{
         width: 60%;
@@ -78,4 +107,5 @@ strong.hall{
         background: whitesmoke;
     }
 }
+
 

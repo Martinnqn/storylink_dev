@@ -30,8 +30,12 @@
 </div>
   <div class="col-lg-5">
     <div class="container" id="container-form-create-account">
-      <h3>Crear una cuenta</h3>
-      <form method="post" enctype="multipart/form-data" novalidate>
+      <div class="row justify-content-center">
+        <a href="{%url 'social:begin' 'facebook' %}" class="facebook-button">Iniciar Sesión con Facebook</a>
+      </div>
+      <hr>
+      <p>También puedes <a onclick="showForm()" href="javascript: void(0)"><strong>crear una cuenta</strong></a> en Storylink.
+      <form class="form-create-user" method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
 
         {% for hidden_field in form.hidden_fields %}
@@ -97,4 +101,8 @@
   </div>
 </div>
 </div>
+{% endblock %}
+
+{%block extra-script%}
+<script src="{% static 'registration/js/reg.js' %}"></script>
 {% endblock %}

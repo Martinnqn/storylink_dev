@@ -17,7 +17,11 @@
             {% block profile-description %}
             <ul>
                 <li>
-                    <img alt="Imagen de perfil" class="img-perfil" src="{{customuser.link_img_perfil.url}}">
+                    {% if customuser.social_auth.get.provider == 'facebook' %}
+                        <img alt="Imagen de perfil" class="img-perfil" src="{{ customuser.social_auth.get.extra_data.link_img_perfil.data.url }}">
+                    {%else%}
+                        <img alt="Imagen de perfil" class="img-perfil" src="{{ customuser.link_img_perfil.url }}">
+                    {%endif%}
                 </li> 
                 <li>
                     <a href="{% url 'user:user_profile' customuser.username %}">{{customuser.first_name}} {{customuser.last_name}}</a>

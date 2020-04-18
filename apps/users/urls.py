@@ -14,7 +14,7 @@ urlpatterns = [
     path('unfollow/', UnfollowUser.as_view(), name='user_unfollow'),
     path('delete/<int:id>', DeleteUser.as_view(), name='user_delete'),
     path('publication/', include('apps.publications.urls')),
-    path('search/<suser>', SearchUser.as_view(), name='user_search')
+    path('search/<suser>', SearchUser.as_view(), name='user_search'),
 
 ]
 

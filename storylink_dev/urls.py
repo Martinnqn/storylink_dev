@@ -34,7 +34,9 @@ urlpatterns = [
     path('user/<str:username>/', include('apps.users.urls')), #matchea con un string despues del .com/ y termina de procesarlo en el archivo urls de users
     path('accounts/', include('django.contrib.auth.urls')), # para la administracion de la cuenta de usuario
     path('signup/', SignUpView.as_view(), name='sign_up'), 
-    path('terminos_privacidad/', TemplateView.as_view(template_name='term_priv.html'),  name='term_priv'),   
+    path('terminos_privacidad/', TemplateView.as_view(template_name='term_priv.html'),  name='term_priv'),
+    path('social/', include('social_django.urls', namespace='social')),
+
 ]
 
 if settings.DEBUG:
