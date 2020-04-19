@@ -1,7 +1,7 @@
 <h3>Debe introducir un email para poder continuar</h3>
  <div id="email-required-modal" class="modal fade">
-        <form method="post" role="form">
-          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <form action="{% url 'social:complete' 'facebook' %}" method="post" role="form">
+          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
           <input type="hidden" name="partial_token" value="{{ partial_token }}">
           <div class="modal-dialog">
             <div class="modal-content">

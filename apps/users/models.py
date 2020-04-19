@@ -12,7 +12,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 #funcion para validar si el usuario es unico (equalsIgnoreCase) y no contiene punto
 def unique_user(value):
     regex = re.compile('[.@\w]+$')
-    if (not regex.match(value)):
+    if (not check_characters(value)):
         raise ValidationError(
             _('No se permiten utilizar caracteres especiales como ", ?,¡, &, %%, ., comas, espacios, etc en los nombres de usuario.'),
             params={'value': value},
@@ -23,6 +23,11 @@ def unique_user(value):
             _('El nombre de usuario "%(value)s" ya está en uso.'),
             params={'value': value},
         )
+
+def check_characters(value):
+    regex = re.compile('[.@\w]+$')
+    return regex.match(value)
+        
 
 
 class CustomUserManager(UserManager):

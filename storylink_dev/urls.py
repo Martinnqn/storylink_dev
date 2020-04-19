@@ -19,7 +19,7 @@ from django.urls import path
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import TemplateView
-from apps.users.views import SignUpView
+from apps.users.views import SignUpView, mail_check
 from apps.publications.views import ListStories
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -36,6 +36,8 @@ urlpatterns = [
     path('signup/', SignUpView.as_view(), name='sign_up'), 
     path('terminos_privacidad/', TemplateView.as_view(template_name='term_priv.html'),  name='term_priv'),
     path('social/', include('social_django.urls', namespace='social')),
+    path('re_email/', mail_check, name = 'form_new_mail'),
+    path('re_username/', username_check, name = 'form_new_username'),
 
 ]
 

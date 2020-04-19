@@ -1,7 +1,7 @@
 <h3>Nuevo nombre de usuario</h3>
 <p>Lo sentimos, ese nombre de usuario ya esta en uso, por favor elija otro:</p>
  <div id="email-required-modal" class="modal fade">
-        <form method="post" role="form">
+        <form action="{% url 'social:complete' 'facebook' %}" method="post" role="form">
           <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
           <input type="hidden" name="partial_token" value="{{ partial_token }}">
           <div class="modal-dialog">

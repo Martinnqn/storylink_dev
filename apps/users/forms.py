@@ -32,3 +32,16 @@ def only_chars(value):
             _('Solo se permiten letras.'),
             params={'value': value},
         )
+
+
+class MailCheck(forms.Form):
+    class Meta:
+        model = CustomUser
+        fields = ('email')
+        error_css_class = 'error'
+
+class UsernameCheck(forms.Form):
+    class Meta:
+        model = CustomUser
+        fields = ('username')
+        error_css_class = 'error'

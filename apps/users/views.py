@@ -5,11 +5,13 @@ from django.views import generic, View
 from django.contrib.auth import login, authenticate
 from apps.publications.models import StoryPublication, StoryChapter
 from apps.users.models import CustomUser
-from apps.users.forms import CustomUserCreationForm
+from apps.users.forms import CustomUserCreationForm, MailCheck
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.contrib.auth.forms import AuthenticationForm
+from social_django.utils import psa, load_strategy
+
 
 #retorna el perfil del usuario
 class ListUserPerfil(LoginRequiredMixin, generic.DetailView):
@@ -148,3 +150,34 @@ class SearchUser(LoginRequiredMixin, generic.DetailView):
                 us.append(user)
             res_users.update({'users_found': us})
             return JsonResponse(res_users)
+
+'''renderiza el template para pedir el email, en caso de qeu destilde la casilla cuando inicie sesion con fb.'''
+def mail_check(request):
+    if request.method == 'POST':
+        form = MailCheck(request.POST)
+    else:
+        form = MailCheck()
+    strategy = load_strategy()
+    partial_token = request.GET.get('partial_token')
+    partial = strategy.partial_load(partial_token)
+    params = {
+        'email_required': True,
+        'partial_backend_name': partial.backend,
+        'partial_token': partial_token
+    }
+    return render(request, "registration/force_get_email.html", params)
+
+def username_check(request):
+    if request.method == 'POST':
+        form = UsernameCheck(request.POST)
+    else:
+        form = UsernameCheck()
+    strategy = load_strategy()
+    partial_token = request.GET.get('partial_token')
+    partial = strategy.partial_load(partial_token)
+    params = {
+        'username_required': True,
+        'partial_backend_name': partial.backend,
+        'partial_token': partial_token
+    }
+    return render(request, "registration/new_username.html", params)
