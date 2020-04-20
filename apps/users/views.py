@@ -152,9 +152,63 @@ class SearchUser(LoginRequiredMixin, generic.DetailView):
             return JsonResponse(res_users)
 
 '''renderiza el template para pedir el email, en caso de qeu destilde la casilla cuando inicie sesion con fb.'''
-def mail_check(request):
+class mail_check(generic.edit.FormView):
+    form_class = MailCheck
+    template_name = 'registration/force_get_email.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(mail_check, self).get_context_data(**kwargs)
+        strategy = load_strategy()
+        partial_token = self.request.GET.get('partial_token')
+        partial = strategy.partial_load(partial_token)
+        context.update({
+            'partial_backend_name': partial.backend,
+            'partial_token': partial_token
+        })
+        return context
+
+    def get_success_url(self):
+        print("selfffff")
+        print(self.request.POST)
+        #partial_token = self.request.GET.get('partial_token')
+        return reverse_lazy('social:complete', args={'backend':'facebook', 'partial_token':self.request.POST.get('partial_token')})
+    '''def get(self, *args, **kwargs):
+        strategy = load_strategy()
+        partial_token = self.request.GET.get('partial_token')
+        partial = strategy.partial_load(partial_token)
+        params ={
+            'email_required': True,
+            'partial_backend_name': partial.backend,
+            'partial_token': partial_token
+        }
+        return render(self.request, 'registration/force_get_email.html', params)'''
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        print("entra form valid")
+        self.request.session['email'] = form.cleaned_data['email']
+        return redirect(reverse('social:complete', kwargs={"backend":"facebook"}))
+        return super().form_valid(form)
+
+'''def mail_check(request):
     if request.method == 'POST':
         form = MailCheck(request.POST)
+        if (form.is_valid()):
+            print("volvio valid")
+            print(form.errors)
+            return redirect(reverse('social:complete', kwargs={'backend':'facebook'}))
+        else:
+            print("volvio invalid")
+            strategy = load_strategy()
+            partial_token = request.GET.get('partial_token')
+            partial = strategy.partial_load(partial_token)
+            params = {
+                'email_required': True,
+                'partial_backend_name': partial.backend,
+                'partial_token': partial_token
+            }
+            return render(request, "registration/force_get_email.html", params)
     else:
         form = MailCheck()
     strategy = load_strategy()
@@ -165,7 +219,7 @@ def mail_check(request):
         'partial_backend_name': partial.backend,
         'partial_token': partial_token
     }
-    return render(request, "registration/force_get_email.html", params)
+    return render(request, "registration/force_get_email.html", params)'''
 
 def username_check(request):
     if request.method == 'POST':

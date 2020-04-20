@@ -277,7 +277,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_user',
     'apps.users.pipeline.require_email',
     'social_core.pipeline.user.get_username',
-    'apps.users.pipeline.username_check',
+    #'apps.users.pipeline.username_check',
     #'social_core.pipeline.social_auth.associate_by_email',
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
@@ -288,5 +288,5 @@ SOCIAL_AUTH_PIPELINE = (
 
 SESSION_COOKIE_SAMESITE = None
 
-SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['mail',]
+SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['email',]
 

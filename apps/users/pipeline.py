@@ -19,7 +19,8 @@ def require_email(backend, strategy, details, user=None, is_new=False, *args, **
     if user and user.email:
         return
     elif is_new and not details.get('email'):
-        email = strategy.request_data().get('email')
+        #email = strategy.request_data().get('email')
+        email = strategy.session_get('email', None)
         if email:
             exist = CustomUser.objects.filter(email__iexact=email).exists()
             if (exist):
@@ -34,6 +35,25 @@ def require_email(backend, strategy, details, user=None, is_new=False, *args, **
             return strategy.redirect(
                 '/re_email?partial_token={0}'.format(current_partial.token)
             )
+    elif is_new and details.get('email'):
+        if (strategy.session_get('email', None)):
+            exist = CustomUser.objects.filter(email__iexact=strategy.session_get('email')).exists()
+            if (exist):
+                current_partial = kwargs.get('current_partial')
+                return strategy.redirect(
+                '/re_email?partial_token={0}&used=True'.format(current_partial.token)
+                )
+            else:
+                details['email'] = strategy.session_get('email')
+        else:
+            print(strategy.session_get('email', None))
+            exist = CustomUser.objects.filter(email__iexact=details.get('email')).exists()
+            print(exist)
+            if (exist):
+                current_partial = kwargs.get('current_partial')
+                return strategy.redirect(
+                '/re_email?partial_token={0}&used=True'.format(current_partial.token)
+                )
 
 @partial
 def check_unique_username(backend, strategy, details, user=None, is_new=False, *args, **kwargs):

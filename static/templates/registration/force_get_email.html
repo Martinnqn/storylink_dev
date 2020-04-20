@@ -1,28 +1,58 @@
+{% load static %}
+{% load widget_tweaks %}
 <h3>Debe introducir un email para poder continuar</h3>
  <div id="email-required-modal" class="modal fade">
-        <form action="{% url 'social:complete' 'facebook' %}" method="post" role="form">
+        <form action="" method="post" role="form">
           <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
           <input type="hidden" name="partial_token" value="{{ partial_token }}">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Email required</h4>
-              </div>
+          {%comment%}
+          {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+          {%endcomment%}
 
-              <div class="modal-body">
-                <p>An email address is required.</p>
-                <div class="form-group">
-                  <label class="control-label" for="email">Email address:</label>
-                  <input class="form-control" id="email" type="email" name="email" value="" autofocus />
-                </div>
-              </div>
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
 
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {%comment%}
+      <!--el siguiente ifequal no hace nada pero lo dejo como ejemplo
+      {%ifequal field.id_for_label|stringformat:"s" "id_hashtag" %}
+      {%for x in form.fields.hashtag.choices%}
+      {{x}}
+      {%endfor%}
+      {%endifequal%}-->
+      {%endcomment%}
+      {% if form.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control is-valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
               <div class="modal-footer">
                 <button type="cancel" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="submit" class="btn btn-primary">Continue</button>
               </div>
-            </div>
-          </div>
         </form>
       </div>

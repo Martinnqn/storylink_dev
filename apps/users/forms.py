@@ -5,6 +5,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 import re
 
+from django.forms import ModelForm
+
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
@@ -34,10 +36,10 @@ def only_chars(value):
         )
 
 
-class MailCheck(forms.Form):
+class MailCheck(ModelForm):
     class Meta:
         model = CustomUser
-        fields = ('email')
+        fields = ('email',)
         error_css_class = 'error'
 
 class UsernameCheck(forms.Form):
