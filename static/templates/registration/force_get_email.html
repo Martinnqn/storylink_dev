@@ -1,6 +1,6 @@
 {% load static %}
 {% load widget_tweaks %}
-<h3>Debe introducir un email para poder continuar</h3>
+<h3>Nuevo email</h3>
  <div id="email-required-modal" class="modal fade">
         <form action="" method="post" role="form">
           <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
@@ -22,14 +22,6 @@
   {% for field in form.visible_fields %}
     <div class="form-group">
       {{ field.label_tag }}
-      {%comment%}
-      <!--el siguiente ifequal no hace nada pero lo dejo como ejemplo
-      {%ifequal field.id_for_label|stringformat:"s" "id_hashtag" %}
-      {%for x in form.fields.hashtag.choices%}
-      {{x}}
-      {%endfor%}
-      {%endifequal%}-->
-      {%endcomment%}
       {% if form.is_bound %}
         {% if field.errors %}
           {% render_field field class="form-control is-invalid" %}
@@ -51,8 +43,7 @@
     </div>
   {% endfor %}
               <div class="modal-footer">
-                <button type="cancel" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Continue</button>
+                <button type="submit" class="btn btn-primary">Continuar</button>
               </div>
         </form>
       </div>

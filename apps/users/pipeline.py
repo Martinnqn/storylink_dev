@@ -46,28 +46,70 @@ def require_email(backend, strategy, details, user=None, is_new=False, *args, **
             else:
                 details['email'] = strategy.session_get('email')
         else:
-            print(strategy.session_get('email', None))
             exist = CustomUser.objects.filter(email__iexact=details.get('email')).exists()
-            print(exist)
             if (exist):
                 current_partial = kwargs.get('current_partial')
                 return strategy.redirect(
                 '/re_email?partial_token={0}&used=True'.format(current_partial.token)
                 )
+                
+@partial
+def get_username(backend, strategy, details, user=None, is_new=False, *args, **kwargs):
+    if user and user.username:
+        return
+    elif strategy.session_get('username'):
+        new_username = strategy.session_get('username')
+    elif details.get('username'):
+            new_username = details.get('username').replace(" ", ".")
+    else:
+        if (details.get('first_name') and details.get('last_name')):
+            new_username = details.get('first_name')+'.'+details.get('last_name')
+        else:
+            new_username = 'username'
+
+    if new_username:
+        exist = CustomUser.objects.filter(username__iexact=new_username).exists()
+        if (exist):
+            current_partial = kwargs.get('current_partial')
+            return strategy.redirect(
+            '/re_username?partial_token={0}&used=True'.format(current_partial.token)
+            )
+    return {'username': new_username}
 
 @partial
 def check_unique_username(backend, strategy, details, user=None, is_new=False, *args, **kwargs):
     if user and user.username:
         return
+    elif strategy.session_get('username'):
+        new_username = strategy.session_get('username')
+    elif kwargs.get('username'):
+        new_username = kwargs.get('username')
+    if new_username:
+        exist = CustomUser.objects.filter(username__iexact=new_username).exists()
+        if (exist):
+            current_partial = kwargs.get('current_partial')
+            print("denuevo")
+            return strategy.redirect(
+            '/re_username?partial_token={0}&used=True'.format(current_partial.token)
+            )
+        else:
+            print("ahorasi")
+            print(new_username)
+            details['username'] = new_username
+            kwargs.update({'username': new_username})
+    else:
+        print("elelse")        
+        current_partial = kwargs.get('current_partial')
+        return strategy.redirect(
+            '/re_username?partial_token={0}'.format(current_partial.token)
+        )
+'''@partial
+def check_unique_username(backend, strategy, details, user=None, is_new=False, *args, **kwargs):
+    if user and user.username:
+        return
     elif is_new and not details.get('username'):
-        username = strategy.request_data().get('username')
+        username = strategy.session_get('username', None)
         if username:
-            if (not check_characters(username)):
-                current_partial = kwargs.get('current_partial')
-                return strategy.redirect(
-                '/re_username?partial_token={0}&invalid_characters=True'.format(current_partial.token)
-                )
-
             exist = CustomUser.objects.filter(username__iexact=username).exists()
             if (exist):
                 current_partial = kwargs.get('current_partial')
@@ -75,10 +117,27 @@ def check_unique_username(backend, strategy, details, user=None, is_new=False, *
                 '/re_username?partial_token={0}&used=True'.format(current_partial.token)
                 )
             else:
-                return{'username': username}
+                return {'username': username}
         else:
             current_partial = kwargs.get('current_partial')
             return strategy.redirect(
                 '/re_username?partial_token={0}'.format(current_partial.token)
             )
-           
+    elif is_new and details.get('username'):
+        if (strategy.session_get('username', None)):
+            exist = CustomUser.objects.filter(username__iexact=strategy.session_get('username')).exists()
+            if (exist):
+                current_partial = kwargs.get('current_partial')
+                return strategy.redirect(
+                '/re_username?partial_token={0}&used=True'.format(current_partial.token)
+                )
+            else:
+                return {'username': strategy.session_get('username')}
+        else:
+            exist = CustomUser.objects.filter(username__iexact=details.get('username')).exists()
+            if (exist):
+                current_partial = kwargs.get('current_partial')
+                return strategy.redirect(
+                '/re_username?partial_token={0}&used=True'.format(current_partial.token)
+                )
+'''

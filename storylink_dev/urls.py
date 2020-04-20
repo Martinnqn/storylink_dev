@@ -37,7 +37,7 @@ urlpatterns = [
     path('terminos_privacidad/', TemplateView.as_view(template_name='term_priv.html'),  name='term_priv'),
     path('social/', include('social_django.urls', namespace='social')),
     path('re_email/', mail_check.as_view(), name = 'form_new_mail'),
-    path('re_username/', username_check, name = 'form_new_username'),
+    path('re_username/', username_check.as_view(), name = 'form_new_username'),
 
 ]
 

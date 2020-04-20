@@ -1,28 +1,49 @@
+{% load static %}
+{% load widget_tweaks %}
 <h3>Nuevo nombre de usuario</h3>
-<p>Lo sentimos, ese nombre de usuario ya esta en uso, por favor elija otro:</p>
  <div id="email-required-modal" class="modal fade">
-        <form action="{% url 'social:complete' 'facebook' %}" method="post" role="form">
+         <form action="" method="post" role="form">
           <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
           <input type="hidden" name="partial_token" value="{{ partial_token }}">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Nombre de usuario</h4>
-              </div>
+          {%comment%}
+          {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+          {%endcomment%}
 
-              <div class="modal-body">
-                <div class="form-group">
-                  <label class="control-label" for="username">Nombre de usuario:</label>
-                  <input class="form-control" id="username" type="text" name="username" value="" autofocus />
-                </div>
-              </div>
+  {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+  {% endif %}
 
+  {% for field in form.visible_fields %}
+    <div class="form-group">
+      {{ field.label_tag }}
+      {% if form.is_bound %}
+        {% if field.errors %}
+          {% render_field field class="form-control is-invalid" %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+        {% else %}
+          {% render_field field class="form-control is-valid" %}
+        {% endif %}
+      {% else %}
+        {% render_field field class="form-control" %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+    </div>
+  {% endfor %}
               <div class="modal-footer">
-                <button type="cancel" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Continuar</button>
               </div>
-            </div>
-          </div>
         </form>
       </div>

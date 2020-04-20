@@ -42,8 +42,8 @@ class MailCheck(ModelForm):
         fields = ('email',)
         error_css_class = 'error'
 
-class UsernameCheck(forms.Form):
+class UsernameCheck(ModelForm):
     class Meta:
         model = CustomUser
-        fields = ('username')
+        fields = ('username',)
         error_css_class = 'error'
