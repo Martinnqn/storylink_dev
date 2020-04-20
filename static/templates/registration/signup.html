@@ -6,6 +6,7 @@
 {% block head-page %}
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% endblock %}
 
 {% block main-content %}
@@ -31,10 +32,10 @@
   <div class="col-lg-5">
     <div class="container" id="container-form-create-account">
       <div class="row justify-content-center">
-        <a href="{%url 'social:begin' 'facebook' %}" class="facebook-button">Iniciar Sesión con Facebook</a>
+        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
       </div>
       <hr>
-      <p>También puedes <a onclick="showForm()" href="javascript: void(0)"><strong>crear una cuenta</strong></a> en Storylink.
+      <p>También puedes <strong>crear una cuenta</strong> en Storylink llenando el siguiente formulario.
       <form class="form-create-user" method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
 

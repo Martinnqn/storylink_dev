@@ -6,6 +6,8 @@
 {% block head-page %}
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 {% endblock %}
 
 {% block main-content %}
@@ -86,7 +88,7 @@
       <span class="text-muted">o inicia sesión con Facebook</span>
       <hr>
       <div class="row justify-content-center">
-        <a href="{%url 'social:begin' 'facebook' %}" class="facebook-button">Iniciar Sesión con Facebook</a>
+         <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
       </div>
     </div>
     </div>

@@ -1,15 +1,18 @@
+{% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
-<h3>Nuevo email</h3>
- <div id="email-required-modal" class="modal fade">
-        <form action="" method="post" role="form">
-          <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-          <input type="hidden" name="partial_token" value="{{ partial_token }}">
-          {%comment%}
-          {% for hidden_field in form.hidden_fields %}
-    {{ hidden_field }}
-  {% endfor %}
-          {%endcomment%}
+{% block title-page %}Solicitud nuevo email{% endblock %}
+{% block head-page %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
+{% endblock %}
+{% block main-content %}
+ <div id="email-required" class="container">
+<h3 class="title-center">Nuevo email</h3>
+<div class="msg"></div>
+  <form class="email-required-form" action="" method="post" role="form">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <input type="hidden" name="partial_token" value="{{ partial_token }}">
 
   {% if form.non_field_errors %}
     <div class="alert alert-danger" role="alert">
@@ -42,8 +45,13 @@
       {% endif %}
     </div>
   {% endfor %}
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Continuar</button>
-              </div>
-        </form>
-      </div>
+        <div class="row justify-content-center">
+          <button type="submit" class="btn btn-primary">Continuar</button>
+        </div>
+    </form>
+  </div>
+{%endblock%}
+
+{%block extra-script%}
+<script src="{% static 'registration/js/reg.js' %}"></script>
+{% endblock %}
