@@ -3,38 +3,23 @@ body {
     position: relative;
 }
 
-#publication-container {
-    font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
-}
-
-
-#publication-container a{
-    font-family: "avenir-medium","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
-}
 
 .publication-container {
+    font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
     margin-top: 20px;
     position: relative;
     /*background-color: #e3f2fd;*/
     background-color: snow;
     min-height: 417px;
-}
-
-.publication-container {
     color: black;
     border-radius: 25px;
     overflow-y: hidden;
 }
 
 
-#publication-description h4{ 
-    font-size: 20px;
+.publication-container a{
+    font-family: "avenir-medium","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
 }
-
-#publication-description { 
-    color: black;
-}
-
 
 .publication-container-title nav {
     padding: 0;
@@ -60,7 +45,13 @@ body {
     height: 120px;
     background: inherit;
     display: block;
+    color: black;
 }
+
+.publication-description h4{ 
+    font-size: 20px;
+}
+
 
 .publication-description-container{
     padding: 0;
@@ -127,7 +118,7 @@ ul{
     padding: 0;
 }
 
-#body-publication {
+.body-publication {
     padding-bottom: 10px;
 }
 
@@ -232,7 +223,7 @@ div.img-thumbnail {
     color: white;
 }
 
-#content-previews {
+.content-previews {
     height: 540px;
     background: whitesmoke;
 }
@@ -276,11 +267,11 @@ div.img-thumbnail {
   }
 }
 
-#publication-header{
+.publication-header{
     overflow-y: hidden;
 }
 
-#header-image {
+.header-image {
     height: 190px;
     width: 100%;
     border-bottom: 1px solid;
@@ -299,22 +290,22 @@ div.img-thumbnail {
     background-color: white;
 }
 
-#publication-title {
+.publication-title {
     text-align: center;
     font-size: 20px;
 }
 
-#publication-content {
+.publication-content {
     color: rgb(57, 57, 57);
     font-size: 16px;
 }
 
-#publication-description {
+.publication-description {
     padding-left: 4px;
     padding-right: 4px;
 }
 
-#card-options{
+.card-options{
     display: flex;
     justify-content: space-evenly;
     padding-left: 10px;
@@ -348,7 +339,7 @@ div.img-thumbnail {
 }
 
 
-#title-pub-detail {
+.title-pub-detail {
     display: block;
     color: white;
     text-align: center;
@@ -455,13 +446,13 @@ div.img-thumbnail {
 
 
 /*Previsualizacion de chapters*/
-.card-story #pub-owner{
+.card-story .pub-owner{
     position: absolute;
     top: 0;
     right: 0;
 }
 
-.card-story #pub-owner #img-owner{
+.card-story .pub-owner #img-owner{
     margin-top: 0;
 }
 
@@ -472,7 +463,7 @@ div.img-thumbnail {
         max-height: 450px;
     }
 
-    #content-previews {
+    .content-previews {
         height: 580px;
         max-width: 500px;
         margin-bottom: auto;
@@ -571,7 +562,7 @@ div.img-thumbnail {
         font-size: 16px;
     }
 
-    #content-previews {
+    .content-previews {
         height: auto;
         min-height: 350px;
     }

@@ -10,10 +10,10 @@ Formato de tarjeta de una publicacion
   <div class="content-card col-12 col-lg-6">
     <div class="">
       <div class="content-pub">
-      <h3 id="title-pub-detail"></h3>
-      <div class="publication-container" id="publication-container">
-        <div class="" id="publication-container-header">
-          <div class="publication-header" id="publication-header">
+      <h3 id="title-pub-detail" class="title-pub-detail"></h3>
+      <div class="publication-container">
+        <div class="publication-container-header">
+          <div class="publication-header">
            <div class="dropdown" id="card-options-owner">
               <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
                 <div class="dropdown-content">
@@ -22,20 +22,20 @@ Formato de tarjeta de una publicacion
                 </div>
             </div>
             <img id="header-image" class="header-image" src="" alt="">
-            <div id="pub-owner">
+            <div class="pub-owner">
               <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
             </div>
           </div>  
         </div>
-        <div class="" id="body-publication">
+        <div class="body-publication">
           <div class="publication-description-container">
-            <div class="publication-description" id="publication-description">
-              <div id="publication-title"></div>
-              <div id="publication-content"></div>
+            <div class="publication-description">
+              <div id="publication-title" class="publication-title"></div>
+              <div id="publication-content" class="publication-content"></div>
             </div>
           </div>
         </div>
-        <div id="card-options">
+        <div class="card-options">
             <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
               Desuscribirse 
             </a>
@@ -46,10 +46,8 @@ Formato de tarjeta de una publicacion
               Leer
             </a>
         </div>
-        <div class="container" id="tags">
-          <div class="tags-story">
-            
-          </div>
+        <div class="container tags" id="tags">
+          <div class="tags-story"></div>
         </div>
       </div>
       </div>
@@ -64,7 +62,7 @@ Formato de tarjeta de una publicacion
     </div>
   </div>
   {%block mini-preview%}
-  <div id="content-previews" class="col-12 col-lg-6">
+  <div class="col-12 col-lg-6 content-previews">
     <h3 class="title-center">Continuaciones</h3>
     <div id="scroll-previews" class="">
     </div>
