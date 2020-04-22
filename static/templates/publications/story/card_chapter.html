@@ -5,7 +5,11 @@ Crea un card-story con el contenido de un chapter a partir de la variable storyc
   <div class="container card-story">
     <div class="row content-story">
         <div class="col-3 card-thumbnail">
+          {%if "gallery/no-img.png" in storychapter.mainStory.img_content_link.url%}
+            <div class="img-thumbnail" style="background: {{storychapter.mainStory.color}}"></div>
+          {%else%}
             <img alt="Publication image" class="img-thumbnail" src="{{storychapter.mainStory.img_content_link.url}}">
+          {%endif%}
         </div>
         <div class="col-9 card-body">
         <h3>

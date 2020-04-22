@@ -17,9 +17,9 @@ class StoryCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80) 
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link')
+        fields = ('title', 'text_content', 'img_content_link', 'color')
         error_css_class = 'error'
-    
+
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
         self.fields['title'].label = "Título"
@@ -30,6 +30,8 @@ class StoryCreationForm(ModelForm):
          Puedes probar con "ficcion", "terror", "storyAventura", "cienciaFiccion", "storyLove", "storyKid", etc.
          Los tags se separan con espacios, y pueden tener máximo 80 caracteres.'''
         self.fields['img_content_link'].label = "Agregar Portada"
+        self.fields['color'] = forms.CharField(widget=forms.TextInput(attrs={'type': 'color'})) 
+        self.fields['color'].help_text = "Puedes seleccionar un color en caso que no poseas una imagen de portada."
 
 class StoryContinuationCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
@@ -53,15 +55,13 @@ class StoryContinuationCreationForm(ModelForm):
          Los tags se separan con espacios y pueden tener máximo 80 caracteres.'''
         self.fields['quest_answ'].label = "Pregunta decisiva para el lector"
         self.fields['quest_answ'].help_text='''La Pregunta Decisiva ayuda al lector a identificar cómo continúa la trama en esta Storylink.
-        Por ejemplo, si el protagonista principal debe decidir entre quedarse en casa o romper la cuarentena, se puede
-        continuar la trama con una pregunta: "¿Romper cuarentena?" o "¿#yoMeQuedoEnCasa?". También puede escribirse en
-        forma de subtítulo, sin embargo hacerlo en forma de pregunta resulta mas interactivo para el lector.'''
+         También puede cumplir el rol de subtítulo.'''
 
 class StoryEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link')
+        fields = ('title', 'text_content', 'img_content_link', 'color')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):
@@ -75,7 +75,8 @@ class StoryEditForm(ModelForm):
         self.fields['text_content'].label = "Story"
         self.fields['title'].label = "Título"
         self.fields['title'].max_length= 120
-        #self.fields['img_content_link'].label = "Portada actual"
+        self.fields['color'] = forms.CharField(widget=forms.TextInput(attrs={'type': 'color'})) 
+        
 
 class StoryChapterEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
@@ -124,5 +125,6 @@ class FilterHall(ModelForm):
         error_css_class = 'error'
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
+        self.fields['title'].label = "Título"
         self.fields['title'].required = False
         self.fields['tag'].required = False

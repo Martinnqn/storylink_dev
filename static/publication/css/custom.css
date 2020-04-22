@@ -159,6 +159,14 @@ ul{
     width: 200px;
 }
 
+div.img-thumbnail {
+    border: 1px;
+    border-radius: 50px;
+    height: 100px;
+    width: 100px;
+    margin:auto;
+}
+
 .card-story {
     font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
     border-bottom-style: solid;
@@ -172,6 +180,7 @@ ul{
 .card-story a{
     font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
     font-size: 26px;
+    word-break: break-all;
 }
 
 
@@ -571,4 +580,14 @@ ul{
         min-width: 310px;
     }
 
+    div.img-thumbnail {
+        border-radius: 25px;
+        height: 50px;
+        width: 50px;
+    }
+
+    img.img-thumbnail {
+        height: 100px;
+        width: 100px;
+    }
 }

@@ -18,7 +18,7 @@ class StoryPublication(models.Model):
     views = models.IntegerField(default=0) #cantidad de visitas
     valoration = models.IntegerField(default=0)
     tag = models.ManyToManyField('Tag')
-
+    color = models.CharField(max_length=7, default="#000000")
     def __str__(self):
         return self.title+' '+str(self.id)
 
