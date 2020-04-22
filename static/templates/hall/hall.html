@@ -14,7 +14,7 @@
 <div id="hall-main" class="container">
 {% block hall %}
     <div class="row justify-content-center" >
-    <div class="col-lg-5" id="filter">
+    <div class="col-lg-3" id="filter">
         <div class="container" id="content-filter">
         Buscador Storylinks:
             {% include "hall/form.html" %}
@@ -55,12 +55,6 @@
 {% endblock %}
 </div>
 {% endblock %}
-
-{%block display-pub-detail%}
-
-{% include "publications/story/story_card.html" %}
-
-{%endblock%}
 
 {%block extra-script%}
 <script src="{% static 'publication/js/publication-display.js' %}"></script>

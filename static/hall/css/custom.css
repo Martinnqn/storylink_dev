@@ -4,11 +4,10 @@
     min-height: 250px;
 }
 
-
 #content-filter {
     border-radius: 15px;
     background-color: white;
-    justify-content: center;
+    position: fixed;
 }
 
 #hall-main{
@@ -45,4 +44,16 @@
   to {
     text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6;
   }
+}
+
+@media (max-width: 1999px) {
+    #content-filter {
+        width: 210px;
+    }
+}
+
+@media (min-width: 1200px) {
+    #content-filter {
+        width: 250px;
+    }
 }

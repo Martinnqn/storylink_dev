@@ -35,81 +35,10 @@ function showInfoPub(url, user_id, evt) {
         dataType:  'text/json',
         complete: function  (data) {
             //console.log(data.responseText);
-            history.pushState(undefined, undefined, url+'?mode=theater');
             cont = JSON.parse(data.responseText).content_pub;
-            if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
-                $("#header-image").attr('src',cont.img_content_link);
-                $("#header-image").attr('alt',cont.own_username);
-            }else{
-                $("#header-image").css('background', cont.color);
-            }
-            $("#img-owner").attr('src',cont.own_user_image);
-            $("#img-owner").attr('alt',cont.own_username);
-            $("#link-autor-profile").attr('href',cont.url_autor);
-
-            if (cont.active && cont.own_user == user_id){
-                $("#btn-edit").attr('href',cont.url_edit);
-                $("#btn-delete").attr('href',cont.url_delete);
-                $("#card-options-owner").css({'display': 'inline-block'});
-            }else{
-                $("#btn-edit").attr('href','');
-                $("#btn-delete").attr('href','');
-                $("#card-options-owner").css({'display': 'none'});
-            }
-            $("#title-pub-detail").text(cont.title);
-
-            $("#title-read-mode").text(cont.title);
-            $("#publication-title").text('');
-            $("#publication-content").html(cont.text_content);
-            $(".content-read-mode").html(cont.text_content);
-
-            if (cont.active){
-                if (cont.own_user != user_id){
-                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
-                        $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
-                    if (cont.is_subscribed){
-                        $("#unsubscribe-story").css({display:'inline-block'});
-                        //$("#subscribe-story").attr('onclick', '');
-                        $("#subscribe-story").css({display:'none'});
-
-                    }else{
-                        $("#subscribe-story").css({display:'inline-block'});
-                        $("#unsubscribe-story").css({display:'none'});
-                        //$("#unsubscribe-story").attr('onclick', '');
-                    }
-                }else{
-                    $("#unsubscribe-story").attr('onclick', '');
-                    $("#subscribe-story").attr('onclick', '');
-                    $("#subscribe-story").css({display:'none'});
-                    $("#unsubscribe-story").css({display:'none'});
-                }
-
-                $("#btn-create-continuation").attr('href',cont.url_continuate);
-                $("#btn-create-continuation").css({display:'flex'});
-
-            }else{
-                $("#btn-create-continuation").attr('href','javascript: void(0)');
-                $("#subscribe-story").attr('onclick', '');
-                $("#subscribe-story").attr('onclick', '');
-                $("#btn-create-continuation").css({display:'none'});
-                $("#subscribe-story").css({display:'none'});
-                $("#unsubscribe-story").css({display:'none'});
-            }
-
-            $(".displacement-menu").css({'display':"none"});
-            
-            $("#tags .tags-story").empty();
-            if (cont.tags!=undefined){
-                makeTags($("#tags .tags-story"), cont.tags)
-            }
-
-            $("#display-pub-detail").css({
-                'display': 'flex',
-            });
-            showStoriesPreview(cont.url_continuations);
-            $("body").css({'overflow-y': 'hidden'});
-      }
-  });
+            loadTheater(cont, user_id, url, 'story');
+        }
+    });
 }
 
 
@@ -120,91 +49,10 @@ function showInfoChapter(url, user_id, evt) {
         dataType:  'text/json',
         complete: function  (data) {
             //console.log(data.responseText);
-            history.pushState(undefined, undefined, url+'?mode=theater');
             cont = JSON.parse(data.responseText).content_pub;
-            if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
-                $("#header-image").attr('src',cont.img_content_link);
-                $("#header-image").attr('alt',cont.own_username);
-            }else{
-                $("#header-image").css('background', cont.color);
-            }
-            $("#img-owner").attr('src',cont.own_user_image);
-            $("#img-owner").attr('alt',cont.own_username);
-            $("#link-autor-profile").attr('href',cont.url_autor);
-
-            if (cont.active && cont.own_user == user_id){
-                $("#btn-edit").attr('href',cont.url_edit);
-                $("#btn-delete").attr('href',cont.url_delete);
-                $("#card-options-owner").css({'display': 'inline-block'});
-            }else{
-                $("#btn-edit").attr('href','');
-                $("#btn-delete").attr('href','');
-                $("#card-options-owner").css({'display': 'none'});
-            }
-
-            $("#title-pub-detail").text(cont.title);
-
-            $("#title-read-mode").text(cont.question);
-            $("#publication-title").text(cont.question);
-            $("#publication-content").html(cont.text_content);
-            $(".content-read-mode").html(cont.text_content);
-
-            if (cont.active){
-                if (cont.own_first_story != user_id){
-                        $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
-                        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
-                    if (cont.is_subscribed){
-                        $("#unsubscribe-story").css({display:'inline-block'});
-                        //$("#subscribe-story").attr('onclick', '');
-                        $("#subscribe-story").css({display:'none'});
-
-                    }else{
-                        $("#subscribe-story").css({display:'inline-block'});
-                        $("#unsubscribe-story").css({display:'none'});
-                        //$("#unsubscribe-story").attr('onclick', '');
-                    }
-                }else{
-                    $("#unsubscribe-story").attr('onclick', '');
-                    $("#subscribe-story").attr('onclick', '');
-                    $("#subscribe-story").css({display:'none'});
-                    $("#unsubscribe-story").css({display:'none'});
-                }
-
-                $("#btn-create-continuation").attr('href',cont.url_continuate);
-                $("#btn-create-continuation").css({display:'flex'});
-
-            }else{
-                $("#btn-create-continuation").attr('href','javascript: void(0)');
-                $("#subscribe-story").attr('onclick', '');
-                $("#subscribe-story").attr('onclick', '');
-                $("#btn-create-continuation").css({display:'none'});
-                $("#subscribe-story").css({display:'none'});
-                $("#unsubscribe-story").css({display:'none'});
-            }
-
-
-            $("#first-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
-
-            if (cont.url_prev_chapter==null){
-                $("#pre-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
-            }else{
-                $("#pre-story").attr('onclick',`showInfoChapter('`+cont.url_prev_chapter+`','`+user_id+`')`);
-            }
-
-            $(".displacement-menu").css({'display':"flex"});
-
-            $("#tags .tags-story").empty();
-            if (cont.tags!=undefined){
-                makeTags($("#tags .tags-story"), cont.tags)
-            }
-
-            $("#display-pub-detail").css({
-                'display': 'flex',
-            });
-            showStoriesPreview(cont.url_continuations);
-            $("body").css({'overflow-y': 'hidden'});
-      }
-  });
+            loadTheater(cont, user_id, url, 'chapter');
+        }
+    });
 }
 
 //recibe un array de tags y los convierte en string html safe.
@@ -293,9 +141,9 @@ function getParameters() {
         ll = s[0],
         v =  decodeURIComponent(s[1]);
         res.push([ll,v]); //si es nula, quiere decir que no tiene valor, solo textual
-      });
-  }
-  return res;
+    });
+}
+return res;
 }
 
 /*Para mostrar el modo teatro si se visita una publicacion invocando el get.*/
@@ -307,7 +155,7 @@ $(document).ready(function() {
                 if (location.pathname.split('/')[5]){
                     if (js_user_id){
                         if (location.pathname.split('/')[4]=='chapter-content'){
-                        showInfoChapter(location.pathname, js_user_id);
+                            showInfoChapter(location.pathname, js_user_id);
                         }else if (location.pathname.split('/')[4]=='story-content')
                         showInfoPub(location.pathname, js_user_id);
                     }
@@ -318,10 +166,98 @@ $(document).ready(function() {
 });
 
 
-function clonarNodo(indice) {
-     var original=document.getElementById("display-pub-detail");
-     var nuevo=original.cloneNode(true);
-     nuevo.id=indice;
-     destino=document.getElementById("nodo_destino");
-     destino.appendChild(nuevo);
-} 
+function loadTheater(cont, user_id, url, typePubli) {
+    history.pushState(undefined, undefined, url+'?mode=theater');
+    if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
+        $("#header-image").attr('src',cont.img_content_link);
+        $("#header-image").attr('alt',cont.own_username);
+    }else{
+        $("#header-image").css('background', cont.color);
+    }
+    $("#img-owner").attr('src',cont.own_user_image);
+    $("#img-owner").attr('alt',cont.own_username);
+    $("#link-autor-profile").attr('href',cont.url_autor);
+
+    if (cont.active && cont.own_user == user_id){
+        $("#btn-edit").attr('href',cont.url_edit);
+        $("#btn-delete").attr('href',cont.url_delete);
+        $("#card-options-owner").css({'display': 'inline-block'});
+    }else{
+        $("#btn-edit").attr('href','');
+        $("#btn-delete").attr('href','');
+        $("#card-options-owner").css({'display': 'none'});
+    }
+
+    $("#title-pub-detail").text(cont.title);
+
+    $("#title-read-mode").text(cont.question);
+    $("#publication-title").text(cont.question);
+    $("#publication-content").html(cont.text_content);
+    $(".content-read-mode").html(cont.text_content);
+
+    if (cont.active){
+        if ((typePubli == 'story' && cont.own_user != user_id) || (typePubli == 'chapter' && cont.own_first_story != user_id)){
+            $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
+            $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
+            if (cont.is_subscribed){
+                $("#unsubscribe-story").css({display:'inline-block'});
+                        //$("#subscribe-story").attr('onclick', '');
+                        $("#subscribe-story").css({display:'none'});
+
+                    }else{
+                        $("#subscribe-story").css({display:'inline-block'});
+                        $("#unsubscribe-story").css({display:'none'});
+                        //$("#unsubscribe-story").attr('onclick', '');
+                    }
+                }else{
+                    $("#unsubscribe-story").attr('onclick', '');
+                    $("#subscribe-story").attr('onclick', '');
+                    $("#subscribe-story").css({display:'none'});
+                    $("#unsubscribe-story").css({display:'none'});
+                }
+
+                $("#btn-create-continuation").attr('href',cont.url_continuate);
+                $("#btn-create-continuation").css({display:'flex'});
+
+            }else{
+                $("#btn-create-continuation").attr('href','javascript: void(0)');
+                $("#subscribe-story").attr('onclick', '');
+                $("#subscribe-story").attr('onclick', '');
+                $("#btn-create-continuation").css({display:'none'});
+                $("#subscribe-story").css({display:'none'});
+                $("#unsubscribe-story").css({display:'none'});
+            }
+
+            if (typePubli == 'story'){
+                $(".displacement-menu").css({'display':"none"});
+            }else{
+                $("#first-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
+                if (cont.url_prev_chapter==null){
+                    $("#pre-story").attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
+                }else{
+                    $("#pre-story").attr('onclick',`showInfoChapter('`+cont.url_prev_chapter+`','`+user_id+`')`);
+                }
+                $(".displacement-menu").css({'display':"flex"});
+            }
+
+            $("#tags .tags-story").empty();
+            if (cont.tags!=undefined){
+                makeTags($("#tags .tags-story"), cont.tags)
+            }
+
+            $("#display-pub-detail").css({
+                'display': 'flex',
+            });
+            showStoriesPreview(cont.url_continuations);
+            $("body").css({'overflow-y': 'hidden'});
+        }
+
+
+        function clonarNodo(indice) {
+         var original=document.getElementById("display-pub-detail");
+         var nuevo=original.cloneNode(true);
+         nuevo.id=indice;
+         destino=document.getElementById("nodo_destino");
+         destino.appendChild(nuevo);
+     } 
+
