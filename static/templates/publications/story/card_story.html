@@ -2,8 +2,8 @@
 Crea un card-story con el contenido de una story a partir de la variable storypublication.
 {%endcomment%}
 {%if storypublication%}
-  <div class="container card-story">
-    <div class="row content-story">
+  <div class="container card-story" style="border-color: {{storypublication.color|add:'20'}}; border-left-color: {{storypublication.color}}">
+    <div class="row content-story" onClick='showInfoPub("{% url 'user:pub:story_content' storypublication.own_user.username storypublication.id %}", {{user.id}}, event)'>
         <div class="col-3 card-thumbnail">
           {%if "gallery/no-img.png" in storypublication.img_content_link.url%}
             <div class="img-thumbnail" style="background: {{storypublication.color}}"></div>
@@ -12,14 +12,13 @@ Crea un card-story con el contenido de una story a partir de la variable storypu
           {%endif%}
         </div>
         <div class="col-9 card-body">
-        <h3>
-            <a href="javascript: void(0)" onClick='showInfoPub("{% url 'user:pub:story_content' storypublication.own_user.username storypublication.id %}", {{user.id}}, event)'>{{storypublication.title|truncatechars:35}}
-            </a>
+        <h3 class="title-card-story">
+            {{storypublication.title|truncatechars:35}}
         </h3>
         <div class="description">{{storypublication.text_content|safe|truncatechars:150}}</div>
         <div class="tags-story">
           {% for h in storypublication.tag.all %}
-          <span>{{ h.tag }}</span>
+          <span style="background: {{storypublication.color|add:'50'}}">{{ h.tag }}</span>
           {% endfor %}
         </div>
       </div>

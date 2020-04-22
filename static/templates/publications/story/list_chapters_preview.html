@@ -2,21 +2,17 @@
 Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferente que list_chapters.html
 {%endcomment%}
 {%if storychapter_list %}
+<div class="chapter-preview">
 {% for chap in storychapter_list %}
-
   <div class="card-story">
     <div class="container">
-    <div class="row content-story">
+    <div class="row content-story" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)'>
         <div class="col-12 card-body">
-        <h5>
           {%if chap.active %}
-              <a href="javascript: void(0)" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)'>{{chap.quest_answ}}
-              </a>
-            {%else%}
-            <a class="disabled-story" href="javascript: void(0)" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)'>{{chap.quest_answ}}
-              </a>
+            <h5>{{chap.quest_answ}}</h5>
+          {%else%}
+            <h5 class="disabled-story" >{{chap.quest_answ}}</h5>
           {%endif%}
-        </h5>
         <div id="pub-owner">
             <a id="link-autor-profile" href="{% url 'user:user_profile' chap.own_user.username %}"><img src="{{chap.own_user.link_img_perfil.url}}" id="img-owner" class="img-autor-mini" alt="{{chap.own_user.username}}"></a>
         </div>
@@ -37,6 +33,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
     </div>
   </div>
 {% endfor %}
+</div>
 {%else%}
 <div class="disabled-story"><p>No hay Storylinks que continúen la trama.</p></div>
 {%endif%}
