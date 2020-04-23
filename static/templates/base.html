@@ -16,6 +16,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'base/css/theater.css' %}">
     <link rel="stylesheet" href="{% static 'base/css/custom.css' %}">
     <link rel="icon"  type="image/png" href="{% static 'imgs/story_minim.png' %}" sizes="32x32">
     {% block head-page %}{% endblock %}
@@ -25,7 +26,7 @@
     <a id="scroll-to-top" href="#scroll-to-top"></a>
     <div id="page-container">
     {%block primary-navbar%}
-    <div id="header-base">
+    <div id="header-base" class="sticky-top">
         <!-- navBar primario -->   
         <nav id="primary-navbar" class="navbar navbar-expand-sm navbar-light">
             <!-- Brand -->
@@ -92,7 +93,7 @@
 
     {%endblock%} <!--main-content -->
     {% block display-pub-detail %}
-        {% include "publications/story/story_card.html" %}
+        {% include "publications/story/theater_mode.html" %}
     {% endblock %}
     </div>
 

@@ -70,6 +70,7 @@ function hideInfoPub() {
         'display': 'none',
         'opacity': '1',
     })}, 450);
+    $("#header-base").addClass('sticky-top');
     $("body").css({'overflow-y': 'scroll'});
 }
 
@@ -168,6 +169,7 @@ $(document).ready(function() {
 
 function loadTheater(cont, user_id, url, typePubli) {
     history.pushState(undefined, undefined, url+'?mode=theater');
+    $("#header-base").removeClass('sticky-top');
     if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
         $("#header-image").attr('src',cont.img_content_link);
         $("#header-image").attr('alt',cont.own_username);

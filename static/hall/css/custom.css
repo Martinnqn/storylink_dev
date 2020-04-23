@@ -46,7 +46,7 @@
   }
 }
 
-@media (max-width: 1999px) {
+@media (min-width: 992px) and (max-width: 1999px) {
     #content-filter {
         width: 210px;
     }
@@ -55,5 +55,11 @@
 @media (min-width: 1200px) {
     #content-filter {
         width: 250px;
+    }
+}
+
+@media (max-width: 991px) {
+    #content-filter {
+        position: relative;
     }
 }
