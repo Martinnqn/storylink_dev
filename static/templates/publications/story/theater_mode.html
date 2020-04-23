@@ -13,13 +13,6 @@ Formato de tarjeta de una publicacion
   <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
     Suscribirse
   </a>
-  <div class="dropdown" id="card-options-owner">
-  <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
-      <div class="dropdown-content">
-      <a id="btn-delete" class='btn-delete'>Eliminar</a>
-      <a id="btn-edit" class='btn-edit'>Editar</a>
-      </div>
-  </div>
   <button class="btn-close" onclick="hideInfoPub()">
     Cerrar visor <span class="material-icons">settings_backup_restore</span>
   </button>
@@ -36,6 +29,13 @@ Formato de tarjeta de una publicacion
       <div class="publication-container">
         <div class="publication-container-header">
           <div class="publication-header">
+           <div class="dropdown" id="card-options-owner">
+              <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
+                <div class="dropdown-content">
+                <a id="btn-delete" class='btn-delete'>Eliminar</a>
+                <a id="btn-edit" class='btn-edit'>Editar</a>
+                </div>
+            </div>
             <img id="header-image" class="header-image" src="" alt="">
             <div class="pub-owner">
               <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>

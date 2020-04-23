@@ -241,7 +241,7 @@
 .dropdown {
   position: absolute;
   display: inline-block;
-  right: 180px;
+  right: 0;
 }
 
 .dropdown .material-icons {

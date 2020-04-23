@@ -28,36 +28,6 @@ SetRatingStar();
 //////////////////////////////////////////////////////
 //////////////////////////////////////////////////////
 
-function showInfoPub(url, user_id, evt) {
-    $.ajax({
-        url:  url,
-        type:  'get',
-        dataType:  'text/json',
-        complete: function  (data) {
-            //console.log(data.responseText);
-            cont = JSON.parse(data.responseText).content_pub;
-            loadTheater(cont, user_id, url, 'story', null);
-            $("#display-pub-detail").css({
-                'display': 'flex',
-            });
-            $("body").css({'overflow-y': 'hidden'});
-        }
-    });
-}
-
-
-function showInfoChapter(url, user_id, idParent, evt) {
-    $.ajax({
-        url:  url,
-        type:  'get',
-        dataType:  'text/json',
-        complete: function  (data) {
-            //console.log(data.responseText);
-            cont = JSON.parse(data.responseText).content_pub;
-            loadTheater(cont, user_id, url, 'chapter', idParent);
-        }
-    });
-}
 
 //recibe un array de tags y los convierte en string html safe.
 function makeTags(cont, array) {
@@ -170,29 +140,82 @@ $(document).ready(function() {
     }
 });
 
+/*Variables globales para administrar el comportamiento de las views. 
+contViews es un contador para asignar identificadores a las views 
+(las que resultan de clonar theater-view-template).
+views es un arreglo de las view que existen en la pantalla. Estan ordenadas.
+pubsToViews es un arreglo que tiene arreglos cuyo primer elemento es el id de una publicacion 
+y el segundo elemento es el id de una view. (cambiar a hashmap xD)
 
+Caso de uso normal: sea P una publicacion con su lista de continuaciones 'A', 'B', ..., Si se clickea sobre
+'A', luego sobre una continuacion 'A1' de 'A', y luego sobre 'B', se tienen que eliminar todas
+las views que siguen a la continuacion 'A' (es decir A1), y actualizar la view 'A' con el contenido de 'B'.
+Para esto, tomar el id de la publicacion P, obtener el ID de su view correspondiente desde pubsToViews,
+luego hallar ese ID en el array views y recorrer hacia adelante el arreglo, eliminando 
+todos los elementos del DOM con id theater-view-ID (y los que siguen).
+*/
+var contViews = 0;
 var views = [];
 var pubsToViews = [];
 
+
+function showInfoPub(url, user_id, evt) {
+    $.ajax({
+        url:  url,
+        type:  'get',
+        dataType:  'text/json',
+        complete: function  (data) {
+            //console.log(data.responseText);
+            cont = JSON.parse(data.responseText).content_pub;
+            loadTheater(cont, user_id, url, 'story', null);
+            $("#display-pub-detail").css({
+                'display': 'flex',
+            });
+            $("body").css({'overflow-y': 'hidden'});
+        }
+    });
+}
+
+
+function showInfoChapter(url, user_id, idParent, evt) {
+    $.ajax({
+        url:  url,
+        type:  'get',
+        dataType:  'text/json',
+        complete: function  (data) {
+            //console.log(data.responseText);
+            cont = JSON.parse(data.responseText).content_pub;
+            loadTheater(cont, user_id, url, 'chapter', idParent);
+        }
+    });
+}
+
+/*Clona el template theater-view-template y lo rellena con los datos de la publicacion. 
+Discrimina entre publicacion story y chapter.
+Algunos elementos del theater-mode son editados de manera global, 
+como la suscripcion a la story principal. Otros elementos con id son modificados con el id de 
+la publicacion, para comportamiento personalizado*/
 function loadTheater(cont, user_id, url, typePubli, idParent) {
     history.pushState(undefined, undefined, url+'?mode=theater');
     $("#header-base").removeClass('sticky-top');
+    //a la story le concateno main_ porque puede haber un capitulo con el mismo id que la story.
     if (typePubli=='story'){
         pubid = 'main_'+cont.id;
     }else{
-        if (idParent!=null){
-            pubid = idParent;
-        }else{
-            pubid = cont.id;
-        }
+        pubid = cont.id;
+        updateViews(cont.id, idParent);
     }
+    pubsToViews.push([pubid,contViews]);
+    views.push(contViews);
+    contViews++;
     newNode = $("#theater-view-template").clone(true);
     $("#theater-main").append(newNode);
-    newNode.attr('id',"theater-view_"+pubid);
-    newNode.id="theater-view_"+pubid;
+    newNode.attr('id',"theater-view_"+contViews);
+    newNode.id="theater-view_"+contViews;
 
     elements = newNode.find('[id]');
 
+    /*Actualizar el id de los elementos dentro de newNode para que coincidan con el id de la publicacion*/
     for (var i = elements.length - 1; i >= 0; i--) {
         oldid =elements[i].id;
         elements[i].id = oldid+"_"+pubid;
@@ -231,35 +254,35 @@ function loadTheater(cont, user_id, url, typePubli, idParent) {
 
     if (cont.active){
         if ((typePubli == 'story' && cont.own_user != user_id) || (typePubli == 'chapter' && cont.own_first_story != user_id)){
-            $("#unsubscribe-story_"+pubid).attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
-            $("#subscribe-story_"+pubid).attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
+            $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
+            $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
             if (cont.is_subscribed){
-                $("#unsubscribe-story_"+pubid).css({display:'inline-block'});
+                $("#unsubscribe-story").css({display:'inline-block'});
                 //$("#subscribe-story").attr('onclick', '');
-                $("#subscribe-story_"+pubid).css({display:'none'});
+                $("#subscribe-story").css({display:'none'});
 
             }else{
-                $("#subscribe-story_"+pubid).css({display:'inline-block'});
-                $("#unsubscribe-story_"+pubid).css({display:'none'});
+                $("#subscribe-story").css({display:'inline-block'});
+                $("#unsubscribe-story").css({display:'none'});
                 //$("#unsubscribe-story").attr('onclick', '');
             }
         }else{
-            $("#unsubscribe-story_"+pubid).attr('onclick', '');
-            $("#subscribe-story_"+pubid).attr('onclick', '');
-            $("#subscribe-story_"+pubid).css({display:'none'});
-            $("#unsubscribe-story_"+pubid).css({display:'none'});
+            $("#unsubscribe-story").attr('onclick', '');
+            $("#subscribe-story").attr('onclick', '');
+            $("#subscribe-story").css({display:'none'});
+            $("#unsubscribe-story").css({display:'none'});
         }
 
-        $("#btn-create-continuation_"+pubid).attr('href',cont.url_continuate);
-        $("#btn-create-continuation_"+pubid).css({display:'flex'});
+        $("#btn-create-continuation").attr('href',cont.url_continuate);
+        $("#btn-create-continuation").css({display:'flex'});
 
     }else{
         $("#btn-create-continuation_"+pubid).attr('href','javascript: void(0)');
-        $("#subscribe-story_"+pubid).attr('onclick', '');
-        $("#subscribe-story_"+pubid).attr('onclick', '');
-        $("#btn-create-continuation_"+pubid).css({display:'none'});
-        $("#subscribe-story_"+pubid).css({display:'none'});
-        $("#unsubscribe-story_"+pubid).css({display:'none'});
+        $("#subscribe-story").attr('onclick', '');
+        $("#subscribe-story").attr('onclick', '');
+        $("#btn-create-continuation").css({display:'none'});
+        $("#subscribe-story").css({display:'none'});
+        $("#unsubscribe-story").css({display:'none'});
     }
 
     if (typePubli == 'story'){
@@ -283,3 +306,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent) {
     showStoriesPreview(cont.url_continuations, pubid);
 }
 
+/*Actualizar las theater-views...*/
+function updateViews(argument) {
+    // body...
+}
