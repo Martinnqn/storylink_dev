@@ -3,9 +3,9 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
 {%endcomment%}
 {%if storychapter_list %}
 {% for chap in storychapter_list %}
-  <div class="card-story">
+  <div class="card-story" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, {{chap.mainStory.id}}, event)' style="border-color: {{chap.mainStory.color|add:'20'}}; border-left-color: {{chap.mainStory.color}}">
     <div class="container">
-    <div class="row content-story" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, event)' style="border-color: {{chap.mainStory.color|add:'20'}}; border-left-color: {{chap.mainStory.color}}">
+    <div class="row content-story">
         <div class="col-12 card-body">
           {%if chap.active %}
             <h5>{{chap.quest_answ}}</h5>
@@ -19,7 +19,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
           <div class="description">{{chap.text_content|safe|truncatechars:200}}</div>
           <div class="tags-story">
             {%for t in chap.tag.all %}
-            <span style="background: {{storychapter.mainStory.color|add:'50'}}">{{ t.tag }}</span>
+            <span style="background: {{chap.mainStory.color|add:'50'}}">{{ t.tag }}</span>
             {%endfor%}
           </div>
         {%else%}

@@ -3,24 +3,39 @@ Formato de tarjeta de una publicacion
 {%endcomment%}
 {%load static%}
 <div class="container">
-<div id="display-pub-detail" class="row">
+<div id="display-pub-detail" class="">
+  <nav id="theater-header" class="sticky-top">
+  <div class="container d-flex">
+  <h3 id="title-pub-detail" class="title-pub-detail"></h3>
+    <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
+    Desuscribirse 
+  </a>
+  <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
+    Suscribirse
+  </a>
+  <div class="dropdown" id="card-options-owner">
+  <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
+      <div class="dropdown-content">
+      <a id="btn-delete" class='btn-delete'>Eliminar</a>
+      <a id="btn-edit" class='btn-edit'>Editar</a>
+      </div>
+  </div>
   <button class="btn-close" onclick="hideInfoPub()">
     Cerrar visor <span class="material-icons">settings_backup_restore</span>
   </button>
+  </div>
+  </nav>
+  <div class="container" id="theater-main">
+  <div class="theater-view" id="theater-view-template">
+  <div class="container publication-node">
+  <div class="row">
   <div class="content-card col-12 col-lg-6">
     <div class="">
       <div class="content-pub">
-      <h3 id="title-pub-detail" class="title-pub-detail"></h3>
+      <h3 id="answer-chapter" class="title-pub-detail"></h3>
       <div class="publication-container">
         <div class="publication-container-header">
           <div class="publication-header">
-           <div class="dropdown" id="card-options-owner">
-              <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
-                <div class="dropdown-content">
-                <a id="btn-delete" class='btn-delete'>Eliminar</a>
-                <a id="btn-edit" class='btn-edit'>Editar</a>
-                </div>
-            </div>
             <img id="header-image" class="header-image" src="" alt="">
             <div class="pub-owner">
               <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
@@ -36,12 +51,6 @@ Formato de tarjeta de una publicacion
           </div>
         </div>
         <div class="card-options">
-            <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
-              Desuscribirse 
-            </a>
-            <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
-              Suscribirse
-            </a>
             <a href="javascript: void(0)" class="btn-custom-2" data-toggle="modal" onclick="extendStory()" data-target="#story-read-mode">
               Leer
             </a>
@@ -51,7 +60,7 @@ Formato de tarjeta de una publicacion
         </div>
       </div>
       </div>
-      <div class="displacement-menu ">
+      <div id="displacement-menu">
         <a id="first-story" href="javascript: void(0)">
           Ir al comienzo
         </a>
@@ -62,12 +71,12 @@ Formato de tarjeta de una publicacion
     </div>
   </div>
   {%block mini-preview%}
-  <div class="col-12 col-lg-6 content-previews">
+  <div class="col-12 col-lg-4 content-previews">
     <h3 class="title-center">Continuaciones</h3>
-    <div id="scroll-previews" class="">
+    <div id="scroll-previews" class="scroll-previews-container">
     </div>
     <div class="container">
-      <div id="create-continuation" class="row">
+      <div class="row create-continuation">
         <a class="btn-custom-2" href="#" id="btn-create-continuation">
           Continuar Storylink <span class="material-icons">rate_review</span>
         </a>
@@ -75,6 +84,10 @@ Formato de tarjeta de una publicacion
     </div>
   </div>
   {% endblock %} 
+  </div>
+  </div>
+</div>
+</div>
 </div>
 </div>
 

@@ -4,7 +4,6 @@
     margin-left: auto;
     transition: all 1s ease-in-out;
     display: none;
-    z-index: 10;
     position: fixed;
     background: #314455F1;
     top:0;
@@ -15,8 +14,8 @@
     -webkit-animation: opactiyTransition 0.3s ease-in 1 normal;
     -moz-animation: opactiyTransition 0.3s ease-in 1 normal;
     animation: opactiyTransition 0.3s ease-in 1 normal;
-
 }
+
 
 @-webkit-keyframes opactiyTransition {
   from {
@@ -26,6 +25,37 @@
   to {
     opacity: 0.9;
   }
+}
+
+#theater-header{
+    height: 35px;
+    width: 100%;
+    position: fixed;
+    background: black;
+    display: flex;
+}
+
+.publication-node {
+    min-width: 80%;    
+    -webkit-animation: opactiyTransition 0.3s ease-in 1 normal;
+    -moz-animation: opactiyTransition 0.3s ease-in 1 normal;
+    animation: opactiyTransition 0.3s ease-in 1 normal;
+    padding-top: 40px;
+}
+
+#theater-main {
+    display: flex;
+    overflow-x: scroll;
+}
+
+#theater-view-template{
+    display: none;
+}
+
+.theater-view {
+    width: 100%;
+    min-width: max-content;
+    margin: auto;
 }
 
 .publication-header{
@@ -39,7 +69,7 @@
     border-radius: 25px 25px 0 0;
 }
 
-#img-owner{
+.img-autor-mini{
     height: 60px;
     width: 60px;
     border-radius: 30px;
@@ -108,13 +138,13 @@
     line-height: 20px;
 }
 
-.displacement-menu {
+#displacement-menu {
     padding: 2px;
     display: flex;
     justify-content: space-evenly;
 }
 
-.displacement-menu a{
+#displacement-menu a{
     color: white;
     font-size: 18px;
     text-decoration: underline;
@@ -122,17 +152,16 @@
 
 
 .title-pub-detail {
-    display: block;
+    display: inline;
     color: white;
-    text-align: center;
 }
 
-#scroll-previews {
+.scroll-previews-container {
     position: relative;
     padding: 5px;
 }
 
-#scroll-previews .card-story {
+.scroll-previews-container .card-story {
   -webkit-overflow-scrolling: touch;
 }
 
@@ -151,12 +180,216 @@
     background: whitesmoke;
 }
 
-#create-continuation {
+.create-continuation {
     justify-content: center;
-    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
-#create-continuation a{
+.create-continuation a{
     display: inline-flex;
 }
 
+/*Color de fondo del modal en mode-read*/
+.modal-backdrop.show{
+    opacity: 1;
+}
+
+#title-read-mode {
+    text-align: center;
+    margin: auto;
+    font-family: 'avenir-medium';
+}
+
+.modal-header .close {
+    margin: 0;
+}
+
+.content-read-mode {
+    padding: 8px;
+    line-height: 24px;
+    font-family: 'avenir-book';
+    font-size: 18px;
+}
+
+.modal-dialog {
+    max-width: 100%;
+}
+
+.modal-footer {
+    justify-content: center;
+}
+
+.btn-close {
+    color: white;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    display: inline-flex;
+}
+
+/*dropwdown menu opciones del modo theater*/
+/* Style The Dropdown Button */
+.dropbtn {
+  background-color: white;
+  color: black;
+  padding: 1px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  display: inline-block;
+  right: 180px;
+}
+
+.dropdown .material-icons {
+    font-size: 28px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    border: 1px solid black;
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #97a9bd
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #97a9bd;
+}
+
+.dropdown-content {
+  right: 0;
+}
+
+/*Previsualizacion de chapters*/
+.card-story .pub-owner{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.card-story .pub-owner .img-autor-mini{
+    margin-top: 0;
+}
+
+
+
+@media (min-width: 992px) {
+     .publication-container {
+        max-height: 450px;
+    }
+
+    .content-previews {
+        height: 500px;
+        max-width: 500px;
+        margin-bottom: auto;
+        margin-top: auto;
+        border-radius: 25px;
+    }
+
+    .content-pub {
+        margin: auto;
+        width: 450px;
+    }
+
+/*Previsualizacion de chapters*/
+    .scroll-previews-container {
+        display: block;
+        overflow-y: scroll;
+        height: 400px;
+    }
+
+    #story-list-flotante .stories-preview .card-story {
+        float: left;
+        max-width: 400px;
+        margin: 10px;
+    }
+
+    .scroll-previews-container .card-story .img-autor-mini{
+        width: 40px;
+        height: 40px;
+    }
+
+    .scroll-previews-container .card-story .content-story {
+        line-height: 24px;
+        font-size: 14px;
+    }
+
+    .modal-content {
+        max-width: 800px;
+        margin: auto;
+    }
+
+    #theater-body {
+    }
+}
+
+@media (max-width: 991px) {
+    .btn-close {
+    }
+
+    .content-pub{
+        margin-top: 35px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .content-previews {
+        height: auto;
+        min-height: 350px;
+    }
+
+    .scroll-previews-container{
+        padding: 5px;
+        width: 100%;
+        overflow-x: auto;
+        display: flex;
+    }
+
+    .scroll-previews-container .card-story {
+        min-width: 310px;
+        width: 310px;
+        margin-left: 10px;
+    }
+
+    #theater-main {
+        display: block;
+        overflow-x: hidden;
+        padding: 0;
+    }
+
+    .theater-view {
+        min-width: 100%;
+    }
+
+    .publication-node {
+        padding: 0;
+    }
+
+}
