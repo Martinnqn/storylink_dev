@@ -1,42 +1,17 @@
-//////////////////////////////////////////////////////
-///Para la valoracion de la publicacion
-//////////////////////////////////////////////////////
-var $star_rating = $('.star-rating .fa');
+var isTheaterOn = false;
 
-var SetRatingStar = function() {
-  return $star_rating.each(function() {
-    if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
-      return ($(this)).removeClass('not-pressed').addClass('pressed');
-  } else {
-    return ($(this)).removeClass('pressed').addClass('not-pressed');
-}
-});
-};
-
-$star_rating.on('click', function() {
-    $star_rating.siblings('input.rating-value').val(($(this)).data('rating'));
-    return SetRatingStar();
-});
-
-SetRatingStar();
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
-
-
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
-//////////////////////////////////////////////////////
-
-
-//recibe un array de tags y los convierte en string html safe.
-function makeTags(cont, array) {
-    for (var i = array.length - 1; i >= 0; i--) {
-        cont.append($("<span></span>").text(array[i]));
+function showTheater() {
+    if (!isTheaterOn){
+        isTheaterOn = true;
+        $("#display-pub-detail").css({
+            'display': 'flex',
+        });
+        $("body").css({'overflow-y': 'hidden'});
     }
 }
 
-function hideInfoPub() {
+function hideTheater() {
+    isTheaterOn = false;
     $("#display-pub-detail").css({
         'opacity': '0',
     })
@@ -48,6 +23,14 @@ function hideInfoPub() {
     $("#header-base").addClass('sticky-top');
     $("body").css({'overflow-y': 'scroll'});
 }
+
+/*para salir del modo theater*/
+$('body').on('keydown', function (e) {
+    if (e.which == 27 && !$('#story-read-mode').attr('aria-modal')) {
+        hideTheater();
+    }
+});
+
 
 function subUnsubToStory(url) {
     //console.log(url)
@@ -79,43 +62,6 @@ function showStoriesPreview(url, pubid) {
             $("#scroll-previews_"+pubid).html(cont);
         }
     });
-}
-
-
-function extendStory() {
-    //$("#title-read-mode").html($("#publication-title").text())
-    //$(".content-read-mode").html($("#publication-content").text());
-}
-
-
-function limitText(text, maxLength){
-    limite_text = text;
-    if (limite_text.length > maxLength)
-    {
-        limite_text = limite_text.substr(0, maxLength)+" ...";
-    }
-    return limite_text;
-}
-
-/*para salir del modo theater*/
-$('body').on('keydown', function (e) {
-    if (e.which == 27 && !$('#story-read-mode').attr('aria-modal')) {
-        hideInfoPub();
-    }
-});
-
-/*funcion para obtener un arreglo con los parametros de la url*/
-function getParameters() {
-  var res=[];
-  if (location.search){
-    location.search.substr(1).split("&").forEach(function(param) {
-        var s = param.split("="), //separamos llave/valor
-        ll = s[0],
-        v =  decodeURIComponent(s[1]);
-        res.push([ll,v]); //si es nula, quiere decir que no tiene valor, solo textual
-    });
-}
-return res;
 }
 
 /*Para mostrar el modo teatro si se visita una publicacion invocando el get.*/
@@ -170,14 +116,10 @@ function showInfoPub(url, user_id, evt) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
             loadTheater(cont, user_id, url, 'story', null);
-            $("#display-pub-detail").css({
-                'display': 'flex',
-            });
-            $("body").css({'overflow-y': 'hidden'});
+            showTheater();
         }
     });
 }
-
 
 function showInfoChapter(url, user_id, idParent, idPrev, evt) {
     $.ajax({
@@ -188,6 +130,7 @@ function showInfoChapter(url, user_id, idParent, idPrev, evt) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
             loadTheater(cont, user_id, url, 'chapter', idPrev);
+            showTheater();
         }
     });
 }
@@ -326,4 +269,42 @@ function deletChildView(idParentUnique) {
     }else{
         //console.log(idParentUnique+" dio child false");
     }
+}
+
+//recibe un array de tags y los convierte en string html safe.
+function makeTags(cont, array) {
+    for (var i = array.length - 1; i >= 0; i--) {
+        cont.append($("<span></span>").text(array[i]));
+    }
+}
+
+
+function extendStory() {
+    //$("#title-read-mode").html($("#publication-title").text())
+    //$(".content-read-mode").html($("#publication-content").text());
+}
+
+
+function limitText(text, maxLength){
+    limite_text = text;
+    if (limite_text.length > maxLength)
+    {
+        limite_text = limite_text.substr(0, maxLength)+" ...";
+    }
+    return limite_text;
+}
+
+
+/*funcion para obtener un arreglo con los parametros de la url*/
+function getParameters() {
+  var res=[];
+  if (location.search){
+    location.search.substr(1).split("&").forEach(function(param) {
+        var s = param.split("="), //separamos llave/valor
+        ll = s[0],
+        v =  decodeURIComponent(s[1]);
+        res.push([ll,v]); //si es nula, quiere decir que no tiene valor, solo textual
+    });
+}
+return res;
 }
