@@ -137,11 +137,14 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'url_first_story': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.username, 'pk': mainStory.id})})
             data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.username})})
             data['content_pub'].update({'color': mainStory.color})
+            data['content_pub'].update({'id_main_story': mainStory.id})
             
             prev =publication.prevChapter
             if (prev):
+                data['content_pub'].update({'previous_pub_id': prev.id})
                 data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:chapter_content', kwargs={'username': own_user.username, 'pk': publication.prevChapter.id})})
             else:
+                data['content_pub'].update({'previous_pub_id': mainStory.id})
                 data['content_pub'].update({'url_prev_chapter': None})
 
             data['content_pub'].update({'active': publication.active})

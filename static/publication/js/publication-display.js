@@ -1,5 +1,5 @@
 var isTheaterOn = false;
-
+var first_story;
 function showTheater() {
     if (!isTheaterOn){
         isTheaterOn = true;
@@ -115,13 +115,19 @@ function showInfoPub(url, user_id, evt) {
         complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            loadTheater(cont, user_id, url, 'story', null);
+            loadTheater(cont, user_id, url, 'story', null, true);
             showTheater();
+            first_story = cont.id;
         }
     });
 }
 
-function showInfoChapter(url, user_id, idParent, idPrev, evt) {
+/*
+//como extra tambien eliminamos cualquier view  que tenga como padre a undefined.
+    //ocurre cuando se visita un chapter desde la url.
+    deletChildView(undefined);*/
+
+function showInfoChapter(url, user_id, evt) {
     $.ajax({
         url:  url,
         type:  'get',
@@ -129,8 +135,38 @@ function showInfoChapter(url, user_id, idParent, idPrev, evt) {
         complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            loadTheater(cont, user_id, url, 'chapter', idPrev);
+            loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, true);
             showTheater();
+        }
+    });
+}
+
+function loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id) {
+    url =  urlPrevChapt
+    // es == "null" y no == null porque asi interpreta javascript un dato que se genera con {'url_prev_chapter': None} en python.
+    if (url == "null" || url == null){ 
+        url =  urlFirstStory
+    }
+    $.ajax({
+        url:  url,
+        type:  'get',
+        dataType:  'text/json',
+        complete: function  (data) {
+            //console.log(data.responseText);
+            cont = JSON.parse(data.responseText).content_pub;
+            if (cont.previous_pub_id != undefined){
+                newView = loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, false);
+                parentView.set(newView, currentView);
+                loadPrevChapTheaterView(cont.url_prev_chapter, cont.url_first_story, newView, user_id);
+            }else{
+                newView = loadTheater(cont, user_id, url, 'story', null, false);
+                parentView.set(newView, currentView);
+                /*Actualizamos es boton para que ya no cargue de nuevo la first-story*/
+                idPubToIdUnique.forEach(function (value, key) {
+                    $("#first-story_"+value).attr('onclick',''); 
+                    $("#first-story_"+value).attr('href',"#theater-view_"+idPubToIdUnique.get(first_story)); 
+                });
+            }
         }
     });
 }
@@ -140,20 +176,27 @@ Discrimina entre publicacion story y chapter.
 Cuando encuentra un atributo id, lo modifica agregandole el id de la publicacion (el idPubToIdUnique),
 para que no se repitan. Algunos id del theater-mode no son modificados (porque no pertenecen
 al div theather-view-template), como la suscripcion a la story principal y el titulo de la story.*/
-function loadTheater(cont, user_id, url, typePubli, idParent) {
+/*Position indica si debe cargarse el nuevo theater a la derecha o izquierda*/
+function loadTheater(cont, user_id, url, typePubli, idParent, position) {
     history.pushState(undefined, undefined, url+'?mode=theater');
     $("#header-base").removeClass('sticky-top');
     //a la story le concateno main_ porque puede haber un capitulo con el mismo id que la story.
     if (typePubli=='story'){
         pubid = cont.id+"";
     }else{
-        pubid = idParent+"_"+cont.id;
+        pubid = cont.id_main_story+"_"+cont.id;
     }
     idPubToIdUnique.set(cont.id, pubid);
     updateViews(idParent);
-    parentView.set(idPubToIdUnique.get(idParent), pubid);
+    if (idPubToIdUnique.has(idParent)){
+        parentView.set(idPubToIdUnique.get(idParent), pubid);
+    }
     newNode = $("#theater-view-template").clone(true);
-    $("#theater-main").append(newNode);
+    if (position){
+        $("#theater-main").append(newNode);
+    }else{
+        $("#theater-main").prepend(newNode);
+    }
     newNode.attr('id',"theater-view_"+pubid);
     newNode.id="theater-view_"+pubid;
 
@@ -232,7 +275,12 @@ function loadTheater(cont, user_id, url, typePubli, idParent) {
     if (typePubli == 'story'){
         $("#displacement-menu_"+pubid).css({'display':"none"});
     }else{
-        $("#first-story_"+pubid).attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
+        if (first_story!=undefined){
+            $("#first-story_"+pubid).attr('href',"#theater-view_"+idPubToIdUnique.get(first_story)); 
+        }else{
+            $("#first-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`')`); 
+            first_story = cont.id_main_story;
+        }
         if (cont.url_prev_chapter==null){
             $("#pre-story_"+pubid).attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
         }else{
@@ -248,6 +296,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent) {
 
     newNode.css({'display':'block'})
     showStoriesPreview(cont.url_continuations, pubid);
+    return pubid;
 }
 
 /*Actualizar las theater-views...*/
@@ -256,7 +305,7 @@ function updateViews(idParent) {
         idParentUnique = idPubToIdUnique.get(idParent);
         deletChildView(idParentUnique)
     }else{
-        console.log("Entraca")
+        //console.log("Entraca")
     }
 }
 
