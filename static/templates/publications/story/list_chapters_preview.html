@@ -3,7 +3,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
 {%endcomment%}
 {%if storychapter_list %}
 {% for chap in storychapter_list %}
-  <div class="card-story" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, {{chap.mainStory.id}}, event)' style="border-color: {{chap.mainStory.color|add:'20'}}; border-left-color: {{chap.mainStory.color}}">
+  <div class="card-story" onClick='showInfoChapter("{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}", {{user.id}}, {{chap.mainStory.id}}, {%if chap.prevChapter.id%}chap.prevChapter.id{%else%}{{chap.mainStory.id}}{%endif%}, event)' style="border-color: {{chap.mainStory.color|add:'20'}}; border-left-color: {{chap.mainStory.color}}">
     <div class="container">
     <div class="row content-story">
         <div class="col-12 card-body">

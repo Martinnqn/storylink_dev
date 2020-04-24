@@ -44,6 +44,7 @@ function hideInfoPub() {
         'display': 'none',
         'opacity': '1',
     })}, 450);
+    deleteAllViews();
     $("#header-base").addClass('sticky-top');
     $("body").css({'overflow-y': 'scroll'});
 }
@@ -76,12 +77,8 @@ function showStoriesPreview(url, pubid) {
         complete: function  (data) {
             cont = data.responseText;
             $("#scroll-previews_"+pubid).html(cont);
-            /*para scrollear hasta el div*/
-            /*document.querySelector('#scroll-previews').scrollIntoView({ 
-              behavior: 'smooth' 
-          });*/
-      }
-  });
+        }
+    });
 }
 
 
@@ -141,23 +138,28 @@ $(document).ready(function() {
 });
 
 /*Variables globales para administrar el comportamiento de las views. 
-contViews es un contador para asignar identificadores a las views 
-(las que resultan de clonar theater-view-template).
-views es un arreglo de las view que existen en la pantalla. Estan ordenadas.
-pubsToViews es un arreglo que tiene arreglos cuyo primer elemento es el id de una publicacion 
-y el segundo elemento es el id de una view. (cambiar a hashmap xD)
+idPubToIdUnique: dado el id de una publicacion, guardar un id especial usado unicamente en la interfaz.
+El id especial es para hacer los id unicos, porque puede darse el caso que una story tenga el mismo id 
+que un chapter.
+Para la story principal el nuevo id se mantiene igual; para los chapters el nuevo id se forma 
+concatenando el id de su storyMain junto con el id del chapter (mainStory id = 1, chapter id= 2, newID = 1_2).
 
-Caso de uso normal: sea P una publicacion con su lista de continuaciones 'A', 'B', ..., Si se clickea sobre
-'A', luego sobre una continuacion 'A1' de 'A', y luego sobre 'B', se tienen que eliminar todas
+Caso de uso normal: sea P una publicacion con su lista de continuaciones 'A', 'B', ..., Si se clickea 
+sobre 'A', luego sobre una continuacion 'A1' de 'A', y luego sobre 'B', se tienen que eliminar todas
 las views que siguen a la continuacion 'A' (es decir A1), y actualizar la view 'A' con el contenido de 'B'.
-Para esto, tomar el id de la publicacion P, obtener el ID de su view correspondiente desde pubsToViews,
-luego hallar ese ID en el array views y recorrer hacia adelante el arreglo, eliminando 
-todos los elementos del DOM con id theater-view-ID (y los que siguen).
+Para esto, tomar el id de la publicacion P, obtener el IDunico desde idPubToIdUnique (como es una story
+es el mismo), y recorrer parentView eliminando todas las views que pueden alcanzarse (metodo deletChildView()).
 */
-var contViews = 0;
-var views = [];
-var pubsToViews = [];
+var idPubToIdUnique = new Map();
+var parentView = new Map(); //idPubUnique1 -> idPubUnique2 (para saber que idPubUnique1 es padre de una ventana con idPubUnique2)
 
+function deleteAllViews() {
+    idPubToIdUnique.forEach(function (value, key) {
+        $("#theater-view_"+value).remove();
+    });
+    idPubToIdUnique.clear();
+    parentView.clear();
+}
 
 function showInfoPub(url, user_id, evt) {
     $.ajax({
@@ -177,7 +179,7 @@ function showInfoPub(url, user_id, evt) {
 }
 
 
-function showInfoChapter(url, user_id, idParent, evt) {
+function showInfoChapter(url, user_id, idParent, idPrev, evt) {
     $.ajax({
         url:  url,
         type:  'get',
@@ -185,33 +187,32 @@ function showInfoChapter(url, user_id, idParent, evt) {
         complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            loadTheater(cont, user_id, url, 'chapter', idParent);
+            loadTheater(cont, user_id, url, 'chapter', idPrev);
         }
     });
 }
 
 /*Clona el template theater-view-template y lo rellena con los datos de la publicacion. 
 Discrimina entre publicacion story y chapter.
-Algunos elementos del theater-mode son editados de manera global, 
-como la suscripcion a la story principal. Otros elementos con id son modificados con el id de 
-la publicacion, para comportamiento personalizado*/
+Cuando encuentra un atributo id, lo modifica agregandole el id de la publicacion (el idPubToIdUnique),
+para que no se repitan. Algunos id del theater-mode no son modificados (porque no pertenecen
+al div theather-view-template), como la suscripcion a la story principal y el titulo de la story.*/
 function loadTheater(cont, user_id, url, typePubli, idParent) {
     history.pushState(undefined, undefined, url+'?mode=theater');
     $("#header-base").removeClass('sticky-top');
     //a la story le concateno main_ porque puede haber un capitulo con el mismo id que la story.
     if (typePubli=='story'){
-        pubid = 'main_'+cont.id;
+        pubid = cont.id+"";
     }else{
-        pubid = cont.id;
-        updateViews(cont.id, idParent);
+        pubid = idParent+"_"+cont.id;
     }
-    pubsToViews.push([pubid,contViews]);
-    views.push(contViews);
-    contViews++;
+    idPubToIdUnique.set(cont.id, pubid);
+    updateViews(idParent);
+    parentView.set(idPubToIdUnique.get(idParent), pubid);
     newNode = $("#theater-view-template").clone(true);
     $("#theater-main").append(newNode);
-    newNode.attr('id',"theater-view_"+contViews);
-    newNode.id="theater-view_"+contViews;
+    newNode.attr('id',"theater-view_"+pubid);
+    newNode.id="theater-view_"+pubid;
 
     elements = newNode.find('[id]');
 
@@ -273,14 +274,14 @@ function loadTheater(cont, user_id, url, typePubli, idParent) {
             $("#unsubscribe-story").css({display:'none'});
         }
 
-        $("#btn-create-continuation").attr('href',cont.url_continuate);
-        $("#btn-create-continuation").css({display:'flex'});
+        $("#btn-create-continuation_"+pubid).attr('href',cont.url_continuate);
+        $("#btn-create-continuation_"+pubid).css({display:'flex'});
 
     }else{
         $("#btn-create-continuation_"+pubid).attr('href','javascript: void(0)');
         $("#subscribe-story").attr('onclick', '');
         $("#subscribe-story").attr('onclick', '');
-        $("#btn-create-continuation").css({display:'none'});
+        $("#btn-create-continuation_"+pubid).css({display:'none'});
         $("#subscribe-story").css({display:'none'});
         $("#unsubscribe-story").css({display:'none'});
     }
@@ -307,6 +308,22 @@ function loadTheater(cont, user_id, url, typePubli, idParent) {
 }
 
 /*Actualizar las theater-views...*/
-function updateViews(argument) {
-    // body...
+function updateViews(idParent) {
+    if (idParent!=null){
+        idParentUnique = idPubToIdUnique.get(idParent);
+        deletChildView(idParentUnique)
+    }else{
+        console.log("Entraca")
+    }
+}
+
+function deletChildView(idParentUnique) {
+    childView = parentView.get(idParentUnique);
+    if(childView){
+        $("#theater-view_"+childView).remove();
+        parentView.delete(idParentUnique);
+        deletChildView(childView);
+    }else{
+        //console.log(idParentUnique+" dio child false");
+    }
 }
