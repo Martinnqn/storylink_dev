@@ -127,22 +127,27 @@ function showInfoPub(url, user_id, evt) {
     //ocurre cuando se visita un chapter desde la url.
     deletChildView(undefined);*/
 
-function showInfoChapter(url, user_id, evt) {
-    $.ajax({
-        url:  url,
-        type:  'get',
-        dataType:  'text/json',
-        complete: function  (data) {
+    function showInfoChapter(url, user_id, evt) {
+        $.ajax({
+            url:  url,
+            type:  'get',
+            dataType:  'text/json',
+            complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
             loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, true);
             showTheater();
         }
     });
-}
+    }
 
-function loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id) {
-    url =  urlPrevChapt
+    function preLoadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id, all) {
+        deleteAllViews();
+        loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id, all);
+    }
+
+    function loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id, all) {
+        url =  urlPrevChapt
     // es == "null" y no == null porque asi interpreta javascript un dato que se genera con {'url_prev_chapter': None} en python.
     if (url == "null" || url == null){ 
         url =  urlFirstStory
@@ -154,19 +159,25 @@ function loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_
         complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
+            var IdNewView;
             if (cont.previous_pub_id != undefined){
-                newView = loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, false);
-                parentView.set(newView, currentView);
-                loadPrevChapTheaterView(cont.url_prev_chapter, cont.url_first_story, newView, user_id);
+                IdNewView = loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, false);
+                parentView.set(IdNewView, currentView);
+                if (all){
+                    loadPrevChapTheaterView(cont.url_prev_chapter, cont.url_first_story, IdNewView, user_id, all);
+                }
             }else{
-                newView = loadTheater(cont, user_id, url, 'story', null, false);
-                parentView.set(newView, currentView);
+                IdNewView = loadTheater(cont, user_id, url, 'story', null, false);
+                parentView.set(IdNewView, currentView);
+                first_story = cont.id;
                 /*Actualizamos es boton para que ya no cargue de nuevo la first-story*/
                 idPubToIdUnique.forEach(function (value, key) {
                     $("#first-story_"+value).attr('onclick',''); 
-                    $("#first-story_"+value).attr('href',"#theater-view_"+idPubToIdUnique.get(first_story)); 
+                    $("#first-story_"+value).attr('href',"#theater-view_"+idPubToIdUnique.get(cont.id)); 
                 });
             }
+            $("#pre-story_"+currentView).attr('onclick',''); 
+            $("#pre-story_"+currentView).attr('href',"#theater-view_"+IdNewView); 
         }
     });
 }
@@ -275,16 +286,18 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
     if (typePubli == 'story'){
         $("#displacement-menu_"+pubid).css({'display':"none"});
     }else{
-        if (first_story!=undefined){
-            $("#first-story_"+pubid).attr('href',"#theater-view_"+idPubToIdUnique.get(first_story)); 
+        $("#first-story_"+pubid).attr('onclick',`preLoadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+true+`)`); 
+        //si tiene al idParent es porque el padre ya estaba creado,
+        //por lo que la pre-story no es necesaria cargarla de nuevo (un poco de acoplamiento).
+        if(!idPubToIdUnique.has(idParent)){
+            if (cont.url_prev_chapter==null){
+                //$("#pre-story_"+pubid).attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
+                $("#pre-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+false+`)`);
+            }else{
+                $("#pre-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+false+`)`);
+            }
         }else{
-            $("#first-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`')`); 
-            first_story = cont.id_main_story;
-        }
-        if (cont.url_prev_chapter==null){
-            $("#pre-story_"+pubid).attr('onclick',`showInfoPub('`+cont.url_first_story+`','`+user_id+`')`); 
-        }else{
-            $("#pre-story_"+pubid).attr('onclick',`showInfoChapter('`+cont.url_prev_chapter+`','`+user_id+`')`);
+            $("#pre-story_"+pubid).attr('href',"#theater-view_"+idPubToIdUnique.get(idParent)); 
         }
         $("#displacement-menu_"+pubid).css({'display':"flex"});
     }
