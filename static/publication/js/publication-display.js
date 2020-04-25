@@ -73,7 +73,7 @@ $(document).ready(function() {
                 if (location.pathname.split('/')[5]){
                     if (js_user_id){
                         if (location.pathname.split('/')[4]=='chapter-content'){
-                            showInfoChapter(location.pathname, js_user_id, null);
+                            showInfoChapter(location.pathname, js_user_id, null, null, null);
                         }else if (location.pathname.split('/')[4]=='story-content')
                         showInfoPub(location.pathname, js_user_id);
                     }
@@ -127,7 +127,7 @@ function showInfoPub(url, user_id, evt) {
     //ocurre cuando se visita un chapter desde la url.
     deletChildView(undefined);*/
 
-    function showInfoChapter(url, user_id, evt) {
+    function showInfoChapter(url, user_id, id_main_story, id_prev_pub, evt) {
         $.ajax({
             url:  url,
             type:  'get',
@@ -135,8 +135,9 @@ function showInfoPub(url, user_id, evt) {
             complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, true);
+            idNewTheater = loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, true);
             showTheater();
+            animateScroll("#theater-view_"+idNewTheater);
         }
     });
     }
@@ -172,12 +173,12 @@ function showInfoPub(url, user_id, evt) {
                 first_story = cont.id;
                 /*Actualizamos es boton para que ya no cargue de nuevo la first-story*/
                 idPubToIdUnique.forEach(function (value, key) {
-                    $("#first-story_"+value).attr('onclick',''); 
-                    $("#first-story_"+value).attr('href',"#theater-view_"+idPubToIdUnique.get(cont.id)); 
+                    $("#first-story_"+value).attr('onclick',`animateScroll('#theater-view_`+idPubToIdUnique.get(cont.id)+`')`); 
+                    //$("#first-story_"+value).attr('href',"#theater-view_"+idPubToIdUnique.get(cont.id)); 
                 });
             }
-            $("#pre-story_"+currentView).attr('onclick',''); 
-            $("#pre-story_"+currentView).attr('href',"#theater-view_"+IdNewView); 
+            $("#pre-story_"+currentView).attr('onclick',`animateScroll('#theater-view_`+IdNewView+`')`); 
+            //$("#pre-story_"+currentView).attr('href',"#theater-view_"+IdNewView); 
         }
     });
 }
@@ -297,7 +298,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
                 $("#pre-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+false+`)`);
             }
         }else{
-            $("#pre-story_"+pubid).attr('href',"#theater-view_"+idPubToIdUnique.get(idParent)); 
+            $("#pre-story_"+pubid).attr('onclick',`animateScroll('#theater-view_`+idPubToIdUnique.get(idParent)+`')`);
         }
         $("#displacement-menu_"+pubid).css({'display':"flex"});
     }

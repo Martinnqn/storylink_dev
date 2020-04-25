@@ -36,7 +36,6 @@
 }
 
 .publication-node {
-    min-width: 80%;    
     -webkit-animation: opactiyTransition 0.3s ease-in 1 normal;
     -moz-animation: opactiyTransition 0.3s ease-in 1 normal;
     animation: opactiyTransition 0.3s ease-in 1 normal;
@@ -53,8 +52,9 @@
 }
 
 .theater-view {
-    width: 100%;
-    min-width: max-content;
+    max-width: 80%;
+    width: 80%;
+    min-width: 80%;
     margin: auto;
 }
 
