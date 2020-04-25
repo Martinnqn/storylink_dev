@@ -199,13 +199,6 @@ div.img-thumbnail {
         padding: 0;
     }
 
-    .content-card {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-
 }
 
 

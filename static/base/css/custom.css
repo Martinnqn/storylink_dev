@@ -134,7 +134,7 @@ a:hover{
     color: rgb(111,111,111);
     font-size: 16px;
     display: flex;
-    position: relative;
+    /*position: relative;*/
     margin-top: 20px;
 }
 

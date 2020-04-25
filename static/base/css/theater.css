@@ -45,6 +45,8 @@
 #theater-main {
     display: flex;
     overflow-x: scroll;
+    background: whitesmoke;
+    height: 100%;
 }
 
 #theater-view-template{
@@ -62,11 +64,25 @@
     overflow-y: hidden;
 }
 
+.content-image-pub{
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    overflow: hidden;
+}
+
+.content-image-pub:hover{
+    overflow: visible;
+}
+
+.content-image-pub:hover .header-image{
+    margin-left: 0;
+}
+
 .header-image {
-    height: 190px;
-    width: 100%;
-    border-bottom: 1px solid;
-    border-radius: 25px 25px 0 0;
+    transition: all 0.5s ease-out;
+    margin-left: -60px;
 }
 
 .img-autor-mini{
@@ -75,33 +91,20 @@
     border-radius: 30px;
     border-width: 5px;
     border: 1px solid black;
-    margin-top: -50px;
-    margin-left: 10px;
     padding: 3px;
     background-color: white;
 }
 
 .publication-container {
     font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
-    margin-top: 20px;
     position: relative;
-    /*background-color: #e3f2fd;*/
-    background-color: snow;
-    min-height: 417px;
     color: black;
-    border-radius: 25px;
-    overflow-y: hidden;
 }
 
 .publication-container a{
     font-family: "avenir-medium","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
 }
 
-
-.publication-title {
-    text-align: center;
-    font-size: 20px;
-}
 
 .body-publication {
     padding-bottom: 10px;
@@ -110,6 +113,8 @@
 .publication-content {
     color: rgb(57, 57, 57);
     font-size: 16px;
+    height: 300px;
+    overflow-y: scroll;
 }
 
 .publication-description {
@@ -144,16 +149,27 @@
     justify-content: space-evenly;
 }
 
-#displacement-menu a{
-    color: white;
-    font-size: 18px;
-    text-decoration: underline;
-}
-
 
 .title-pub-detail {
-    display: inline;
     color: white;
+    display: inline;
+}
+
+#unsubscribe-story {
+    margin: auto;
+    color: white;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+}
+
+#unsubscribe-story:hover {
+    background: #4d4d4d;
+}
+
+.title-theater-view {
+    color: black;
+    display: inline;
 }
 
 .scroll-previews-container {
@@ -171,13 +187,9 @@
 }
 
 
-.main-actions a:hover{
-    color: white;
-}
-
 .content-previews {
     height: 540px;
-    background: whitesmoke;
+    background: #0000000D;
 }
 
 .create-continuation {
@@ -220,22 +232,34 @@
 }
 
 .btn-close {
-    color: white;
+    color: black;
     position: absolute;
     right: 0;
     cursor: pointer;
     display: inline-flex;
+    border: 1px white solid;
+}
+
+.btn-close .material-icons {
+    vertical-align: middle;
+}
+
+.btn-close:hover {
+    background: white;
 }
 
 /*dropwdown menu opciones del modo theater*/
 /* Style The Dropdown Button */
 .dropbtn {
-  background-color: white;
   color: black;
   padding: 1px;
   font-size: 16px;
   border: none;
   cursor: pointer;
+}
+
+.dropbtn .material-icons {
+    vertical-align: middle;
 }
 
 .dropdown {
@@ -309,12 +333,9 @@
         max-width: 500px;
         margin-bottom: auto;
         margin-top: auto;
-        border-radius: 25px;
     }
 
     .content-pub {
-        margin: auto;
-        width: 450px;
     }
 
 /*Previsualizacion de chapters*/
