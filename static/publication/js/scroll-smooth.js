@@ -1,6 +1,6 @@
 function animateScroll(target) {
     var x = $("#theater-main").scrollLeft()+$(target).offset().left;
-    x=x-450;
+    x=x-300;
     var x = x;
     $('#theater-main').animate({
         scrollLeft: x,

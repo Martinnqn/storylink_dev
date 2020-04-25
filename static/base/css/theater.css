@@ -33,6 +33,7 @@
     position: fixed;
     background: black;
     display: flex;
+    font-family: sans-serif, sans-serif, "avenir-medium","Helvetica Neue",Helvetica,Arial;
 }
 
 .publication-node {
@@ -46,7 +47,8 @@
     display: flex;
     overflow-x: scroll;
     background: whitesmoke;
-    height: 100%;
+    /*height: 100%;*/
+    margin:auto;
 }
 
 #theater-view-template{
@@ -60,6 +62,13 @@
     margin: auto;
 }
 
+
+.limit-publication {
+    border-top: 1px solid #cacaca;
+    border-radius: 20px;
+    padding: 5px;
+    overflow:hidden;
+}
 .publication-header{
     overflow-y: hidden;
 }
@@ -169,7 +178,7 @@
 
 .title-theater-view {
     color: black;
-    display: inline;
+    text-align: center;
 }
 
 .scroll-previews-container {
@@ -232,20 +241,24 @@
 }
 
 .btn-close {
-    color: black;
     position: absolute;
     right: 0;
-    cursor: pointer;
-    display: inline-flex;
-    border: 1px white solid;
 }
 
 .btn-close .material-icons {
     vertical-align: middle;
 }
 
+.btn-close {
+    color: white;
+}
+
+.btn-close:hover a{
+    color: white;
+}
+
 .btn-close:hover {
-    background: white;
+    background: #4d4d4d;
 }
 
 /*dropwdown menu opciones del modo theater*/
@@ -255,6 +268,7 @@
   padding: 1px;
   font-size: 16px;
   border: none;
+  background: transparent;
   cursor: pointer;
 }
 
@@ -275,12 +289,11 @@
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
     border: 1px solid black;
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
 }
 
 /* Links inside the dropdown */

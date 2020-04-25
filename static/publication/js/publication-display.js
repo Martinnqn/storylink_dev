@@ -244,6 +244,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
     if (typePubli == 'story'){
         $("#title-pub-detail").text(cont.title);
         $("#title-read-mode").text(cont.title);
+        $("#answer-chapter_"+pubid).text(cont.title);
     }else{
         $("#title-pub-detail").text(cont.title);
         $("#answer-chapter_"+pubid).text(cont.question);

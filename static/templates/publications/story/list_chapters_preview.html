@@ -1,9 +1,10 @@
 {%comment%}
 Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferente que list_chapters.html
 {%endcomment%}
+<div class="chapter-preview">
 {%if storychapter_list %}
 {% for chap in storychapter_list %}
-  <div class="card-story" onClick="showInfoChapter('{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}', {{user.id}}, {{chap.mainStory.id}}, {{chap.prevChapter.id|default:chap.mainStory.id}}, event)" style="border-color: {{chap.mainStory.color|add:'20'}}; border-left-color: {{chap.mainStory.color}}">
+  <div class="card-story" onClick="showInfoChapter('{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}', {{user.id}}, {{chap.mainStory.id}}, {{chap.prevChapter.id|default:chap.mainStory.id}}, event)" style="border-color: transparent; border-left-color: {{chap.mainStory.color}}">
     <div class="container">
     <div class="row content-story">
         <div class="col-12 card-body">
@@ -35,3 +36,4 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
 {%else%}
 <div class="disabled-story"><p>No hay Storylinks que continúen la trama.</p></div>
 {%endif%}
+</div>
