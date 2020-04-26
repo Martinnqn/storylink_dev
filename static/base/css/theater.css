@@ -81,7 +81,6 @@
 
 .menu-pub{
     position: fixed;
-    left: 0;
     top: 50%;
     transform: translate(0, -50%);
     transition: all 0.5s ease-out;
@@ -92,10 +91,6 @@
     color: white;
 }
 
-.menu-pub div{
-    display: none;
-}
-
 .menu-pub .material-icons{
     position: fixed;
     left: 0;
@@ -104,17 +99,27 @@
     color: white;
 }
 
-.menu-pub:hover div{
-    display: block;
+.menu-pub:hover .pub-data-init{
+    display: inline-flex;
 }
 
 .menu-pub:hover{
-    width: 250px;
-    height: 250px;
+    width: auto;
+    height: auto;
 }
 
 .menu-pub:hover .material-icons{
     display: none;
+}
+
+.pub-data-init {
+    display: none;
+}
+
+.pub-data-init a{
+    font-size: 20px;
+    color: white;
+    text-decoration: underline;
 }
 
 .header-image {
