@@ -145,9 +145,9 @@ div.img-thumbnail {
 }
 
 .description {
-    height: 50px;
+    height: 65px;
     overflow-y: hidden;
-    word-wrap: break-word;
+    word-break: break-all;
     margin-bottom: 2px; 
     color:rgb(60,60,60);
 }

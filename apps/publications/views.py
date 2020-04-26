@@ -126,6 +126,7 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'own_user': own_user.id})
             data['content_pub'].update({'title': mainStory.title})
             data['content_pub'].update({'own_first_story': mainStory.own_user.id})
+            data['content_pub'].update({'own_name_first_story': mainStory.own_user.username})
             data['content_pub'].update({'question': publication.quest_answ})
             data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
             data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_chapt', kwargs={'username': own_user.username, 'pk': publication.id})})

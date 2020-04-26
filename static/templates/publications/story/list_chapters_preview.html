@@ -4,7 +4,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
 <div class="chapter-preview">
 {%if storychapter_list %}
 {% for chap in storychapter_list %}
-  <div class="card-story" onClick="showInfoChapter('{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}', {{user.id}}, {{chap.mainStory.id}}, {{chap.prevChapter.id|default:chap.mainStory.id}}, event)" style="border-color: transparent; border-left-color: {{chap.mainStory.color}}">
+  <div class="card-story" onClick="showInfoChapter('{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}', {{user.id}}, {{chap.mainStory.id}}, {{chap.prevChapter.id|default:chap.mainStory.id}}, event)" style="border-color: rgba(0,0,0,0.2);">
     <div class="container">
     <div class="row content-story">
         <div class="col-12 card-body">
@@ -20,7 +20,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
           <div class="description">{{chap.text_content|safe|truncatechars:200}}</div>
           <div class="tags-story">
             {%for t in chap.tag.all %}
-            <span style="background: {{chap.mainStory.color|add:'50'}}">{{ t.tag }}</span>
+            <span>{{ t.tag }}</span>
             {%endfor%}
           </div>
         {%else%}

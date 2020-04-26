@@ -46,8 +46,8 @@
 #theater-main {
     display: flex;
     overflow-x: scroll;
-    background: whitesmoke;
-    /*height: 100%;*/
+    background: #eee;
+    height: 100%;
     margin:auto;
 }
 
@@ -69,29 +69,56 @@
     padding: 5px;
     overflow:hidden;
 }
+
+.content-card {
+    background: white;
+    position: static;
+}
+
 .publication-header{
     overflow-y: hidden;
 }
 
-.content-image-pub{
+.menu-pub{
     position: fixed;
     left: 0;
     top: 50%;
     transform: translate(0, -50%);
-    overflow: hidden;
+    transition: all 0.5s ease-out;
+    width: 25px;
+    background: #314455F1;
+    height: 25px;
+    border-right: 1px solid black;
+    color: white;
 }
 
-.content-image-pub:hover{
-    overflow: visible;
+.menu-pub div{
+    display: none;
 }
 
-.content-image-pub:hover .header-image{
-    margin-left: 0;
+.menu-pub .material-icons{
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translate(0, -50%);
+    color: white;
+}
+
+.menu-pub:hover div{
+    display: block;
+}
+
+.menu-pub:hover{
+    width: 250px;
+    height: 250px;
+}
+
+.menu-pub:hover .material-icons{
+    display: none;
 }
 
 .header-image {
-    transition: all 0.5s ease-out;
-    margin-left: -60px;
+    border: 1px solid white;
 }
 
 .img-autor-mini{
@@ -106,7 +133,7 @@
 
 .publication-container {
     font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
-    position: relative;
+    position: inherit;
     color: black;
 }
 
@@ -122,13 +149,26 @@
 .publication-content {
     color: rgb(57, 57, 57);
     font-size: 16px;
-    height: 300px;
+    height: 270px;
     overflow-y: scroll;
+    word-break: break-all;
 }
 
 .publication-description {
     padding-left: 4px;
     padding-right: 4px;
+}
+
+.card-body {
+    color:rgb(60,60,60);
+    padding: 2px;
+    position: static;
+}
+
+.card-body h5{
+    display: inline-flex;
+    overflow: hidden;
+    width: 70%; 
 }
 
 .card-options{
@@ -152,7 +192,7 @@
     line-height: 20px;
 }
 
-#displacement-menu {
+.displacement-menu {
     padding: 2px;
     display: flex;
     justify-content: space-evenly;
@@ -176,13 +216,16 @@
     background: #4d4d4d;
 }
 
+#subscribe-story {
+    margin: auto;
+}
+
 .title-theater-view {
     color: black;
     text-align: center;
 }
 
 .scroll-previews-container {
-    position: relative;
     padding: 5px;
 }
 
@@ -198,7 +241,11 @@
 
 .content-previews {
     height: 540px;
-    background: #0000000D;
+    position: static;
+}
+
+.content-previews .title-center{
+    color: rgb(111,111,111);
 }
 
 .create-continuation {
@@ -243,6 +290,7 @@
 .btn-close {
     position: absolute;
     right: 0;
+    padding: 2px;
 }
 
 .btn-close .material-icons {
@@ -251,13 +299,12 @@
 
 .btn-close {
     color: white;
-}
-
-.btn-close:hover a{
-    color: white;
+    top: 50%;
+    transform: translate(0, -50%);
 }
 
 .btn-close:hover {
+    color: white;
     background: #4d4d4d;
 }
 
@@ -294,6 +341,7 @@
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    background: white;
 }
 
 /* Links inside the dropdown */
@@ -325,13 +373,30 @@
 
 /*Previsualizacion de chapters*/
 .card-story .pub-owner{
-    position: absolute;
-    top: 0;
-    right: 0;
+    display: inline;
 }
 
 .card-story .pub-owner .img-autor-mini{
     margin-top: 0;
+}
+
+.chapter-preview .card-story {
+    max-height: 200px;
+    height: 200px;
+    overflow-y: hidden;
+}
+.chapter-preview .tags-story {
+    margin-top: 25px;
+}
+
+#display-pub-detail .tags-story{
+    height: 26px;
+    overflow-y: hidden;
+}
+#display-pub-detail .tags-story span{
+    margin: 1px;
+    padding: 2px;
+    color: #040404CC;
 }
 
 

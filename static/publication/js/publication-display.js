@@ -300,6 +300,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
             }else{
                 $("#pre-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+false+`)`);
             }
+        $("#name-autor-init").text($("#name-autor-init").text()+cont.own_name_first_story);
         }else{
             $("#pre-story_"+pubid).attr('onclick',`animateScroll('#theater-view_`+idPubToIdUnique.get(idParent)+`')`);
         }
