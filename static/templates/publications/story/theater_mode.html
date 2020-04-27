@@ -42,7 +42,8 @@ Formato de tarjeta de una publicacion
               <div class="content-card col-12 col-lg-8">
                 <div class="content-pub">
                   <div class="publication-container">
-                    <div class="publication-header">
+                    <div class="publication-header d-flex justify-content-between">
+                    <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
                      <div class="dropdown" id="card-options-owner">
                       <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
                       <div class="dropdown-content">
@@ -50,7 +51,6 @@ Formato de tarjeta de una publicacion
                         <a id="btn-edit" class='btn-edit'>Editar</a>
                       </div>
                     </div>
-                    <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
                   </div>  
                   <h3 id="answer-chapter" class="title-theater-view"></h3>
                   <div class="body-publication">
@@ -102,16 +102,36 @@ Formato de tarjeta de una publicacion
 {% endblock %}
 
 {%block modal-delete-story%}
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Confirmar</h4>
+        <h4 class="modal-title" id="modal-delete-title">¿Eliminar Storylink?</h4>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-sm-8">
+            <ul>
+            <p>¿Confirma que desea eliminar la storylink?</p>
+              <li>
+                Tenga en cuenta que esta acción no se puede deshacer.
+              </li>
+              <li>
+                Si encontró un error o desea actualizar el contenido, pruebe la opción <a id="redirect-edit" href="">modificar storylink</a>.
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" id="modal-btn-si">Si</button>
-        <button type="button" class="btn btn-primary" id="modal-btn-no">No</button>
+          <button type="button" class="btn" id="modal-btn-si">Eliminar</button>
+          <button type="button" class="btn btn-primary" id="modal-btn-no">Cancelar</button>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+        <small>Si la publicación tiene continuaciones, aún podrá ser accedida, pero su contenido no será visible.</small>
+        </div>
       </div>
     </div>
   </div>

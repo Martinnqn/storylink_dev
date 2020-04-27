@@ -236,7 +236,8 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         //$("#btn-delete_"+pubid).attr('href',cont.url_delete);
         $("#btn-delete_"+pubid).on('click', function(){
             currentURLDelStory = cont.url_delete;
-            $("#mi-modal").modal('show');
+            $("#redirect-edit").attr('href',cont.url_edit);
+            $("#modal-delete").modal('show');
         });
         $("#card-options-owner_"+pubid).css({'display': 'inline-block'});
     }else{
@@ -383,12 +384,12 @@ return res;
 
 
 var currentURLDelStory = null;
+var currentURLEditStory = null;
 $("#modal-btn-si").on("click", function(){
-    console.log("eliminar")
-    $("#mi-modal").modal('hide');
+    window.location = currentURLDelStory;
+    $("#modal-delete").modal('hide');
 });
 $("#modal-btn-no").on("click", function(){
-    console.log("NO eliminar")
-    $("#mi-modal").modal('hide');
+    $("#modal-delete").modal('hide');
 });
 

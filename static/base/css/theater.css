@@ -85,10 +85,11 @@
     transform: translate(0, -50%);
     transition: all 0.5s ease-out;
     width: 25px;
-    background: #314455F1;
+    background: #314455FF;
     height: 25px;
     border-right: 1px solid black;
     color: white;
+    margin-left: -30px;
 }
 
 .menu-pub .material-icons{
@@ -329,9 +330,7 @@
 }
 
 .dropdown {
-  position: absolute;
-  display: inline-block;
-  right: 0;
+    position: static;
 }
 
 .dropdown .material-icons {
@@ -345,7 +344,6 @@
     position: absolute;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
     background: white;
 }
 
@@ -372,9 +370,6 @@
   background-color: #97a9bd;
 }
 
-.dropdown-content {
-  right: 0;
-}
 
 /*Previsualizacion de chapters*/
 .card-story .pub-owner{
@@ -405,6 +400,9 @@
 }
 
 
+#modal-delete ul{
+    list-style: initial;
+}
 
 @media (min-width: 992px) {
      .publication-container {
