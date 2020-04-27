@@ -165,7 +165,7 @@ BLEACH_ALLOWED_ATTRIBUTES = ['style']
 
 # Which CSS properties are allowed in 'style' attributes (assuming style is
 # an allowed attribute)
-BLEACH_ALLOWED_STYLES = ['text-decoration', 'color', 'background-color', 'text-align']
+BLEACH_ALLOWED_STYLES = ['text-decoration', 'text-align']
 
 # Which protocols (and pseudo-protocols) are allowed in 'src' attributes
 # (assuming src is an allowed attribute)
@@ -195,7 +195,7 @@ CKEDITOR_CONFIGS = {
              'items': ['NumberedList', 'BulletedList',
                        'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']},
             {'name': 'styles', 'items': []},
-            {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+            {'name': 'colors', 'items': []},
             {'name': 'tools', 'items': ['Maximize']},
             {'name': 'about', 'items': ['About']},
             #'/',  # put this to force next toolbar on new line

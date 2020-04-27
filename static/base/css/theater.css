@@ -171,8 +171,9 @@
 
 .tags-story span {
     font-size: 11px;
-    color: black;
-    padding: 5px;
+    font-weight: bold;
+    padding-right: 5px;
+    padding-left: 5px;
     border-radius: 15px;
     margin: 3px;
     display: inline-block;
