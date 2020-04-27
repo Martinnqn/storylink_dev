@@ -20,7 +20,11 @@
     <link rel="stylesheet" href="{% static 'base/css/custom.css' %}">
     <link rel="icon"  type="image/png" href="{% static 'imgs/story_minim.png' %}" sizes="32x32">
     {% block head-page %}{% endblock %}
-    
+    <script>
+    {% if user.is_authenticated %}
+        js_user_id = {{user.id}};
+    {%endif%}
+    </script>
 </head>
 <body>
     <a id="scroll-to-top" href="#scroll-to-top"></a>

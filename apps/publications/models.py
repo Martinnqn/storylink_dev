@@ -12,7 +12,7 @@ class StoryPublication(models.Model):
     text_content = models.TextField(max_length=2000)
     #img_content_link = models.URLField(max_length=500)
     img_content_link = models.ImageField(upload_to = 'gallery/publications/', default = 'gallery/no-img.png')
-    privacity = models.BooleanField(default=True) # privado=False o publico=True
+    opened = models.BooleanField(default=True) # privado=False o publico=True
     active = models.BooleanField(default=True) # si es una publicacion activa o no.
     date_time = models.DateField(auto_now_add=True)
     views = models.IntegerField(default=0) #cantidad de visitas

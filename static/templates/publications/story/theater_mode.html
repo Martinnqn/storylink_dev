@@ -5,7 +5,7 @@ Formato de tarjeta de una publicacion
 <div class="container">
   <div id="display-pub-detail" class="">
     <nav id="theater-header" class="sticky-top">
-      <div class="container d-flex">
+      <div class="container d-flex justify-content-between">
         <h3 id="title-pub-detail" class="title-pub-detail"></h3>
         <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
           Desuscribirse 
@@ -13,7 +13,7 @@ Formato de tarjeta de una publicacion
         <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
           Suscribirse
         </a>
-        <a class="btn-custom-1 btn-close" href="javascript: void(0)" onclick="hideTheater()">
+        <a class="btn-close" href="javascript: void(0)" onclick="hideTheater()">
           Cerrar visor <span class="material-icons">settings_backup_restore</span>
         </a>
       </div>
@@ -57,7 +57,7 @@ Formato de tarjeta de una publicacion
                     <div id="publication-content" class="publication-content"></div>
                   </div>
                   <div class="card-options">
-                    <a href="javascript: void(0)" class="btn-custom-2" data-toggle="modal" onclick="extendStory()" data-target="#story-read-mode">
+                    <a href="javascript: void(0)" class="btn-custom-2" data-toggle="modal" data-target="#story-read-mode" id="btn-read-mode">
                       Leer
                     </a>
                   </div>

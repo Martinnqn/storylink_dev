@@ -2,7 +2,7 @@
 Crea un card-story con el contenido de un chapter a partir de la variable storychapter.
 {%endcomment%}
 {%if storychapter%}
-  <div id="chapter-{{storychapter.id}}" class="container card-story" style="border-color: {{storychapter.mainStory.color|add:'20'}}; border-left-color: {{storychapter.mainStory.color}}">
+  <div id="chapter-{{storychapter.id}}" class="container card-story" style="border-left-color: {{storychapter.mainStory.color}}">
     <div class="row content-story" onClick='showInfoChapter("{% url 'user:pub:chapter_content' storychapter.own_user.username storychapter.id %}", {{user.id}}, event)'>
         <div class="col-3 card-thumbnail">
           {%if "gallery/no-img.png" in storychapter.mainStory.img_content_link.url%}
@@ -21,7 +21,7 @@ Crea un card-story con el contenido de un chapter a partir de la variable storyc
         <div class="description">{{storychapter.text_content|safe|truncatechars:150}}</div>
         <div class="tags-story">
           {% for h in storychapter.tag.all %}
-          <span style="background: {{storychapter.mainStory.color|add:'50'}}">{{ h.tag }}</span>
+          <span>{{ h.tag }}</span>
           {% endfor %}
         </div>
       </div>

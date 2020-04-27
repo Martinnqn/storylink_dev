@@ -85,6 +85,7 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.username})})
             data['content_pub'].update({'active': publication.active})
             data['content_pub'].update({'color': publication.color})
+            data['content_pub'].update({'opened': publication.opened})
 
             if (publication.active):
                 tags = []
@@ -140,6 +141,7 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'url_autor_init': reverse_lazy('user:user_profile', kwargs={'username': mainStory.own_user.username})})
             data['content_pub'].update({'color': mainStory.color})
             data['content_pub'].update({'id_main_story': mainStory.id})
+            data['content_pub'].update({'opened': mainStory.opened})
             
             prev =publication.prevChapter
             if (prev):
@@ -236,8 +238,6 @@ class EditStoryChapter(LoginRequiredMixin, generic.edit.UpdateView):
         context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
-
-
     def get(self, *args, username, pk, **kwargs):
         chap = self.get_object()
         if (chap.own_user != self.request.user):
@@ -304,6 +304,13 @@ class CreateStoryContinuation(LoginRequiredMixin, generic.DetailView, generic.Cr
         addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
     
+    #si opened es true o el usuario que la modifica es el duenio entonces se procede normalmente, sino se redirige al hall.
+    def get(self, *args, **kwargs):
+        fromUser = self.request.user
+        storyMain = get_object_or_404(StoryPublication, id = self.kwargs.get('pk'))
+        if (storyMain.opened or (fromUser.id == storyMain.own_user.id)):
+            return super().get(*args, **kwargs)
+        return redirect(reverse_lazy('hall'))
 
 '''no se agregan tags de manera atomica entre una Story y el Tag. 
 Para eso usar el transaction.atomic, aunque no es critico perder tags...'''

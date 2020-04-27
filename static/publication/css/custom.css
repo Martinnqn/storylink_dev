@@ -126,9 +126,8 @@ div.img-thumbnail {
 
 .card-story {
     font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
-    border: outset;
-    border-width: 3px;
-    border-left: solid;
+    border: 1px solid #eee;
+    border-left-width: 2px;
     margin-top: 10px;
     background: white;
 }
@@ -139,9 +138,24 @@ div.img-thumbnail {
 }
 
 .title-card-story {
-    font-size: 26px;
+    font-size: 24px;
     word-break: break-all;
-    color: #606060;
+    color: #646161;
+    font-weight: bold;
+    width: max-content;
+}
+
+.card-body {
+    color:rgb(60,60,60);
+    padding: 2px;
+    position: static;
+    overflow: hidden;
+}
+
+
+.card-body h5{
+    display: inline-flex;
+    overflow: hidden;
 }
 
 .description {
@@ -149,7 +163,12 @@ div.img-thumbnail {
     overflow-y: hidden;
     word-break: break-all;
     margin-bottom: 2px; 
-    color:rgb(60,60,60);
+    color:rgb(87, 87, 87);
+
+}
+
+.tags-story {
+    width: max-content;
 }
 
 
@@ -166,8 +185,17 @@ div.img-thumbnail {
     justify-content: space-between;
 }
 
+.answer-pub{
+    overflow-x: hidden;
+}
+
+.answer{
+    width: max-content;
+    overflow-x: hidden;
+}
 .answer h5{
-    font-size: 15px;
+    font-size: 18px;
+    color: #4d4b4b;
 }
 
 

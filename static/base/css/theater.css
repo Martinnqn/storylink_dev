@@ -161,18 +161,6 @@
     padding-right: 4px;
 }
 
-.card-body {
-    color:rgb(60,60,60);
-    padding: 2px;
-    position: static;
-}
-
-.card-body h5{
-    display: inline-flex;
-    overflow: hidden;
-    width: 70%; 
-}
-
 .card-options{
     display: flex;
     justify-content: space-evenly;
@@ -188,11 +176,9 @@
     border-radius: 15px;
     margin: 3px;
     display: inline-block;
+    background: #eaeaea;
 }
 
-.tags-story {
-    line-height: 20px;
-}
 
 .displacement-menu {
     padding: 2px;
@@ -205,6 +191,7 @@
     color: white;
     display: inline;
     overflow: hidden;
+    width: max-content;
 }
 
 #unsubscribe-story {
@@ -291,19 +278,11 @@
 }
 
 .btn-close {
-    position: absolute;
-    right: 0;
     padding: 2px;
-}
-
-.btn-close .material-icons {
-    vertical-align: middle;
-}
-
-.btn-close {
     color: white;
-    top: 50%;
-    transform: translate(0, -50%);
+    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .btn-close:hover {

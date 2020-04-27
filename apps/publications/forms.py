@@ -17,7 +17,7 @@ class StoryCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80) 
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link', 'color')
+        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):
@@ -32,6 +32,8 @@ class StoryCreationForm(ModelForm):
         self.fields['img_content_link'].label = "Agregar Portada"
         self.fields['color'] = forms.CharField(widget=forms.TextInput(attrs={'type': 'color'})) 
         self.fields['color'].help_text = "Puedes seleccionar un color en caso que no poseas una imagen de portada."
+        self.fields['opened'].label = "Abierta"
+        self.fields['opened'].help_text = "Permitir que otros usuarios puedan continuar la trama."
 
 class StoryContinuationCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
@@ -61,7 +63,7 @@ class StoryEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link', 'color')
+        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):
@@ -76,7 +78,8 @@ class StoryEditForm(ModelForm):
         self.fields['title'].label = "Título"
         self.fields['title'].max_length= 120
         self.fields['color'] = forms.CharField(widget=forms.TextInput(attrs={'type': 'color'})) 
-        
+        self.fields['opened'].label = "Abierta"
+        self.fields['opened'].help_text = "Permitir que otros usuarios puedan continuar la trama."
 
 class StoryChapterEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)

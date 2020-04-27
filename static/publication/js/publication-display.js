@@ -239,10 +239,11 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         $("#btn-delete_"+pubid).on('click', '');
         $("#card-options-owner_"+pubid).css({'display': 'none'});
     }
-
+    $("#btn-read-mode_"+pubid).on('click', function(){
+            setContentModalRead(cont.title, cont.question, cont.text_content)
+    });
     if (typePubli == 'story'){
         $("#title-pub-detail").text(cont.title);
-        $("#title-read-mode").text(cont.title);
         $("#answer-chapter_"+pubid).text(cont.title);
         $("#name-autor-init").text(cont.own_username);
         $("#name-autor-init").attr('href', cont.url_autor);
@@ -254,7 +255,6 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
     }else{
         $("#title-pub-detail").text(cont.title);
         $("#answer-chapter_"+pubid).text(cont.question);
-        $("#title-read-mode").text(cont.question);
         //$("#publication-title_"+pubid).text(cont.question);
         if (parentView.size==0){
             if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
@@ -267,7 +267,6 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         }
     }
     $("#publication-content_"+pubid).html(cont.text_content);
-    $(".content-read-mode").html(cont.text_content);
 
     if (cont.active){
         if ((typePubli == 'story' && cont.own_user != user_id) || (typePubli == 'chapter' && cont.own_first_story != user_id)){
@@ -291,8 +290,11 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         }
 
         $("#btn-create-continuation_"+pubid).attr('href',cont.url_continuate);
-        $("#btn-create-continuation_"+pubid).css({display:'flex'});
-
+        if(cont.privacity || (cont.own_user==js_user_id)){
+            $("#btn-create-continuation_"+pubid).css({display:'flex'});
+        }else{
+            $("#btn-create-continuation_"+pubid).css({display:'none'});
+        }
     }else{
         $("#btn-create-continuation_"+pubid).attr('href','javascript: void(0)');
         $("#subscribe-story").attr('onclick', '');
@@ -401,3 +403,12 @@ $("#modal-btn-no").on("click", function(){
     $("#modal-delete").modal('hide');
 });
 
+
+function setContentModalRead(title, question, content) {
+    if (question!=undefined) {
+        $("#title-read-mode").text(question);
+    }else{
+        $("#title-read-mode").text(title);
+    }
+    $(".content-read-mode").html(content);
+}
