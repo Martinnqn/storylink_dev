@@ -6,7 +6,7 @@ Crea un card-story con el contenido de una story a partir de la variable storypu
     <div class="row content-story" onClick='showInfoPub("{% url 'user:pub:story_content' storypublication.own_user.username storypublication.id %}", {{user.id}}, event)'>
         <div class="col-3 card-thumbnail">
           {%if "gallery/no-img.png" in storypublication.img_content_link.url%}
-            <div class="img-thumbnail" style="background: {{storypublication.color}}"></div>
+            <div class="img-fluid" style="background: {{storypublication.color}}"></div>
           {%else%}
             <img alt="Publication image" class="img-thumbnail" src="{{storypublication.img_content_link.url}}">
           {%endif%}

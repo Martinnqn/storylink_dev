@@ -112,8 +112,8 @@ ul{
 
 
 .img-thumbnail {
-    height: 200px;
-    width: 200px;
+    height: auto;
+    width: 100%;
 }
 
 div.img-thumbnail {
