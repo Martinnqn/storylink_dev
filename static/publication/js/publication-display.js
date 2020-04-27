@@ -219,14 +219,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         oldid =elements[i].id;
         elements[i].id = oldid+"_"+pubid;
     }
-    if (parentView.size==0){
-        if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
-            $("#header-image").attr('src',cont.img_content_link);
-            $("#header-image").attr('alt',cont.own_username);
-        }else{
-            $("#header-image").css('background', cont.color);
-        }
-    }
+
     $("#img-owner_"+pubid).attr('src',cont.own_user_image);
     $("#img-owner_"+pubid).attr('alt',cont.own_username);
     $("#link-autor-profile_"+pubid).attr('href',cont.url_autor);
@@ -241,8 +234,9 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         });
         $("#card-options-owner_"+pubid).css({'display': 'inline-block'});
     }else{
-        $("#btn-edit_"+pubid).attr('href','');
-        $("#btn-delete_"+pubid).attr('href','');
+        $("#btn-edit_"+pubid).attr('href','javascript:void(0)');
+        $("#btn-delete_"+pubid).attr('href','javascript:void(0)');
+        $("#btn-delete_"+pubid).on('click', '');
         $("#card-options-owner_"+pubid).css({'display': 'none'});
     }
 
@@ -250,11 +244,27 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         $("#title-pub-detail").text(cont.title);
         $("#title-read-mode").text(cont.title);
         $("#answer-chapter_"+pubid).text(cont.title);
+        $("#name-autor-init").text(cont.own_username);
+        $("#name-autor-init").attr('href', cont.url_autor);
+        if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
+            $("#header-image").html('<img id="" class="header-image img-fluid" src="'+cont.img_content_link+'" alt="'+cont.own_username+'">');
+        }else{
+            $("#header-image").css('background', cont.color);
+        }
     }else{
         $("#title-pub-detail").text(cont.title);
         $("#answer-chapter_"+pubid).text(cont.question);
         $("#title-read-mode").text(cont.question);
         //$("#publication-title_"+pubid).text(cont.question);
+        if (parentView.size==0){
+            if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
+                $("#header-image").html('<img id="" class="header-image img-fluid" src="'+cont.img_content_link+'" alt="'+cont.own_username+'">');
+            }else{
+                $("#header-image").css('background', cont.color);
+            }
+            $("#name-autor-init").text(cont.own_name_first_story);
+            $("#name-autor-init").attr('href', cont.url_autor_init);
+        }
     }
     $("#publication-content_"+pubid).html(cont.text_content);
     $(".content-read-mode").html(cont.text_content);
@@ -305,8 +315,6 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
             }else{
                 $("#pre-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+false+`)`);
             }
-        $("#name-autor-init").text($("#name-autor-init").text()+cont.own_name_first_story);
-        $("#name-autor-init").attr('href', cont.url_autor_init);
         }else{
             $("#pre-story_"+pubid).attr('onclick',`animateScroll('#theater-view_`+idPubToIdUnique.get(idParent)+`')`);
         }
