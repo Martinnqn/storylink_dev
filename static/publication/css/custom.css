@@ -1,8 +1,4 @@
 /*PUBLICATION CSS*/
-body {
-    position: relative;
-}
-
 
 .publication-container-title nav {
     padding: 0;
@@ -119,7 +115,7 @@ ul{
 }
 
 .card-story {
-    font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+    font-family: "Sans-Pro-Regular","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
     border: 1px solid #eee;
     border-left-width: 2px;
     margin-top: 10px;
@@ -134,9 +130,9 @@ ul{
 .title-card-story {
     font-size: 24px;
     word-break: break-all;
-    color: #646161;
-    font-weight: bold;
+    color: black;
     width: max-content;
+    margin-bottom: 0;
 }
 
 .card-body {
@@ -160,7 +156,7 @@ ul{
     overflow-y: hidden;
     word-break: break-all;
     margin-bottom: 2px; 
-    color:rgb(87, 87, 87);
+    color: #04040491;
 
 }
 
@@ -182,17 +178,16 @@ ul{
     justify-content: space-between;
 }
 
-.answer-pub{
-    overflow-x: hidden;
-}
 
 .answer{
-    width: max-content;
-    overflow-x: hidden;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 5px;
 }
 .answer h5{
     font-size: 18px;
-    color: #4d4b4b;
+    color: #04040491;
 }
 
 
@@ -233,10 +228,6 @@ ul{
         line-height: 20px;
         font-size: 16px;
         min-height: 100%;
-    }
-
-    .content-story h3{
-        font-size: 16px;
     }
 
 

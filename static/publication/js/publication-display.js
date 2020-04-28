@@ -94,10 +94,11 @@ Caso de uso normal: sea P una publicacion con su lista de continuaciones 'A', 'B
 sobre 'A', luego sobre una continuacion 'A1' de 'A', y luego sobre 'B', se tienen que eliminar todas
 las views que siguen a la continuacion 'A' (es decir A1), y actualizar la view 'A' con el contenido de 'B'.
 Para esto, tomar el id de la publicacion P, obtener el IDunico desde idPubToIdUnique (como es una story
-es el mismo), y recorrer parentView eliminando todas las views que pueden alcanzarse (metodo deletChildView()).
+es el mismo), y recorrer parentView eliminando todas las views que pueden alcanzarse (metodo deleteChildView()).
 */
 var idPubToIdUnique = new Map();
 var parentView = new Map(); //idPubUnique1 -> idPubUnique2 (para saber que idPubUnique1 es padre de una ventana con idPubUnique2)
+var views = [];
 
 function deleteAllViews() {
     idPubToIdUnique.forEach(function (value, key) {
@@ -105,6 +106,7 @@ function deleteAllViews() {
     });
     idPubToIdUnique.clear();
     parentView.clear();
+    views = [];
 }
 
 function showInfoPub(url, user_id, evt) {
@@ -115,8 +117,7 @@ function showInfoPub(url, user_id, evt) {
         complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            loadTheater(cont, user_id, url, 'story', null, true);
-            showTheater();
+            createView(cont, user_id, url, 'story', null, true);
             first_story = cont.id;
         }
     });
@@ -125,7 +126,7 @@ function showInfoPub(url, user_id, evt) {
 /*
 //como extra tambien eliminamos cualquier view  que tenga como padre a undefined.
     //ocurre cuando se visita un chapter desde la url.
-    deletChildView(undefined);*/
+    deleteChildView(undefined);*/
 
     function showInfoChapter(url, user_id, id_main_story, id_prev_pub, evt) {
         $.ajax({
@@ -135,19 +136,17 @@ function showInfoPub(url, user_id, evt) {
             complete: function  (data) {
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            idNewTheater = loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, true);
-            showTheater();
-            animateScroll("#theater-view_"+idNewTheater);
+            newChild = createView(cont, user_id, url, 'chapter', cont.previous_pub_id, true);
+            if (idPubToIdUnique.has(id_prev_pub)){
+                parentView.set(idPubToIdUnique.get(id_prev_pub), newChild);
+            }
+            console.log(newChild)
+            animateScroll("#theater-view_"+newChild);
         }
     });
     }
 
-    function preLoadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id, all) {
-        deleteAllViews();
-        loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id, all);
-    }
-
-    function loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, currentView, user_id, all) {
+    function loadPrevChapTheaterView(urlPrevChapt, urlFirstStory, childView, user_id, all) {
         url =  urlPrevChapt
     // es == "null" y no == null porque asi interpreta javascript un dato que se genera con {'url_prev_chapter': None} en python.
     if (url == "null" || url == null){ 
@@ -158,29 +157,43 @@ function showInfoPub(url, user_id, evt) {
         type:  'get',
         dataType:  'text/json',
         complete: function  (data) {
+            var newParent;
             //console.log(data.responseText);
             cont = JSON.parse(data.responseText).content_pub;
-            var IdNewView;
             if (cont.previous_pub_id != undefined){
-                IdNewView = loadTheater(cont, user_id, url, 'chapter', cont.previous_pub_id, false);
-                parentView.set(IdNewView, currentView);
+                newParent = createView(cont, user_id, url, 'chapter', cont.previous_pub_id, false);
                 if (all){
-                    loadPrevChapTheaterView(cont.url_prev_chapter, cont.url_first_story, IdNewView, user_id, all);
+                    loadPrevChapTheaterView(cont.url_prev_chapter, cont.url_first_story, newParent, user_id, all);
+                }else{
+                    animateScroll("#theater-view_"+newParent);
                 }
             }else{
-                IdNewView = loadTheater(cont, user_id, url, 'story', null, false);
-                parentView.set(IdNewView, currentView);
+                console.log("entra")
+                newParent = createView(cont, user_id, url, 'story', null, false);
+                console.log("crea a "+newParent)
                 first_story = cont.id;
+                console.log("ultima view creada "+newParent)
+                animateScroll("#theater-view_"+newParent);
                 /*Actualizamos es boton para que ya no cargue de nuevo la first-story*/
-                idPubToIdUnique.forEach(function (value, key) {
-                    $("#first-story_"+value).attr('onclick',`animateScroll('#theater-view_`+idPubToIdUnique.get(cont.id)+`')`); 
-                    //$("#first-story_"+value).attr('href',"#theater-view_"+idPubToIdUnique.get(cont.id)); 
-                });
             }
-            $("#pre-story_"+currentView).attr('onclick',`animateScroll('#theater-view_`+IdNewView+`')`); 
-            //$("#pre-story_"+currentView).attr('href',"#theater-view_"+IdNewView); 
+            parentView.set(newParent, childView);
         }
     });
+}
+
+/*Crea una view o verifica si su padre ya la tiene creada para no crearla de nuevo.*/
+function createView(cont, user_id, url, typePubli, id_prev_pub, position) {
+    idParentUnique = idPubToIdUnique.get(id_prev_pub);
+    var idNewTheater;
+    if (!idPubToIdUnique.has(cont.id) || (idPubToIdUnique.has(cont.id) && !views.includes(idPubToIdUnique.get(cont.id)))){
+            updateViews(cont.previous_pub_id);
+            idNewTheater = loadTheater(cont, user_id, url, typePubli, cont.previous_pub_id, position);
+            views.push(idNewTheater);
+            showTheater();
+        }else{
+            idNewTheater = idPubToIdUnique.get(cont.id);
+    }
+    return idNewTheater;
 }
 
 /*Clona el template theater-view-template y lo rellena con los datos de la publicacion. 
@@ -199,10 +212,6 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         pubid = cont.id_main_story+"_"+cont.id;
     }
     idPubToIdUnique.set(cont.id, pubid);
-    updateViews(idParent);
-    if (idPubToIdUnique.has(idParent)){
-        parentView.set(idPubToIdUnique.get(idParent), pubid);
-    }
     newNode = $("#theater-view-template").clone(true);
     if (position){
         $("#theater-main").append(newNode);
@@ -309,7 +318,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
     if (typePubli == 'story'){
         $("#displacement-menu_"+pubid).css({'display':"none"});
     }else{
-        $("#first-story_"+pubid).attr('onclick',`preLoadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+true+`)`); 
+        $("#first-story_"+pubid).attr('onclick',`loadPrevChapTheaterView('`+cont.url_prev_chapter+`','`+cont.url_first_story+`','`+pubid+`','`+user_id+`',`+true+`)`); 
         //si tiene al idParent es porque el padre ya estaba creado,
         //por lo que la pre-story no es necesaria cargarla de nuevo (un poco de acoplamiento).
         if(!idPubToIdUnique.has(idParent)){
@@ -339,18 +348,19 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
 function updateViews(idParent) {
     if (idParent!=null){
         idParentUnique = idPubToIdUnique.get(idParent);
-        deletChildView(idParentUnique)
+        deleteChildView(idParentUnique)
     }else{
         //console.log("Entraca")
     }
 }
 
-function deletChildView(idParentUnique) {
+function deleteChildView(idParentUnique) {
     childView = parentView.get(idParentUnique);
     if(childView){
         $("#theater-view_"+childView).remove();
         parentView.delete(idParentUnique);
-        deletChildView(childView);
+        views.splice(views.indexOf(childView), 1);
+        deleteChildView(childView);
     }else{
         //console.log(idParentUnique+" dio child false");
     }

@@ -34,7 +34,7 @@
     background: black;
     display: flex;
     align-items: center;
-    font-family: sans-serif, sans-serif, "avenir-medium","Helvetica Neue",Helvetica,Arial;
+    font-family: sans-serif, sans-serif, "Sans-Pro-Regular","Helvetica Neue",Helvetica,Arial;
 }
 
 .publication-node {
@@ -139,13 +139,13 @@
 }
 
 .publication-container {
-    font-family: "avenir-book","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+    font-family: "Sans-Pro-Regular","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
     position: inherit;
     color: black;
 }
 
 .publication-container a{
-    font-family: "avenir-medium","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
+    font-family: "Sans-Pro-Regular","Helvetica Neue",Helvetica,Arial,sans-serif, sans-serif;
 }
 
 
@@ -264,7 +264,7 @@
 #title-read-mode {
     text-align: center;
     margin: auto;
-    font-family: 'avenir-medium';
+    font-family: 'Sans-Pro-Regular';
 }
 
 .modal-header .close {
@@ -274,7 +274,7 @@
 .content-read-mode {
     padding: 8px;
     line-height: 24px;
-    font-family: 'avenir-book';
+    font-family: 'Sans-Pro-Regular';
     font-size: 18px;
 }
 
