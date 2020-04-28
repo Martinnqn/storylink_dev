@@ -110,18 +110,12 @@ ul{
     padding-top: 5px;
 }
 
-
-.img-thumbnail {
-    height: auto;
-    width: 100%;
-}
-
-div.img-thumbnail {
+.div-bgcolor {
     border: 1px;
     border-radius: 50px;
     height: 100px;
     width: 100px;
-    margin:auto;
+    margin: auto;
 }
 
 .card-story {
@@ -150,12 +144,15 @@ div.img-thumbnail {
     padding: 2px;
     position: static;
     overflow: hidden;
+    border-left: 1px solid #eee;
 }
 
 
 .card-body h5{
-    display: inline-flex;
+    display: inline;
     overflow: hidden;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .description {
@@ -222,6 +219,11 @@ div.img-thumbnail {
         padding: 0;
     }
 
+    .div-bgcolor{
+        height: 60px;
+        width: 60px;
+    }
+
 }
 
 
@@ -237,14 +239,9 @@ div.img-thumbnail {
         font-size: 16px;
     }
 
-    div.img-thumbnail {
-        border-radius: 25px;
-        height: 50px;
-        width: 50px;
-    }
 
-    img.img-thumbnail {
-        height: 100px;
-        width: 100px;
+    .div-bgcolor{
+        height: 30px;
+        width: 30px;
     }
 }

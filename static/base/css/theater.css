@@ -33,6 +33,7 @@
     position: fixed;
     background: black;
     display: flex;
+    align-items: center;
     font-family: sans-serif, sans-serif, "avenir-medium","Helvetica Neue",Helvetica,Arial;
 }
 
@@ -89,7 +90,7 @@
     height: 25px;
     border-right: 1px solid black;
     color: white;
-    margin-left: -30px;
+    margin-left: -25px;
 }
 
 .menu-pub .material-icons{
@@ -106,7 +107,8 @@
 
 .menu-pub:hover{
     width: auto;
-    height: auto;
+    height: 50%;
+    word-wrap: anywhere;
 }
 
 .menu-pub:hover .material-icons{
@@ -115,6 +117,9 @@
 
 .pub-data-init {
     display: none;
+    transform: translate(0,-50%);
+    top: 50%;
+    position: relative;
 }
 
 .pub-data-init a{
@@ -190,13 +195,15 @@
 
 .title-pub-detail {
     color: white;
-    display: inline;
     overflow: hidden;
-    width: max-content;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 #unsubscribe-story {
-    margin: auto;
     color: white;
     margin-left: auto;
     margin-right: auto;
@@ -208,7 +215,8 @@
 }
 
 #subscribe-story {
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .title-theater-view {
@@ -282,8 +290,7 @@
     padding: 2px;
     color: white;
     display: flex;
-    margin-top: auto;
-    margin-bottom: auto;
+    min-width: max-content;
 }
 
 .btn-close:hover {
@@ -344,17 +351,19 @@
 
 
 /*Previsualizacion de chapters*/
-.card-story .pub-owner{
-    display: inline;
+.header-mini-card{
+    display: flex;
+    justify-content: space-between;
 }
 
-.card-story .pub-owner .img-autor-mini{
-    margin-top: 0;
+.header-mini-card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .chapter-preview .card-story {
     max-height: 200px;
-    height: 200px;
     overflow-y: hidden;
 }
 .chapter-preview .tags-story {

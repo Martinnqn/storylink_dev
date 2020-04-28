@@ -250,7 +250,8 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
             $("#header-image").html('<img id="" class="header-image img-fluid" src="'+cont.img_content_link+'" alt="'+cont.own_username+'">');
         }else{
-            $("#header-image").css('background', cont.color);
+            $("#header-image").html('<div id="circle-color" class="div-bgcolor"></div>');
+            $("#circle-color").css('background', cont.color);
         }
     }else{
         $("#title-pub-detail").text(cont.title);
@@ -258,9 +259,10 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         //$("#publication-title_"+pubid).text(cont.question);
         if (parentView.size==0){
             if (cont.img_content_link!=undefined && !cont.img_content_link.includes('gallery/no-img.png')){
-                $("#header-image").html('<img id="" class="header-image img-fluid" src="'+cont.img_content_link+'" alt="'+cont.own_username+'">');
+                $("#header-image").html('<img id="" class="img-fluid" src="'+cont.img_content_link+'" alt="'+cont.own_username+'">');
             }else{
-                $("#header-image").css('background', cont.color);
+                $("#header-image").html('<div id="circle-color" class="div-bgcolor"></div>');
+                $("#circle-color").css('background', cont.color);
             }
             $("#name-autor-init").text(cont.own_name_first_story);
             $("#name-autor-init").attr('href', cont.url_autor_init);

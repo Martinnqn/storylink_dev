@@ -8,12 +8,14 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
     <div class="container">
     <div class="row content-story">
         <div class="col-12 card-body">
-          {%if chap.active %}
-            <h5>{{chap.quest_answ}}</h5>
-          {%else%}
-            <h5 class="disabled-story" >{{chap.quest_answ}}</h5>
-          {%endif%}
-        <div class="pub-owner">
+        <div class="header-mini-card">
+          <div class="header-mini-card-title">
+            {%if chap.active %}
+              <h5>{{chap.quest_answ}}</h5>
+            {%else%}
+              <h5 class="disabled-story" >{{chap.quest_answ}}</h5>
+            {%endif%}
+          </div>
             <a id="link-autor-profile" href="{% url 'user:user_profile' chap.own_user.username %}"><img src="{{chap.own_user.link_img_perfil.url}}" id="img-owner" class="img-autor-mini" alt="{{chap.own_user.username}}"></a>
         </div>
         {%if chap.active %}

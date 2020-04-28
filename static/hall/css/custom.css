@@ -27,24 +27,6 @@
 	display: inline-block;
 }
 
-.nav-hall a:hover{
-    -webkit-animation: glow 1s ease-in-out infinite alternate;
-    -moz-animation: glow 1s ease-in-out infinite alternate;
-    animation: glow 1s ease-in-out infinite alternate;
-    /*text-shadow: 4px -4px 7px #ff6567;
-    text-shadow: -4px 4px 7px #ff6567;
-    text-shadow: -4px 4px 7px #ff6567;*/
-}
-
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073;
-  }
-  
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6;
-  }
-}
 
 @media (min-width: 992px) and (max-width: 1999px) {
     #content-filter {
