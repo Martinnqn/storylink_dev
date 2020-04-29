@@ -241,6 +241,17 @@ a:hover{
     display: flex;
 }
 
+
+
+.color-pub{
+    display: flex;
+}
+
+.color-pub li{
+    list-style: none;
+    margin-left: 10px;
+}
+
 @media(min-width:992px) {
 
 

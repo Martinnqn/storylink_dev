@@ -8,6 +8,15 @@ from ckeditor.widgets import CKEditorWidget
 import bleach
 from django.utils.html import conditional_escape, escape
 
+from django.utils.safestring import mark_safe
+
+CHOICES = (
+    ('#000000', '<span style="background:#000000; width:10px; height:10px; display:inline-block"></span>'),
+    ('#FF0000', '<span style="background:#FF0000; width:10px; height:10px; display:inline-block"></span>'),
+    ('#00FF00', '<span style="background:#00FF00; width:10px; height:10px; display:inline-block"></span>'),
+    ('#0000FF', '<span style="background:#0000FF; width:10px; height:10px; display:inline-block"></span>'),
+    )
+
 '''Nota para saber: agregar el field tag en la definicion de la clase, permite obtener un campo
 llamado tag con id = id_tag, pero que no esta asociado al campo tag del modelo. Esto para
 evitar que falle form.is_valid() en la view, ya que el field tag del modelo comprueba que cada tag
@@ -30,7 +39,7 @@ class StoryCreationForm(ModelForm):
          Puedes probar con "ficcion", "terror", "storyAventura", "cienciaFiccion", "storyLove", "storyKid", etc.
          Los tags se separan con espacios, y pueden tener máximo 80 caracteres.'''
         self.fields['img_content_link'].label = "Agregar Portada"
-        self.fields['color'] = forms.CharField(widget=forms.TextInput(attrs={'type': 'color'})) 
+        self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
         self.fields['color'].help_text = "Puedes seleccionar un color en caso que no poseas una imagen de portada."
         self.fields['opened'].label = "Abierta"
         self.fields['opened'].help_text = "Permitir que otros usuarios puedan continuar la trama."
@@ -70,6 +79,7 @@ class StoryEditForm(ModelForm):
         super(StoryEditForm, self).__init__(*args, **kwargs)
         self.fields['img_content_link'].label= 'Portada actual'
         self.fields['img_content_link'].required = False
+        self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
         fpub = kwargs.get('instance', None);
         if (fpub):
             self.initial['tag'] = " ".join([t.tag for t in fpub.tag.all()])
@@ -77,7 +87,6 @@ class StoryEditForm(ModelForm):
         self.fields['text_content'].label = "Story"
         self.fields['title'].label = "Título"
         self.fields['title'].max_length= 120
-        self.fields['color'] = forms.CharField(widget=forms.TextInput(attrs={'type': 'color'})) 
         self.fields['opened'].label = "Abierta"
         self.fields['opened'].help_text = "Permitir que otros usuarios puedan continuar la trama."
 

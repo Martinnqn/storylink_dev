@@ -34,22 +34,65 @@
       {{ field.label_tag }}
       {% if form.is_bound %}
         {% if field.errors %}
-          {% render_field field class="form-control is-invalid" %}
-          {% for error in field.errors %}
-            <div class="invalid-feedback">
-              {{ error }}
-            </div>
-          {% endfor %}
-        {% else %}
-          {% render_field field class="form-control is-valid" %}
-        {% endif %}
-      {% else %}
-      {%ifequal field.id_for_label|stringformat:"s" "id_img_content_link"%}
+          {%if field.name == "id_img_content_link"%}
           <img id="img-preview-form" src="{{field.value.url}}" alt="{{field.value}}" />
           {% render_field field class="form-control" %}
-        {%else%}
+            {%elif field.name == "color" %}
+            <div class="color-pub">
+            {% for choice in form.fields.color.choices %}
+                <li>
+                  <input type="radio" name="{{field.name}}" value="{{choice.0}}"
+                    {% ifequal field.initial choice.0 %} 
+                       checked="checked"
+                    {% endifequal %}/>
+                  <label for="">{{choice.1|safe}}</label>
+               </li>
+              {% endfor %}
+            </div>
+          {% else %}
+            {% render_field field class="form-control is-invalid" %}
+            {% for error in field.errors %}
+              <div class="invalid-feedback">
+                {{ error }}
+              </div>
+           {% endfor %}
+          {%endif%}
+        {% else %}
+        {%if field.name == "color" %}
+        <div class="color-pub">
+            {% for choice in form.fields.color.choices %}
+                <li>
+                  <input type="radio" name="{{field.name}}" value="{{choice.0}}"
+                    {% ifequal field.initial choice.0 %} 
+                       checked="checked"
+                    {% endifequal %}/>
+                  <label for="">{{choice.1|safe}}</label>
+               </li>
+              {% endfor %}
+          </div>
+          {% else %}
+          {% render_field field class="form-control is-valid" %}
+          {% endif %}
+        {% endif %}
+      {% else %}
+      {%if field.name == "id_img_content_link"%}
+          <img id="img-preview-form" src="{{field.value.url}}" alt="{{field.value}}" />
           {% render_field field class="form-control" %}
-      {%endifequal%}
+        {%elif field.name == "color" %}
+        <div class="color-pub">
+        {% for choice in form.fields.color.choices %}
+            <li>
+              <input type="radio" name="{{field.name}}" value="{{choice.0}}"
+                {% ifequal field.initial choice.0|safe %} 
+                   checked="checked"
+                {% endifequal %}/>
+              <label for="">{{choice.1|safe}}</label>
+           </li>
+          {% endfor %}
+        </div>
+        {% else %}
+          {% render_field field class="form-control" %}
+      {%endif%}
       
       {% endif %}
 

@@ -28,7 +28,6 @@
       {% endfor %}
     </div>
   {% endif %}
-
   {% for field in form.visible_fields %}
     <div class="form-group">
       {{ field.label_tag }}
@@ -42,17 +41,59 @@
       {%endcomment%}
       {% if form.is_bound %}
         {% if field.errors %}
+              {% if field.name|safe == "color" %}
+              <div class="color-pub">
+              {% for choice in form.fields.color.choices %}
+                  <li>
+                    <input type="radio" name="{{field.name|safe}}" value="{{choice.0|safe}}"
+                      {% ifequal field.data|safe choice.0|safe %} 
+                         checked="checked"
+                      {% endifequal %}/>
+                    <label for="">{{choice.1|safe}}</label>
+                 </li>
+                {% endfor %}
+              </div>
+        {% else %}
           {% render_field field class="form-control is-invalid" %}
           {% for error in field.errors %}
             <div class="invalid-feedback">
               {{ error }}
             </div>
           {% endfor %}
+        {% endif %}
+        {% else %}
+        {% if field.name|safe == "color" %}
+        <div class="color-pub">
+        {% for choice in form.fields.color.choices %}
+            <li>
+              <input type="radio" name="{{field.name|safe}}" value="{{choice.0|safe}}"
+                {% ifequal field.data|safe choice.0|safe %} 
+                   checked="checked"
+                {% endifequal %}/>
+              <label for="">{{choice.1|safe}}</label>
+           </li>
+          {% endfor %}
+        </div>
         {% else %}
           {% render_field field class="form-control is-valid" %}
         {% endif %}
+        {% endif %}
       {% else %}
-        {% render_field field class="form-control" %}
+      {% if field.name|safe == "color" %}
+        <div class="color-pub">
+          {% for choice in form.fields.color.choices %}
+              <li>
+                <input type="radio" name="{{field.name|safe}}" value="{{choice.0|safe}}"
+                  {% ifequal field.initial|safe choice.0|safe %} 
+                     checked="checked"
+                  {% endifequal %}/>
+                <label for="">{{choice.1|safe}}</label>
+             </li>
+          {% endfor %}
+        </div>
+        {% else %}
+          {% render_field field class="form-control" %}
+        {% endif %}
       {% endif %}
 
       {% if field.help_text %}
