@@ -85,6 +85,10 @@ strong.hall{
   color: #fff;
 }
 
+#login-div .btn-facebook{
+    font-size: 16px
+}
+
 @media(max-width:900px) {
     #container-form-create-account{
         width: 60%;

@@ -10,6 +10,22 @@
 
 {% endblock %}
 
+{%block primary-navbar%}
+        <div id="header-base" class="sticky-top">
+            <!-- navBar primario -->   
+            <div class="container">
+                <nav id="primary-navbar" class="navbar navbar-expand-lg navbar-dark">
+                    <!-- Brand -->
+                    <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
+                    <div id="login-div">
+                        <a class="" href="{% url 'sign_up' %}">Registrarse</a>
+                        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
+                    </div>
+                </nav> 
+            </div>
+        </div>
+{%endblock%} <!--primary-navbar-->
+
 {% block main-content %}
 <div class="container">
   <h1 class="title-welcome">Bienvenido a Storylink.club</h1>
