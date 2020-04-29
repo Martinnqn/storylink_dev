@@ -141,7 +141,7 @@ function showInfoPub(url, user_id, evt) {
                 parentView.set(idPubToIdUnique.get(id_prev_pub), newChild);
             }
             console.log(newChild)
-            animateScroll("#theater-view_"+newChild);
+            animateScroll("#theater-view_"+newChild);            
         }
     });
     }
@@ -168,11 +168,8 @@ function showInfoPub(url, user_id, evt) {
                     animateScroll("#theater-view_"+newParent);
                 }
             }else{
-                console.log("entra")
                 newParent = createView(cont, user_id, url, 'story', null, false);
-                console.log("crea a "+newParent)
                 first_story = cont.id;
-                console.log("ultima view creada "+newParent)
                 animateScroll("#theater-view_"+newParent);
                 /*Actualizamos es boton para que ya no cargue de nuevo la first-story*/
             }
