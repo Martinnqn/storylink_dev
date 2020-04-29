@@ -75,6 +75,7 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'user_name': own_user.first_name})
             data['content_pub'].update({'user_lastname': own_user.last_name})
             data['content_pub'].update({'own_user': own_user.id})
+            data['content_pub'].update({'own_first_story': own_user.id})
             data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
             data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_story', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_story', kwargs={'username': own_user.username, 'pk': publication.id})})
@@ -265,9 +266,13 @@ class CreateStory(LoginRequiredMixin, generic.CreateView):
         return context
 
     def form_valid(self, form):
-        story = form.save(commit=False)
-        story.own_user = self.request.user
-        form.save()
+        try:
+            with transaction.atomic():
+                story = form.save(commit=False)
+                story.own_user = self.request.user
+                form.save()
+        except IntegrityError as e:
+                    print("Errorrrrr "+e.message)
         addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
 
@@ -292,23 +297,24 @@ class CreateStoryContinuation(LoginRequiredMixin, generic.DetailView, generic.Cr
         return context
 
     def form_valid(self, form):
-        story = form.save(commit=False)
-        story.own_user = self.request.user
-        try:
-            with transaction.atomic():
-                #if (form.cleaned_data.get("previous_story_id") != None):
-                #base_pub = get_object_or_404(StoryPublication, id = form.cleaned_data.get("previous_story_id"))
-                mainS = get_object_or_404(StoryPublication, id = self.kwargs.get('pk'))
-                if (mainS):
-                    story.mainStory=mainS
+        storyMain = get_object_or_404(StoryPublication, id = self.kwargs.get('pk'))
+        if (storyMain.opened or (self.request.user.id == storyMain.own_user.id)):
+            try:
+                with transaction.atomic():
+                    story = form.save(commit=False)
+                    story.own_user = self.request.user
+                    #if (form.cleaned_data.get("previous_story_id") != None):
+                    #base_pub = get_object_or_404(StoryPublication, id = form.cleaned_data.get("previous_story_id"))
+                    if (storyMain):
+                        story.mainStory=storyMain
 
-                if (self.kwargs.get('pkchapter')):
-                    prevChap = get_object_or_404(StoryChapter, id = self.kwargs.get('pkchapter'))
-                    story.prevChapter=prevChap
-                form.save()
-        except IntegrityError as e:
-                print("Errorrrrr "+e.message)
-        addTags(form.cleaned_data.get('tag').split(), story)
+                    if (self.kwargs.get('pkchapter')):
+                        prevChap = get_object_or_404(StoryChapter, id = self.kwargs.get('pkchapter'))
+                        story.prevChapter=prevChap
+                    form.save()
+            except IntegrityError as e:
+                    print("Errorrrrr "+e.message)
+            addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
     
     #si opened es true o el usuario que la modifica es el duenio entonces se procede normalmente, sino se redirige al hall.

@@ -7,14 +7,21 @@ from ckeditor.fields import RichTextField
 from ckeditor.widgets import CKEditorWidget
 import bleach
 from django.utils.html import conditional_escape, escape
+from django.forms import ValidationError
 
 from django.utils.safestring import mark_safe
 
 CHOICES = (
-    ('#000000', '<span style="background:#000000; width:10px; height:10px; display:inline-block"></span>'),
-    ('#FF0000', '<span style="background:#FF0000; width:10px; height:10px; display:inline-block"></span>'),
-    ('#00FF00', '<span style="background:#00FF00; width:10px; height:10px; display:inline-block"></span>'),
-    ('#0000FF', '<span style="background:#0000FF; width:10px; height:10px; display:inline-block"></span>'),
+    ('#000000', '<span style="background:#000000;" class="palette-color-pub"></span>'),
+    ('#314455', '<span style="background:#314455;" class="palette-color-pub"></span>'),
+    ('#6495ed', '<span style="background:#6495ed;" class="palette-color-pub"></span>'),
+    ('#885930', '<span style="background:#885930;" class="palette-color-pub"></span>'),
+    ('#66978e', '<span style="background:#66978e;" class="palette-color-pub"></span>'),
+    ('#8f6b99', '<span style="background:#8f6b99;" class="palette-color-pub"></span>'),
+    ('#ff6567', '<span style="background:#ff6567;" class="palette-color-pub"></span>'),
+    ('#ccb270', '<span style="background:#ccb270;" class="palette-color-pub"></span>'),
+    ('#bcd28f', '<span style="background:#bcd28f;" class="palette-color-pub"></span>'),
+    ('#e3d2b2', '<span style="background:#e3d2b2;" class="palette-color-pub"></span>'),
     )
 
 '''Nota para saber: agregar el field tag en la definicion de la clase, permite obtener un campo
@@ -39,8 +46,9 @@ class StoryCreationForm(ModelForm):
          Puedes probar con "ficcion", "terror", "storyAventura", "cienciaFiccion", "storyLove", "storyKid", etc.
          Los tags se separan con espacios, y pueden tener máximo 80 caracteres.'''
         self.fields['img_content_link'].label = "Agregar Portada"
+        self.fields['img_content_link'].validators.append(validate_image)
         self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
-        self.fields['color'].help_text = "Puedes seleccionar un color en caso que no poseas una imagen de portada."
+        self.fields['color'].help_text = "Puedes seleccionar un color para personalizar la publicación."
         self.fields['opened'].label = "Abierta"
         self.fields['opened'].help_text = "Permitir que otros usuarios puedan continuar la trama."
 
@@ -79,6 +87,7 @@ class StoryEditForm(ModelForm):
         super(StoryEditForm, self).__init__(*args, **kwargs)
         self.fields['img_content_link'].label= 'Portada actual'
         self.fields['img_content_link'].required = False
+        self.fields['img_content_link'].validators.append(validate_image)
         self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
         fpub = kwargs.get('instance', None);
         if (fpub):
@@ -140,3 +149,11 @@ class FilterHall(ModelForm):
         self.fields['title'].label = "Título"
         self.fields['title'].required = False
         self.fields['tag'].required = False
+
+
+
+def validate_image(image):
+    filesize = image.size
+    megabyte_limit = 5.0
+    if filesize > megabyte_limit*1024*1024:
+        raise ValidationError("El tamaño máximo permitido para las imágenes es %sMB" % str(megabyte_limit))

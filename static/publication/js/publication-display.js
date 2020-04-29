@@ -301,7 +301,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         }
 
         $("#btn-create-continuation_"+pubid).attr('href',cont.url_continuate);
-        if(cont.privacity || (cont.own_user==js_user_id)){
+        if(cont.opened || (cont.own_first_story==js_user_id)){
             $("#btn-create-continuation_"+pubid).css({display:'flex'});
         }else{
             $("#btn-create-continuation_"+pubid).css({display:'none'});
