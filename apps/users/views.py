@@ -27,9 +27,9 @@ class ListUserPerfil(LoginRequiredMixin, generic.DetailView):
         is_following = from_user.from2To.filter(to_user = to_user).exists()
         context.update({'is_following': is_following})
         context.update({'customuser': to_user})
-        publications = StoryPublication.objects.filter(own_user = to_user, active=True)
+        publications = StoryPublication.objects.filter(own_user = to_user, active=True).order_by('date_time__month', '-date_time__day')
         context.update({'storypublication_list': publications})
-        chaps = StoryChapter.objects.filter(own_user = to_user, active=True)
+        chaps = StoryChapter.objects.filter(own_user = to_user, active=True).order_by('date_time__month', '-date_time__day')
         context.update({'storychapter_list': chaps})
         return context
 

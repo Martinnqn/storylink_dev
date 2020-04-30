@@ -15,6 +15,7 @@ Crea un card-story con el contenido de una story a partir de la variable storypu
         <h3 class="title-card-story">
             {{storypublication.title|truncatechars:35}}
         </h3>
+            {% comment %}<small>{{storypublication.date_time}}</small>{% endcomment %}
         <div class="description">{{storypublication.text_content|safe|truncatechars:150}}</div>
         <div class="tags-story">
           {% for h in storypublication.tag.all %}

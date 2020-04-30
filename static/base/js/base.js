@@ -9,7 +9,7 @@ function searchUser(url) {
                     users = JSON.parse(data.responseText).users_found;
                     var x = "<ul class='list-users-found'>";
                     for (var i = 0; i <= users.length - 1; i++) {
-                        x+="<li><a href='"+users[i].url+"'>"+users[i].username+"</a></li>";
+                        x+="<li><a href='"+users[i].url+"'>"+users[i].username+"</a></li><hr>";
                     }
                     x+="</ul>";
                     $("#users-found").html(x);

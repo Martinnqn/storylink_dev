@@ -29,7 +29,7 @@ class ListUserStories(LoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         user = get_object_or_404(CustomUser, username=self.kwargs["username"])
         qs = StoryPublication.objects.filter(own_user=user)
-        return qs
+        return qs.order_by('date_time__month', '-date_time__day')
 
     def get_context_data(self, **kwargs):
         context = super(ListUserStories, self).get_context_data(**kwargs)
