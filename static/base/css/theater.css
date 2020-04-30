@@ -127,6 +127,10 @@
     text-decoration: underline;
 }
 
+.header-image{
+    max-width: 420px;
+}
+
 .img-autor-mini{
     height: 60px;
     width: 60px;
@@ -256,7 +260,7 @@
 }
 
 /*Color de fondo del modal en mode-read*/
-.modal-backdrop.show{
+#story-read-mode .modal-backdrop.show{
     opacity: 1;
 }
 
@@ -266,7 +270,7 @@
     font-family: 'Sans-Pro-Regular';
 }
 
-.modal-header .close {
+#story-read-mode .modal-header .close {
     margin: 0;
 }
 
@@ -277,11 +281,11 @@
     font-size: 18px;
 }
 
-.modal-dialog {
+#story-read-mode .modal-dialog {
     max-width: 100%;
 }
 
-.modal-footer {
+#story-read-mode .modal-footer {
     justify-content: center;
 }
 

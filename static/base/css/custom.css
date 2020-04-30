@@ -256,6 +256,17 @@ a:hover{
     border-radius: 12px;
 }
 
+
+label[for=id_opened] {
+    display: inline-flex;
+}
+
+#id_opened {
+    display: inline;
+    width: auto;
+    vertical-align: middle;
+}
+
 @media(min-width:992px) {
 
 

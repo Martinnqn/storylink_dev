@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /**
          * Método que oculta la sección de Cookie para siempre
          */
-        function ocultarCookie() {
+         function ocultarCookie() {
             // Borra la sección de cookies en el HTML
             seccionCookie.remove();
         }
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /**
          * Método que marca las cookies como aceptadas
          */
-        function aceptarCookies() {
+         function aceptarCookies() {
             // Oculta el HTML de cookies
             ocultarCookie()
             // Guarda que ha aceptado
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /**
          * Método que marca las cookies como denegadas
          */
-        function denegarCookies() {
+         function denegarCookies() {
             // Oculta el HTML de cookies
             ocultarCookie()
             // Guarda que ha aceptado
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /**
          * Método que ejecuta tu código si aceptan las cookies
          */
-        function ejecutarSiAcepta() {
+         function ejecutarSiAcepta() {
             /////////////////// Tu código ////////////////
             // Google Analitics
             window.dataLayer = window.dataLayer || [];
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         /**
          * Método que inicia la lógica
          */
-        function iniciar() {
+         function iniciar() {
             // Comprueba si en el pasado el usuario ha marcado una opción
             if (localStorage.getItem('aceptacookie') !== null) {
                 if(localStorage.getItem('aceptacookie') === 'true') {
@@ -130,4 +130,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Activa el código. Comenta si quieres desactivarlo.
     cookies().iniciar();
 
+});
+
+
+
+////validar imagen subida a formulario
+$(document).on('change','input[type="file"]',function(){
+    // this.files[0].size recupera el tamaño del archivo
+    // alert(this.files[0].size);
+    if (this.files[0]!=undefined){
+        var fileName = this.files[0].name;
+        var fileSize = this.files[0].size;
+
+        if(fileSize > 5000000){
+            $('#modal-alert').modal({"show":true});
+            $('#modal-alert .modal-title').text("Imágen inválida")
+            $('#modal-alert .modal-body').text("La imagen excede el tamaño permitido. El tamaño máximo es de 5.0MB. Por favor seleccione otra imagen.")
+            this.value = '';
+        }else{
+        // recuperamos la extensión del archivo
+        var ext = fileName.split('.').pop();
+        
+        // Convertimos en minúscula porque 
+        // la extensión del archivo puede estar en mayúscula
+        ext = ext.toLowerCase();
+
+        // console.log(ext);
+        switch (ext) {
+            case 'jpg':
+            case 'jpeg':
+            case 'png': break;
+            default:
+            $('#modal-alert').modal({"show":true});    
+            $('#modal-alert .modal-title').text("Archivo inválido")
+            $('#modal-alert .modal-body').text("El archivo subido no corresponde a un formato permitido. Los formatos permitidos son .jpg, .jpeg, .png. Por favor seleccione otra imagen.")
+                this.value = ''; // reset del valor
+            }
+        }
+    }else{
+        $('#modal-alert').modal({"show": true});    
+    }
 });

@@ -12,12 +12,12 @@ from django.forms import ValidationError
 from django.utils.safestring import mark_safe
 
 CHOICES = (
-    ('#000000', '<span style="background:#000000;" class="palette-color-pub"></span>'),
+    ('#4a4a4a', '<span style="background:#4a4a4a;" class="palette-color-pub"></span>'),
     ('#314455', '<span style="background:#314455;" class="palette-color-pub"></span>'),
-    ('#6495ed', '<span style="background:#6495ed;" class="palette-color-pub"></span>'),
-    ('#885930', '<span style="background:#885930;" class="palette-color-pub"></span>'),
-    ('#66978e', '<span style="background:#66978e;" class="palette-color-pub"></span>'),
     ('#8f6b99', '<span style="background:#8f6b99;" class="palette-color-pub"></span>'),
+    ('#66978e', '<span style="background:#66978e;" class="palette-color-pub"></span>'),
+    ('#89abe8', '<span style="background:#89abe8;" class="palette-color-pub"></span>'),
+    ('#885930', '<span style="background:#885930;" class="palette-color-pub"></span>'),
     ('#ff6567', '<span style="background:#ff6567;" class="palette-color-pub"></span>'),
     ('#ccb270', '<span style="background:#ccb270;" class="palette-color-pub"></span>'),
     ('#bcd28f', '<span style="background:#bcd28f;" class="palette-color-pub"></span>'),

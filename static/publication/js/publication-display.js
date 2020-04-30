@@ -276,27 +276,26 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
     }
     $("#publication-content_"+pubid).html(cont.text_content);
 
-    if (cont.active){
-        if ((typePubli == 'story' && cont.own_user != user_id) || (typePubli == 'chapter' && cont.own_first_story != user_id)){
-            $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
-            $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
-            if (cont.is_subscribed){
-                $("#unsubscribe-story").css({display:'inline-block'});
-                //$("#subscribe-story").attr('onclick', '');
-                $("#subscribe-story").css({display:'none'});
-
-            }else{
-                $("#subscribe-story").css({display:'inline-block'});
-                $("#unsubscribe-story").css({display:'none'});
-                //$("#unsubscribe-story").attr('onclick', '');
-            }
-        }else{
-            $("#unsubscribe-story").attr('onclick', '');
-            $("#subscribe-story").attr('onclick', '');
+    if ((typePubli == 'story' && cont.own_user != user_id) || (typePubli == 'chapter' && cont.own_first_story != user_id)){
+        $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
+        $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);
+        if (cont.is_subscribed){
+            $("#unsubscribe-story").css({display:'inline-block'});
+            //$("#subscribe-story").attr('onclick', '');
             $("#subscribe-story").css({display:'none'});
-            $("#unsubscribe-story").css({display:'none'});
-        }
 
+        }else{
+            $("#subscribe-story").css({display:'inline-block'});
+            $("#unsubscribe-story").css({display:'none'});
+            //$("#unsubscribe-story").attr('onclick', '');
+        }
+    }else{
+        $("#unsubscribe-story").attr('onclick', '');
+        $("#subscribe-story").attr('onclick', '');
+        $("#subscribe-story").css({display:'none'});
+        $("#unsubscribe-story").css({display:'none'});
+    }
+    if (cont.active){
         $("#btn-create-continuation_"+pubid).attr('href',cont.url_continuate);
         if(cont.opened || (cont.own_first_story==js_user_id)){
             $("#btn-create-continuation_"+pubid).css({display:'flex'});
@@ -305,11 +304,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         }
     }else{
         $("#btn-create-continuation_"+pubid).attr('href','javascript: void(0)');
-        $("#subscribe-story").attr('onclick', '');
-        $("#subscribe-story").attr('onclick', '');
         $("#btn-create-continuation_"+pubid).css({display:'none'});
-        $("#subscribe-story").css({display:'none'});
-        $("#unsubscribe-story").css({display:'none'});
     }
 
     if (typePubli == 'story'){

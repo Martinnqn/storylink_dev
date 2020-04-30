@@ -6,10 +6,11 @@ function animateScroll(target) {
         //scrollTop: $(target).offset().top
     }, 800);*/
     console.log($('#theater-main').scrollTop())
+    console.log($('#theater-main').offset().top)
     console.log($(target).scrollTop())
     console.log($(target).offset().top)
     $('#theater-main').animate({
-        scrollTop: $('#theater-main').scrollTop()+$(target).offset().top-280,
+        scrollTop: $('#theater-main').scrollTop()+$(target).offset().top,
         scrollLeft: $('#theater-main').scrollLeft()+$(target).offset().left-280,
     }, 800);
 }
@@ -40,3 +41,7 @@ $(document).ready(function(){
   });
 });
 
+/**
+ * Hide the URL address bar on standard Android's browser by setting enough
+ * document height and auto scrolling to active the bar hiding feature
+ */

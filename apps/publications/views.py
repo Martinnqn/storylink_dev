@@ -143,6 +143,9 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'color': mainStory.color})
             data['content_pub'].update({'id_main_story': mainStory.id})
             data['content_pub'].update({'opened': mainStory.opened})
+            fromUser = self.request.user
+            is_subscribed = fromUser.user2Pub.filter(pub = mainStory).exists();
+            data['content_pub'].update({'is_subscribed': is_subscribed})
             
             prev =publication.prevChapter
             if (prev):
@@ -159,11 +162,7 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
                 for x in publication.tag.all():
                     tags.append(x.tag)
                 data['content_pub'].update({'tags': tags})
-                fromUser = self.request.user
                 data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(mainStory.img_content_link.url)})
-                fromUser = self.request.user
-                is_subscribed = fromUser.user2Pub.filter(pub = mainStory).exists();
-                data['content_pub'].update({'is_subscribed': is_subscribed})
             else:
                 data['content_pub'].update({'tags': []})
                 data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
