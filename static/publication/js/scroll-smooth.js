@@ -1,47 +1,16 @@
 function animateScroll(target) {
-    /*var x = ($("#theater-main").scrollLeft()+$(target).offset().left)-390;
-    var y = ($("#theater-main").scrollTop()+$(target).offset().top);
-    $('#theater-main').animate({
-        scrollLeft: x,
-        //scrollTop: $(target).offset().top
-    }, 800);*/
-    console.log($('#theater-main').scrollTop())
+    /*console.log($('#theater-main').scrollTop())
     console.log($('#theater-main').offset().top)
     console.log($(target).scrollTop())
     console.log($(target).offset().top)
+    console.log("resss")
+    console.log($('#theater-main').scrollTop()+($(target).offset().top-window.pageYOffset))
+    alert(window.pageYOffset-$(target).offset().top)
+    alert($(target).offset().top)*/
+    //el scrollTop necesita restarle el pageYoffset porque nose pero funciona.
     $('#theater-main').animate({
-        scrollTop: $('#theater-main').scrollTop()+$(target).offset().top,
-        scrollLeft: $('#theater-main').scrollLeft()+$(target).offset().left-280,
+        scrollTop: $('#theater-main').scrollTop()+($(target).offset().top-window.pageYOffset),
+        scrollLeft: $('#theater-main').scrollLeft()+$(target).offset().left-240,
     }, 800);
+
 }
-
-
-$(document).ready(function(){
-  // Add smooth scrolling to all links
-  $("a").on('click', function(event) {
-
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
-
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 800, function(){
-
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-});
-
-/**
- * Hide the URL address bar on standard Android's browser by setting enough
- * document height and auto scrolling to active the bar hiding feature
- */

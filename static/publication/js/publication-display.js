@@ -6,7 +6,9 @@ function showTheater() {
         $("#display-pub-detail").css({
             'display': 'flex',
         });
-        $("body").css({'overflow-y': 'hidden'});
+        $("body").css({
+            'overflow': 'hidden',
+    });
     }
 }
 
@@ -60,9 +62,41 @@ function showStoriesPreview(url, pubid) {
         complete: function  (data) {
             cont = data.responseText;
             $("#scroll-previews_"+pubid).html(cont);
+           /* elements = $("#scroll-previews_"+pubid).find("[data-view]");
+            //recorre todas las cards de chapters-preview y buscar cual debe setear el highlight
+            //console.log(elements)
+            for (var i = 0; i < elements.length; i++) {
+                if (views.includes(idPubToIdUnique.get(parseInt(elements[i].dataset.view)))) {
+                    addHighLighter(elements[i]);
+                }
+            }*/
         }
     });
 }
+
+//recibe un elemento del DOM (no puede ser un elemento jquery)
+function addHighLighter(element, evt) {
+    element.classList.add("highlight");
+}
+
+function removeHighLighter(element) {
+    element.classList.remove("highlight");
+}
+
+function updateHighLighterFromView(idParentUnique) {
+//verificar que si existe una view padre, quede highlighted el card chapter-preview y el resto no.
+if (idParentUnique!=undefined){
+    elements = $("#scroll-previews_"+idParentUnique).find("[data-view]");
+    for (var i = 0; i < elements.length; i++) {
+        if (!views.includes(idPubToIdUnique.get(parseInt(elements[i].dataset.view)))) {
+            removeHighLighter(elements[i]);
+        }else{
+            addHighLighter(elements[i])
+        }
+    }
+}
+}
+
 
 /*Para mostrar el modo teatro si se visita una publicacion invocando el get.*/
 $(document).ready(function() {
@@ -138,9 +172,10 @@ function showInfoPub(url, user_id, evt) {
             cont = JSON.parse(data.responseText).content_pub;
             newChild = createView(cont, user_id, url, 'chapter', cont.previous_pub_id, true);
             if (idPubToIdUnique.has(id_prev_pub)){
-                parentView.set(idPubToIdUnique.get(id_prev_pub), newChild);
+                idParentUnique = idPubToIdUnique.get(id_prev_pub);
+                parentView.set(idParentUnique, newChild);
+                updateHighLighterFromView(idParentUnique);
             }
-            console.log(newChild)
             animateScroll("#theater-view_"+newChild);            
         }
     });
@@ -174,6 +209,7 @@ function showInfoPub(url, user_id, evt) {
                 /*Actualizamos es boton para que ya no cargue de nuevo la first-story*/
             }
             parentView.set(newParent, childView);
+            updateHighLighterFromView(newParent);
         }
     });
 }
@@ -183,12 +219,12 @@ function createView(cont, user_id, url, typePubli, id_prev_pub, position) {
     idParentUnique = idPubToIdUnique.get(id_prev_pub);
     var idNewTheater;
     if (!idPubToIdUnique.has(cont.id) || (idPubToIdUnique.has(cont.id) && !views.includes(idPubToIdUnique.get(cont.id)))){
-            updateViews(cont.previous_pub_id);
-            idNewTheater = loadTheater(cont, user_id, url, typePubli, cont.previous_pub_id, position);
-            views.push(idNewTheater);
-            showTheater();
-        }else{
-            idNewTheater = idPubToIdUnique.get(cont.id);
+        updateViews(cont.previous_pub_id);
+        idNewTheater = loadTheater(cont, user_id, url, typePubli, cont.previous_pub_id, position);
+        views.push(idNewTheater);
+        showTheater();
+    }else{
+        idNewTheater = idPubToIdUnique.get(cont.id);
     }
     return idNewTheater;
 }
@@ -246,7 +282,7 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         $("#card-options-owner_"+pubid).css({'display': 'none'});
     }
     $("#btn-read-mode_"+pubid).on('click', function(){
-            setContentModalRead(cont.title, cont.question, cont.text_content)
+        setContentModalRead(cont.title, cont.question, cont.text_content)
     });
     if (typePubli == 'story'){
         $("#title-pub-detail").text(cont.title);
@@ -338,6 +374,9 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
 
 /*Actualizar las theater-views...*/
 function updateViews(idParent) {
+    /*console.log(views);
+    console.log(idPubToIdUnique);
+    console.log(parentView);*/
     if (idParent!=null){
         idParentUnique = idPubToIdUnique.get(idParent);
         deleteChildView(idParentUnique)
