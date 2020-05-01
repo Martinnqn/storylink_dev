@@ -1,10 +1,10 @@
 $(document).ready(function() {
-    var params = getParameters();
-    for (var i = params.length - 1; i >= 0; i--) {
-        if (params[i][0]=='used' && params[i][1]=='True'){
-        	$('.msg').html('<p>El e-mail asociado a esta cuenta ya está en uso, por favor ingrese un nuevo e-mail.</p>')
-        }
-    }
+  var params = getParameters();
+  for (var i = params.length - 1; i >= 0; i--) {
+    if (params[i][0]=='used' && params[i][1]=='True'){
+     $('.msg').html('<p>El e-mail asociado a esta cuenta ya está en uso, por favor ingrese un nuevo e-mail.</p>')
+   }
+ }
 });
 
 /*funcion para obtener un arreglo con los parametros de la url*/
@@ -26,15 +26,15 @@ function getParameters() {
 var prevScrollpos = window.pageYOffset;
 window.onscroll = function() {
   var currentScrollPos = window.pageYOffset;
-  if (prevScrollpos + 120 > currentScrollPos) {
+  if (prevScrollpos > currentScrollPos) {
     document.getElementById("header-base").style.top = "0";
   } else {
     document.getElementById("header-base").style.top = "-190px";
   }
-    prevScrollpos = currentScrollPos;
+  prevScrollpos = currentScrollPos;
 }
 
-
+/*
 $(document).ready(function(){
   // Add smooth scrolling to all links
   $("a").on('click', function(event) {
@@ -58,4 +58,22 @@ $(document).ready(function(){
       });
     } // End if
   });
-});
+});*/
+
+function animateScroll(target) {
+    /*console.log($('#theater-main').scrollTop())
+    console.log($('#theater-main').offset().top)
+    console.log($(target).scrollTop())
+    console.log($(target).offset().top)
+    console.log("resss")
+    console.log($('#theater-main').scrollTop()+($(target).offset().top-window.pageYOffset))
+    alert(window.pageYOffset-$(target).offset().top)
+    alert($(target).offset().top)*/
+    //el scrollTop necesita restarle el pageYoffset porque nose pero funciona.
+    console.log($(target).offset().top)
+    console.log($('body').scrollTop())
+    $('html, body').animate({
+        scrollTop: $('body').scrollTop()+$(target).offset().top,
+    }, 800);
+
+}
