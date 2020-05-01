@@ -62,14 +62,8 @@ function showStoriesPreview(url, pubid) {
         complete: function  (data) {
             cont = data.responseText;
             $("#scroll-previews_"+pubid).html(cont);
-           /* elements = $("#scroll-previews_"+pubid).find("[data-view]");
-            //recorre todas las cards de chapters-preview y buscar cual debe setear el highlight
-            //console.log(elements)
-            for (var i = 0; i < elements.length; i++) {
-                if (views.includes(idPubToIdUnique.get(parseInt(elements[i].dataset.view)))) {
-                    addHighLighter(elements[i]);
-                }
-            }*/
+            updateHighLighterFromView(pubid);
+            
         }
     });
 }
@@ -209,7 +203,6 @@ function showInfoPub(url, user_id, evt) {
                 /*Actualizamos es boton para que ya no cargue de nuevo la first-story*/
             }
             parentView.set(newParent, childView);
-            updateHighLighterFromView(newParent);
         }
     });
 }
