@@ -1,12 +1,93 @@
+#header-base {
+    transition: top 0.3s;
+}
+
 .msg-create-acc {
+    color: white;
     display: inline;
 }
 
-.title-welcome {
-    text-align: center;
-    margin-top: 25px;
+.msg-create-acc a {
+    cursor: pointer;
 }
 
+.btn-facebook {
+  background: #3B5998;
+  border-radius: 0;
+  color: #fff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #263961; 
+}
+
+.btn-facebook:link, .btn-facebook:visited {
+  color: #fff;
+}
+
+.btn-facebook:active, .btn-facebook:hover {
+  background: #263961;
+  color: #fff;
+}
+
+#title-welcome .arrow{
+    font-size: 45px;
+    position: absolute;
+    margin-top: 25px;
+    display: block;
+    -webkit-animation: to-back-arrow 1s ease-in-out infinite alternate;
+    -moz-animation: to-back-arrow 1s ease-in-out infinite alternate;
+    animation: to-back-arrow 1s ease-in-out infinite alternate;
+
+}
+
+@-webkit-keyframes to-back-arrow {
+  from {
+    margin-top: 25px;
+  }
+  
+  to {
+    margin-top: 45px;
+  }
+}
+
+.has-account {
+    width: auto;
+    height: auto;
+    display: grid;
+}
+
+.has-account .form-group{
+    margin:auto;
+    width: 130px;
+}
+
+.has-account input {
+    height: 35px;
+    width: 100px;
+}
+
+.has-account label {
+    margin: auto;
+    color: white;
+}
+
+#primary-navbar .btn-custom-2 {
+    font-size: 15px;
+    border:none;
+    margin:auto;
+}
+
+
+#primary-navbar .btn-facebook{
+    font-size: 16px;
+    min-width: max-content;
+    margin: auto;
+}
+
+.to-register {
+    margin:auto;
+    margin-left: 20px;
+}
 
 strong.hall{
     font-family: 'Dancing Script';
@@ -41,53 +122,67 @@ strong.hall{
     margin-top: 25px;
     margin-bottom: 25px;
     background: whitesmoke;
+    width: 300px;
 }
 
 #presentation {
-    margin-top: 25px;
     text-align: center;
 }
 
-#presentation h2{
-    color: #644e5b;
+#img-portada {
+    width: 100%;
+    height: auto;
+    margin-top: 45px;
 }
 
-#presentation-items {
-    margin-top: 50px;
-    text-align: left;
+section{
+    height: 100vh;
+    width: 100%;
+    border-top: 1px solid #31445571;
+    border-left: 1px solid #31445571;
+    border-right: 1px solid #31445571;
 }
 
-#presentation p{
-    margin-top: 20px;
-    color: rgb(66,160,180);
+section a{
+    position: absolute;
+    margin-top: 100px;
 }
 
-#presentation-tree{
-    display: block;
-    margin: auto;
+.section-light {
+background: moccasin;
 }
 
-.btn-facebook {
-  background: #3B5998;
-  border-radius: 0;
-  color: #fff;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #263961; 
+.section-dark {
+    background: #31445571;
 }
 
-.btn-facebook:link, .btn-facebook:visited {
-  color: #fff;
+#presentation .tell-more {
+    -webkit-animation: glowBox 1s ease-in-out infinite alternate;
+    -moz-animation: glowBox 1s ease-in-out infinite alternate;
+    animation: glowBox 1s ease-in-out infinite alternate;
 }
 
-.btn-facebook:active, .btn-facebook:hover {
-  background: #263961;
-  color: #fff;
+@-webkit-keyframes glowBox {
+  from {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #314455, 0 0 40px #314455, 0 0 50px #314455, 0 0 60px #314455;
+  }
+  
+  to {
+    box-shadow: 0 0 20px #fff, 0 0 30px #ff6567, 0 0 40px #ff6567, 0 0 50px #ff6567, 0 0 60px #ff6567;
+  }
 }
 
-#login-div .btn-facebook{
-    font-size: 16px
+.tell-more {
+    width: 60px;
+    height: auto;
+    border-radius: 30px;
 }
+
+.img-esferas {
+    width: 400px;
+    height: auto;
+}
+
 
 @media(max-width:900px) {
     #container-form-create-account{
