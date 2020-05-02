@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //-----------------------------------------------------
         // Variables
         //-----------------------------------------------------
-        let seccionCookie = document.querySelector('section.cookies');
+        let seccionCookie = document.querySelector('.cookies');
         let cookieSi = document.querySelector('.cookies__boton--si');
         let cookieNo = document.querySelector('.cookies__boton--no');
 
