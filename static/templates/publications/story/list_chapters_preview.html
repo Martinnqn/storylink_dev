@@ -4,7 +4,10 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
 <div class="chapter-preview">
 {%if storychapter_list %}
 {% for chap in storychapter_list %}
-  <div data-view="{{chap.id}}" class="card-story" onClick="showInfoChapter('{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}', {{user.id}}, {{chap.mainStory.id}}, {{chap.prevChapter.id|default:chap.mainStory.id}}, event)" style="border-color: rgba(0,0,0,0.2);">
+  <div data-view="chapter_{{chap.id}}" class="card-story" onClick="showInfoChapter('{% url 'user:pub:chapter_content' chap.own_user.username chap.id %}', {{user.id}}, {{chap.mainStory.id}}, {% if  chap.prevChapter.id%}
+    'chapter_{{chap.prevChapter.id}}'
+  {% else %} 'story_{{chap.mainStory.id}}' {% endif %}, event)" style="border-color: rgba(0,0,0,0.2);">
+  
     <div class="container">
     <div class="row content-story">
         <div class="col-12 card-body">
@@ -16,7 +19,13 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
               <h5 class="disabled-story" >{{chap.quest_answ}}</h5>
             {%endif%}
           </div>
-            <a href="{% url 'user:user_profile' chap.own_user.username %}"><img src="{{chap.own_user.link_img_perfil.url}}"  class="img-autor-mini" alt="{{chap.own_user.username}}"></a>
+            <a href="{% url 'user:user_profile' chap.own_user.username %}">
+              {% if user.social_auth.get.provider == 'facebook' %}
+                <img class="img-autor-mini" src="{{ chap.own_user.social_auth.get.extra_data.link_img_perfil.data.url }}" alt="{{chap.own_user.username}}">
+            {%else%}
+                <img class="img-autor-mini" src="{{ chap.own_user.link_img_perfil.url }}" alt="{{chap.own_user.username}}">
+            {%endif%}
+            </a>
         </div>
         {%if chap.active %}
           <div class="description">{{chap.text_content|safe|truncatechars:200}}</div>

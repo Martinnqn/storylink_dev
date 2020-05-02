@@ -70,7 +70,8 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             publication = self.get_object()
             own_user = publication.own_user
             data =  dict()
-            data['content_pub'] = model_to_dict(publication, exclude=['tag', 'own_user', 'img_content_link'])
+            data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'img_content_link'])
+            data['content_pub'].update({'id': 'story_'+str(publication.id)})
             data['content_pub'].update({'own_username': own_user.username})
             data['content_pub'].update({'user_name': own_user.first_name})
             data['content_pub'].update({'user_lastname': own_user.last_name})
@@ -121,7 +122,8 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             own_user = publication.own_user
             mainStory = publication.mainStory
             data =  dict()
-            data['content_pub'] = model_to_dict(publication, exclude=['tag', 'own_user'])
+            data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user'])
+            data['content_pub'].update({'id': 'chapter_'+str(publication.id)})
             data['content_pub'].update({'own_username': own_user.username})
             data['content_pub'].update({'user_name': own_user.first_name})
             data['content_pub'].update({'user_lastname': own_user.last_name})
@@ -149,10 +151,10 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             
             prev =publication.prevChapter
             if (prev):
-                data['content_pub'].update({'previous_pub_id': prev.id})
+                data['content_pub'].update({'previous_pub_id': 'chapter_'+str(prev.id)})
                 data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:chapter_content', kwargs={'username': own_user.username, 'pk': publication.prevChapter.id})})
             else:
-                data['content_pub'].update({'previous_pub_id': mainStory.id})
+                data['content_pub'].update({'previous_pub_id': 'story_'+str(mainStory.id)})
                 data['content_pub'].update({'url_prev_chapter': None})
 
             data['content_pub'].update({'active': publication.active})

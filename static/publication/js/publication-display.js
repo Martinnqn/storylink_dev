@@ -82,7 +82,7 @@ function updateHighLighterFromView(idParentUnique) {
 if (idParentUnique!=undefined){
     elements = $("#scroll-previews_"+idParentUnique).find("[data-view]");
     for (var i = 0; i < elements.length; i++) {
-        if (!views.includes(idPubToIdUnique.get(parseInt(elements[i].dataset.view)))) {
+        if (!views.includes(idPubToIdUnique.get(elements[i].dataset.view))) {
             removeHighLighter(elements[i]);
         }else{
             addHighLighter(elements[i])

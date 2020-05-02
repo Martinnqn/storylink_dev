@@ -207,12 +207,13 @@ a:hover{
 .cookies {
     width: 100%;
     background: #314455;
-    padding: 5px;
+    padding: 10px;
     color: white;
     font-size: 16px;
     display: block;
     position: fixed;
-    bottom: 15px;
+    bottom: 0;
+    text-align: center;
 }
 
 .cookies__texto {
@@ -229,9 +230,6 @@ a:hover{
     margin-left: 10px;
 }
 
-.cookies__botones {
-    float: right;
-}
 
 #users-found {
     top: 38px;

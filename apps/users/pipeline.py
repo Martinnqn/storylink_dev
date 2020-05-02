@@ -1,7 +1,7 @@
 from social_core.pipeline.partial import partial
 from django import forms
 from .models import CustomUser, check_characters
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import redirect
 from django.forms import ValidationError
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
