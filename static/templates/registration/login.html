@@ -18,7 +18,8 @@
                     <!-- Brand -->
                     <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
                         <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
-                        <div class="has-account">
+                    <div class="has-account">
+                      <small class="text-muted">Si ya tienes una cuenta </small>
                      <form method="post" novalidate class="d-flex">
                       {% csrf_token %}
 
@@ -73,33 +74,73 @@
   <section id="title-welcome" class="section-light">
     <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
     <h1 class="title-center">Bienvenido a Storylink.club</h1>
-    <div class="to d-flex justify-content-center">
-      <p>¿Dónde estoy? presiona sobre las <em>Esferalinks</em> para enterarte!</p>
+    <div class="to container">
+      <h3>¿Dónde estoy? presiona sobre las <em>Esferalinks</em> para enterarte!</h3>
       <span class="material-icons arrow">play_for_work</span>
-      <a href="javascript: void(0)" onclick="animateScroll('#what-is')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+      <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#what-is')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+      <div class="section-link"></div>
     </div>
   </section>
   <section id="what-is" class="section-dark">
-    <div class="to d-flex justify-content-center">
-      <h5>Storylink.club es una plataforma desarrollada para <strong>escribir y leer Storylinks!</strong></h5>
-      <a href="javascript: void(0)" onclick="animateScroll('#what-is-sl')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+   <div class="container d-flex justify-content-around"> 
+      <img class="target-link" src="{% static 'imgs/target_link.png' %}" alt="target">
+    </div> 
+    <div class="to container">
+      <h1>Estás en Storylink.club!, una plataforma desarrollada para <strong>escribir y leer Storylinks!</strong></h1>
+      <h3>¿Qué es una Storylink?</h3>
+      <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#what-is-sl')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+      <div class="section-link"></div>
     </div>
   </section>
   <section id="what-is-sl" class="section-light">
-    <h5>Una Storylink es una historia a la que pueden añadirse diferentes desenlaces y tramas.</h5>
-    <img class="img-esferas" src="{% static 'imgs/sl_esferas.png' %}" alt="Esferas Storylinks">
-    <div class="to d-flex justify-content-center">
-      <a href="javascript: void(0)" onclick="animateScroll('#how')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+    <div class="container d-flex justify-content-around"> 
+      <img class="target-link" src="{% static 'imgs/target_link.png' %}" alt="target">
     </div>
+    <div class="to container">
+    <h1>Una Storylink es una historia a la que pueden añadirse diferentes desenlaces y tramas.</h1>
+    <img class="img-esferas" src="{% static 'imgs/stories_linked.png' %}" alt="Esferas Storylinks">
+    <h3>¿Cómo puedo crear una Storylink?</h3>
+      <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#how')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+    </div>
+    <div class="section-link"></div>
   </section>
   <section id="how" class="section-dark">
-      <h5>Crea Storylinks y añade alternativas para cada decisión importante en la trama, creando historias interactivas.</h5>
-      <a href="javascript: void(0)" onclick="animateScroll('#why')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+      <div class="container d-flex justify-content-around"> 
+        <img class="target-link" src="{% static 'imgs/target_link.png' %}" alt="target">
+      </div>
+      <div class="to container">
+      <h3>Crear Storylinks es <strong>fácil!</strong>. Puedes comenzar con una historia desde el inicio, o continuar una existente. En el momento que quieras puedes hacer que los personajes tomen <strong>diferentes decisiones ante una misma situación</strong>, dividiendo la trama principal en dos o más caminos. Alimenta tu creatividad!</h3>
+      </div>
+      <h4>¿Quieres saber más?</h4>
+      <h4>SI!</h4>
+      <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#why')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
+      <div class="section-link"></div>
   </section>
-  <section id="why" class="d-flex"  class="section-light">
-    <p> Promueve el desarrollo colaborativo de historias. ¿Te motiva que los personajes principales derroten al enemigo, o prefieres que los villanos se salgan con la suya? Quieres redimir a un personaje que tomó una mala decisión? <strong>Crea</strong> tu propia trama y <strong>compártelo</strong> con el resto de los usuarios de <strong>Storylink.club</strong></p>
-    <p> En Storylink.club cada usuario es libre de <strong>crear</strong>  sus historias o de <strong>continuar</strong> historias <em>abiertas</em> de otros usuarios, aumentando las posibilidades para que cada lector pueda elegir la trama que más <strong>disfrute</strong>, o <strong>elegir</strong> cómo termina una historia!</p>
-    <p>Explora las Storylinks en nuestro <strong class="hall">Hall</strong></p>
+  <section id="why" class="section-light">
+    <div class="container d-flex justify-content-around"> 
+      <img class="target-link" src="{% static 'imgs/target_link.png' %}" alt="target">
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+        <p class="paragraph-presentation"> En Storylink promovemos el desarrollo de historias de todos los géneros. Puedes crear Storylinks <em>abiertas</em> para permitir que todos los usuarios puedan aportar sus ideas y tramas, o puedes dejarlas <em>cerradas</em> para que solo tú decidas el camino que tomarán los personajes. </p>
+        </div>
+        <div class="col-md-4">
+        <p class="paragraph-presentation">¿Tuviste una idea y no sabes cómo continuarla, o te gustaría compartirla con otros lectores y escritores? ¿Leíste algo que te gustó y tuviste un <em>insigth</em>? <strong>Crea</strong> tu propia trama y <strong>compártelo</strong> con el resto de los usuarios de <strong>Storylink.club</strong> Cada lector pueda elegir la trama que más <strong>disfrute</strong>, o <strong>elegir</strong> cómo termina una historia!</p>
+        </div>
+        <div class="col-md-4">
+        <p class="paragraph-presentation">Explora las Storylinks en nuestro <strong class="hall">Hall</strong></p>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+        <a class="a-create-acc" href="{% url 'sign_up' %}">Crea una cuenta en Storylink</a>
+        <br>o
+        <hr>
+        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
+        </div>
+      </div> 
+    </div>
   </section>
   </div>
 </div>

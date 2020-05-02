@@ -47,10 +47,11 @@ class StoryCreationForm(ModelForm):
          Los tags se separan con espacios, y pueden tener máximo 80 caracteres.'''
         self.fields['img_content_link'].label = "Agregar Portada"
         self.fields['img_content_link'].validators.append(validate_image)
+        self.fields['img_content_link'].help_text = "Los formatos permitidos son jpg, jpeg y png, con un tamaño máximo de 5MB."
         self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
         self.fields['color'].help_text = "Puedes seleccionar un color para personalizar la publicación."
         self.fields['opened'].label = "Abierta"
-        self.fields['opened'].help_text = "Permitir que otros usuarios puedan continuar la trama."
+        self.fields['opened'].help_text = "Tilda la casilla para permitir que otros usuarios puedan continuar la trama."
 
 class StoryContinuationCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
@@ -88,6 +89,7 @@ class StoryEditForm(ModelForm):
         self.fields['img_content_link'].label= 'Portada actual'
         self.fields['img_content_link'].required = False
         self.fields['img_content_link'].validators.append(validate_image)
+        self.fields['img_content_link'].help_text = "Los formatos permitidos son jpg, jpeg y png, con un tamaño máximo de 5MB."
         self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
         fpub = kwargs.get('instance', None);
         if (fpub):
@@ -97,7 +99,7 @@ class StoryEditForm(ModelForm):
         self.fields['title'].label = "Título"
         self.fields['title'].max_length= 120
         self.fields['opened'].label = "Abierta"
-        self.fields['opened'].help_text = "Permitir que otros usuarios puedan continuar la trama."
+        self.fields['opened'].help_text = "Tilda la casilla para permitir que otros usuarios puedan continuar la trama."
 
 class StoryChapterEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)

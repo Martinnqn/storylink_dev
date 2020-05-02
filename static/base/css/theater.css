@@ -164,6 +164,11 @@
     word-break: break-all;
 }
 
+.publication-content p{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
 .publication-description {
     padding-left: 4px;
     padding-right: 4px;
@@ -260,8 +265,8 @@
 }
 
 /*Color de fondo del modal en mode-read*/
-#story-read-mode .modal-backdrop.show{
-    opacity: 1;
+#story-read-mode {
+    background: black;
 }
 
 #title-read-mode {

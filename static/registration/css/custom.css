@@ -38,6 +38,8 @@ body {
     position: absolute;
     margin-top: 25px;
     display: block;
+    left: 50%;
+    transform: translate(-50%,0);
     -webkit-animation: to-back-arrow 1s ease-in-out infinite alternate;
     -moz-animation: to-back-arrow 1s ease-in-out infinite alternate;
     animation: to-back-arrow 1s ease-in-out infinite alternate;
@@ -58,6 +60,15 @@ body {
     width: auto;
     height: auto;
     display: grid;
+}
+
+.has-account .text-muted {
+    color: #acabab !important;
+}
+
+.has-account .alert {
+    position: absolute;
+    margin-top: 100px;
 }
 
 .has-account .form-group{
@@ -88,6 +99,10 @@ body {
     margin: auto;
 }
 
+.to {
+    margin-top: 30px;    
+}
+
 .to-register {
     margin:auto;
     margin-left: 20px;
@@ -112,7 +127,7 @@ strong.hall{
 }
 
 #container-form-create-account{
-    width: 80%;
+    width: 50%;
     margin-top: 25px;
     margin-bottom: 25px;
     background: whitesmoke;
@@ -137,19 +152,24 @@ strong.hall{
     width: 100%;
     height: auto;
     margin-top: 45px;
+    margin-bottom: 5px;
 }
 
 section{
     min-height: 100vh;
     width: 100%;
-    border-top: 1px solid #31445571;
-    border-left: 1px solid #31445571;
-    border-right: 1px solid #31445571;
+    overflow-y: hidden;
 }
 
-section a{
+section .a-scroll{
     position: absolute;
     margin-top: 100px;
+    left: 50%;
+    transform: translate(-50%,0);
+}
+
+p strong {
+    font-size: 22px;
 }
 
 .section-light {
@@ -183,14 +203,38 @@ background: moccasin;
 }
 
 .img-esferas {
-    width: 400px;
+    width: 600px;
     height: auto;
 }
 
 
+.section-link {
+    height: 100vh;
+    width: 3px;
+    background: black;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+    margin-top: 180px;
+}
+
+.target-link {
+    margin-top: -10px;
+    position: absolute;
+}
+
+.paragraph-presentation{
+    padding: 20px;
+    font-size: 20px;
+}
+
+.a-create-acc {
+    font-size: 22px;
+}
+
 @media(max-width:900px) {
     #container-form-create-account{
-        width: 60%;
+        width: 50%;
         margin-top: 25px;
         margin-bottom: 25px;
         background: whitesmoke;
@@ -209,7 +253,10 @@ background: moccasin;
         margin-bottom: 25px;
         background: whitesmoke;
     }
-
+    .img-esferas {
+        width: 300px;
+        height: auto;
+    }
     .email-required-form {
         width: 90%;
     }
