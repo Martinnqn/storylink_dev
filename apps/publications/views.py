@@ -15,6 +15,7 @@ from django.db import transaction, IntegrityError
 from django.db.models import Q
 from django.db.models import Count
 from django.conf import settings
+from social_django.models import UserSocialAuth
 
 from django.core.files.storage import FileSystemStorage
 
@@ -33,6 +34,7 @@ class ListUserStories(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ListUserStories, self).get_context_data(**kwargs)
+        print(self.request.user.social_auth)
         context.update({'customuser': {'username':self.kwargs["username"]}})
         return context
 
@@ -88,6 +90,12 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'active': publication.active})
             data['content_pub'].update({'color': publication.color})
             data['content_pub'].update({'opened': publication.opened})
+
+            if (own_user.social_auth.exists()):
+                social = own_user.social_auth.get(provider="facebook")
+                data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
+            else:
+                data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
 
             if (publication.active):
                 tags = []
@@ -148,6 +156,13 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             fromUser = self.request.user
             is_subscribed = fromUser.user2Pub.filter(pub = mainStory).exists();
             data['content_pub'].update({'is_subscribed': is_subscribed})
+            
+            if (own_user.social_auth.exists()):
+                social = own_user.social_auth.get(provider="facebook")
+                data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
+            else:
+                data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
+
             
             prev =publication.prevChapter
             if (prev):

@@ -25,7 +25,7 @@ SECRET_KEY = '6-v$$swa_e8*9i4ga#37#w&c$tr5_&#cjy!d^ymf*i@s2wsct+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.47', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.47', 'localhost', 'dev-storylink.club']
 
 
 # Application definition
@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'ckeditor',
     'social_django',
 ]
+
+if DEBUG:
+    INSTALLED_APPS += ['sslserver']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -294,3 +297,8 @@ SESSION_COOKIE_SAMESITE = None
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['email',]
 SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['username',]
 
+
+SOCIAL_AUTH_FACEBOOK_API_VERSION = '6.0'
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

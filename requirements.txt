@@ -4,3 +4,4 @@ psycopg2
 django-bleach
 django-ckeditor
 social-auth-app-django
+django-sslserver
