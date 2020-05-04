@@ -239,6 +239,7 @@ CKEDITOR_CONFIGS = {
 #para inicio sesion facebook
 AUTHENTICATION_BACKENDS=(
     'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
     'django.contrib.auth.backends.ModelBackend',
     )
 
@@ -289,6 +290,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
+    #'apps.users.pipeline.get_avatar_url',
 )
 
 
@@ -299,6 +301,18 @@ SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['username',]
 
 
 SOCIAL_AUTH_FACEBOOK_API_VERSION = '6.0'
+
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+#inicio de sesion con twitter
+
+SOCIAL_AUTH_TWITTER_KEY = 'WhsrYleC9s4kq03LpNdecLvqc'
+SOCIAL_AUTH_TWITTER_SECRET = 'rLaXPg1Mr2CAQo2ZUoOivQBK3U1gYr8xxToZ3HQdMqHyFoSUCl'
+
+SOCIAL_AUTH_TWITTER_EXTRA_DATA = [                 # add this
+    ('name', 'name'),
+    ('email', 'email'),
+    ('profile_image_url', 'link_img_perfil'),
+]

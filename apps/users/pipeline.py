@@ -2,6 +2,7 @@ from social_core.pipeline.partial import partial
 from django import forms
 from .models import CustomUser, check_characters
 from django.shortcuts import redirect
+from django.urls import reverse, reverse_lazy
 from django.forms import ValidationError
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
@@ -141,3 +142,21 @@ def check_unique_username(backend, strategy, details, user=None, is_new=False, *
                 '/re_username?partial_token={0}&used=True'.format(current_partial.token)
                 )
 '''
+
+#lo usaba antes de social_core.pipeline.social_auth.social_user porque lanzaba error twitter AuthAlreadyAssociated
+def userExist(backend, strategy, details, response, user=None, *args, **kwargs):
+    if (user):
+        print(user)
+        return redirect(reverse_lazy('hall'))
+        
+def get_avatar_url(request, backend, response,  user=None, *args, **kwargs):
+    """Pipeline to get user avatar from Twitter/FB via django-social-auth"""
+    avatar_url = ''
+    if (user):
+        if (backend.name == "twitter"):
+            avatar_url = response.get('profile_image_url', '')
+            print("ENCONTRO IMAGEN")
+            print(avatar_url)
+            print(user)
+            #aca deberia guardar la imagen en el user.
+
