@@ -91,11 +91,8 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'color': publication.color})
             data['content_pub'].update({'opened': publication.opened})
 
-            if (own_user.social_auth.exists()):
-                social = own_user.social_auth.get(provider="facebook")
-                data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
-            else:
-                data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
+            social = own_user.social_auth.get()
+            data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
 
             if (publication.active):
                 tags = []
@@ -157,13 +154,9 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             is_subscribed = fromUser.user2Pub.filter(pub = mainStory).exists();
             data['content_pub'].update({'is_subscribed': is_subscribed})
             
-            if (own_user.social_auth.exists()):
-                social = own_user.social_auth.get(provider="facebook")
-                data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
-            else:
-                data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
+            social = own_user.social_auth.get()
+            data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
 
-            
             prev =publication.prevChapter
             if (prev):
                 data['content_pub'].update({'previous_pub_id': 'chapter_'+str(prev.id)})

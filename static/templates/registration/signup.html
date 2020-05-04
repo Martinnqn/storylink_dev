@@ -54,12 +54,6 @@
         {% for field in form.visible_fields %}
           <div class="form-group">
             {{ field.label_tag }}
-            <!--el siguiente ifequal no hace nada pero lo dejo como ejemplo
-            {%ifequal field.id_for_label|stringformat:"s" "id_hashtag" %}
-            {%for x in form.fields.hashtag.choices%}
-            {{x}}
-            {%endfor%}
-            {%endifequal%}-->
             {%if not field.field.required or field.id_for_label|stringformat:"s" == "id_link_img_perfil" %}
                 <span class="not-required-field">*</span>
             {%endif%}
