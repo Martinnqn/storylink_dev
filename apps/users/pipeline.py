@@ -148,6 +148,16 @@ def userExist(backend, strategy, details, response, user=None, *args, **kwargs):
     if (user):
         print(user)
         return redirect(reverse_lazy('hall'))
+
+
+#para normalizar el json del campo extra_data en social_auth. Asi, cada vez que se accede a un dato, es independiente
+# del provider.
+# por defecto, para acceder a la imagen de perfil, se usa el formato de json de facebook: link:data:url.
+def custom_load_extra_data(backend, strategy, details, response, user=None, *args, **kwargs):
+    if (user and backend.name == "twitter"):
+        social_user = user.social_auth.get(provider='twitter') 
+        social_user.extra_data.update({'link_img_perfil': {'data': {'url': social_user.extra_data['link_img_perfil']}}})
+        social_user.save() 
         
 def get_avatar_url(request, backend, response,  user=None, *args, **kwargs):
     """Pipeline to get user avatar from Twitter/FB via django-social-auth"""

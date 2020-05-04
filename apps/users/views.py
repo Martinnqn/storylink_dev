@@ -11,6 +11,9 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.contrib.auth.forms import AuthenticationForm
 from social_django.utils import psa, load_strategy
+from django.db import transaction, IntegrityError
+from social_django.models import UserSocialAuth
+
 
 
 #retorna el perfil del usuario
@@ -116,9 +119,15 @@ class SignUpView(generic.CreateView):
         usamos authenticate para que el usuario incie sesión luego de haberse registrado y 
         lo redirigimos al index
         '''
-        form.save()
+        try:
+            with transaction.atomic():
+                user = form.save()
+                extra_data = dict()
+                extra_data.update({'link_img_perfil': {'data': {'url': self.request.build_absolute_uri(user.link_img_perfil.url)}}})
+                social_user = UserSocialAuth.objects.create(user=user, uid=user.id, provider='storylink', extra_data=extra_data)
+        except IntegrityError as e:
+                    print("Errorrrrr "+e.message)
         usuario = form.cleaned_data.get('username')
-        email = form.cleaned_data.get('email')
         password = form.cleaned_data.get('password1')
         usuario = authenticate(username=usuario, password=password)
         login(self.request, usuario)
