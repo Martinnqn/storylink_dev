@@ -1,6 +1,6 @@
 from social_core.pipeline.partial import partial
 from django import forms
-from .models import CustomUser, check_characters
+from .models import CustomUser, check_characters, UserProfile
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.forms import ValidationError
@@ -150,15 +150,24 @@ def userExist(backend, strategy, details, response, user=None, *args, **kwargs):
         return redirect(reverse_lazy('hall'))
 
 
-#para normalizar el json del campo extra_data en social_auth. Asi, cada vez que se accede a un dato, es independiente
-# del provider.
-# por defecto, para acceder a la imagen de perfil, se usa el formato de json de facebook: link:data:url.
-def custom_load_extra_data(backend, strategy, details, response, user=None, *args, **kwargs):
-    if (user and backend.name == "twitter"):
-        social_user = user.social_auth.get(provider='twitter') 
-        social_user.extra_data.update({'link_img_perfil': {'data': {'url': social_user.extra_data['link_img_perfil']}}})
-        social_user.save() 
-        
+#Si el usuario es nuevo crea un Profile, sino actualiza los datos del profile con los del provider (actualmente solo la imagen de perfil). Asi, si un usuario actualiza
+#un dato en el provider, tambien se actualiza en su perfil cuando inicia sesion.
+def update_or_create_userProfile(backend, strategy, details, response, user=None, *args, **kwargs):
+    if (user and kwargs.get('is_new')):
+        if (backend.name == "twitter"):
+            profile = UserProfile.objects.create(user=user, link_img_perfil=response.get('profile_image_url_https'))
+        elif (backend.name == "facebook"):
+            profile = UserProfile.objects.create(user=user, link_img_perfil=response.get('picture')['data']['url'])
+    elif (user and not kwargs.get('is_new')):
+        if (backend.name == "twitter"):
+            profile = user.profile.get()
+            profile.link_img_perfil = response.get('profile_image_url_https')
+            profile.save()
+        elif (backend.name == "facebook"):
+            profile = user.profile.get()
+            profile.link_img_perfil = response.get('picture')['data']['url']
+            profile.save()
+
 def get_avatar_url(request, backend, response,  user=None, *args, **kwargs):
     """Pipeline to get user avatar from Twitter/FB via django-social-auth"""
     avatar_url = ''
@@ -169,4 +178,3 @@ def get_avatar_url(request, backend, response,  user=None, *args, **kwargs):
             print(avatar_url)
             print(user)
             #aca deberia guardar la imagen en el user.
-

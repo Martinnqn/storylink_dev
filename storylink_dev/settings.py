@@ -291,7 +291,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
     #'apps.users.pipeline.get_avatar_url',
-    'apps.users.pipeline.custom_load_extra_data',
+    'apps.users.pipeline.update_or_create_userProfile',
 )
 
 

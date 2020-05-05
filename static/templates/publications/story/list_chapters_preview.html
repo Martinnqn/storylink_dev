@@ -20,7 +20,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
             {%endif%}
           </div>
             <a href="{% url 'user:user_profile' chap.own_user.username %}">
-                <img class="img-autor-mini" src="{{ chap.own_user.social_auth.get.extra_data.link_img_perfil.data.url }}" alt="{{chap.own_user.username}}">
+                <img class="img-autor-mini" src="{{ chap.own_user.profile.get.link_img_perfil }}" alt="{{chap.own_user.username}}">
             </a>
         </div>
         {%if chap.active %}

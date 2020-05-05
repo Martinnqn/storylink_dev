@@ -4,8 +4,8 @@ from django.urls import reverse, reverse_lazy
 from django.views import generic, View
 from django.contrib.auth import login, authenticate
 from apps.publications.models import StoryPublication, StoryChapter
-from apps.users.models import CustomUser
-from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck
+from apps.users.models import CustomUser, UserProfile
+from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck, CreateUserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
@@ -13,6 +13,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from social_django.utils import psa, load_strategy
 from django.db import transaction, IntegrityError
 from social_django.models import UserSocialAuth
+from django.conf import settings
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 
 
@@ -114,24 +117,28 @@ class SignUpView(generic.CreateView):
 
 
     def form_valid(self, form):
-        '''
-        En este parte, si el formulario es valido guardamos lo que se obtiene de él y 
-        usamos authenticate para que el usuario incie sesión luego de haberse registrado y 
-        lo redirigimos al index
-        '''
-        try:
-            with transaction.atomic():
-                user = form.save()
-                extra_data = dict()
-                extra_data.update({'link_img_perfil': {'data': {'url': self.request.build_absolute_uri(user.link_img_perfil.url)}}})
-                social_user = UserSocialAuth.objects.create(user=user, uid=user.id, provider='storylink', extra_data=extra_data)
-        except IntegrityError as e:
-                    print("Errorrrrr "+e.message)
-        usuario = form.cleaned_data.get('username')
+        user = form.save()
+        '''username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
-        usuario = authenticate(username=usuario, password=password)
-        login(self.request, usuario)
+        user = authenticate(username=username, password=password)
+        login(self.request, user)'''
+        return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk))}))
+
+class FillProfile(generic.CreateView):
+    model = UserProfile
+    form_class = CreateUserProfile
+    template_name = 'registration/fill_user_profile.html'
+
+    def form_valid(self, form, **kwargs):
+        id = force_text(urlsafe_base64_decode(self.kwargs.get('uidb64')))
+        user = CustomUser.objects.get(id = id)
+        if (user and not user.profile.exists()): #exists por las dudas que inyecten en la url un uidb64 de un usuario ya creado.
+            profile = form.save(commit=False)
+            profile.user = user;
+            profile.save()
+            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return redirect('/')
+
 
 #Eliminar usuario. No se eliminan, se ponen inactivos
 class DeleteUser(LoginRequiredMixin, generic.DeleteView):

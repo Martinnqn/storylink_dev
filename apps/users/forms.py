@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import CustomUser, UserProfile
 import re
 
 from django.forms import ModelForm
@@ -10,11 +10,10 @@ from django.forms import ModelForm
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ('email', 'username', 'first_name', 'last_name', 'link_img_perfil', 'description')
+        fields = ('email', 'username', 'first_name', 'last_name',)
         error_css_class = 'error'
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
-        self.fields['link_img_perfil'].label = "Imagen de perfil"
         self.fields['username'].label = "Nombre de usuario"
         self.fields['username'].help_text='El nombre de usuario puede contener letras, números, guiones, puntos y @.'
         self.fields['first_name']= forms.CharField(required = True) 
@@ -23,6 +22,15 @@ class CustomUserCreationForm(UserCreationForm):
         self.fields['last_name']= forms.CharField(required = True) 
         self.fields['last_name'].label= "Apellido"
         self.fields['last_name'].validators.append(only_chars)
+
+class CreateUserProfile(ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ('link_img_perfil', 'description')
+        error_css_class = 'error'
+    def __init__(self, *args, **kwargs):
+        super(self.__class__, self).__init__(*args, **kwargs)
+        self.fields['link_img_perfil'].label = "Imagen de perfil"
         self.fields['description'].label= "Cuéntanos sobre ti"
         self.fields['description'].help_text = "150 caracteres como máximo"
 

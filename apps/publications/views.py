@@ -79,7 +79,6 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'user_lastname': own_user.last_name})
             data['content_pub'].update({'own_user': own_user.id})
             data['content_pub'].update({'own_first_story': own_user.id})
-            data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
             data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_story', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_story', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.username, 'pk': publication.id})})
@@ -91,8 +90,8 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'color': publication.color})
             data['content_pub'].update({'opened': publication.opened})
 
-            social = own_user.social_auth.get()
-            data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
+            profile = own_user.profile.get()
+            data['content_pub'].update({'own_user_image': profile.link_img_perfil.url})
 
             if (publication.active):
                 tags = []
@@ -137,7 +136,6 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             data['content_pub'].update({'own_first_story': mainStory.own_user.id})
             data['content_pub'].update({'own_name_first_story': mainStory.own_user.username})
             data['content_pub'].update({'question': publication.quest_answ})
-            data['content_pub'].update({'own_user_image': self.request.build_absolute_uri(own_user.link_img_perfil.url)})
             data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_chapt', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_chapter', kwargs={'username': own_user.username, 'pk': publication.id})})
             data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.username, 'pk': mainStory.id})})
@@ -154,8 +152,8 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             is_subscribed = fromUser.user2Pub.filter(pub = mainStory).exists();
             data['content_pub'].update({'is_subscribed': is_subscribed})
             
-            social = own_user.social_auth.get()
-            data['content_pub'].update({'own_user_image': social.extra_data['link_img_perfil']['data']['url']})
+            profile = own_user.profile.get()
+            data['content_pub'].update({'own_user_image': profile.link_img_perfil.url})
 
             prev =publication.prevChapter
             if (prev):

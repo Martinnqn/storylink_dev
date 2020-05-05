@@ -3,11 +3,12 @@ from django.contrib.admin.models import LogEntry
 
 # Register your models here.
 
-from apps.users.models import CustomUser, UserEvents, UserSubscriptionModelAux, PubSubscriptionModelAux
+from apps.users.models import CustomUser, UserEvents, UserSubscriptionModelAux, PubSubscriptionModelAux, UserProfile
 from apps.publications.models import StoryPublication, ResourcePublication, Tag, StoryChapter
 
 #users app
 admin.site.register(CustomUser)
+admin.site.register(UserProfile)
 admin.site.register(UserEvents)
 admin.site.register(UserSubscriptionModelAux)
 admin.site.register(PubSubscriptionModelAux)
