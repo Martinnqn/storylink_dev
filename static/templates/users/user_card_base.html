@@ -1,10 +1,10 @@
 <div class="card-user ">
     <div class="card-thumbnail">
-        <img class="img-thumbnail" src="{{ user.profile.get.link_img_perfil }}" alt="User image">
+        <img class="img-thumbnail" src="{{ profile.link_img_perfil.url }}" alt="User image">
     </div>
     <div class="card-body-user">
-        <p>
-            <a href="{% url 'user:user_profile' user.username %}">{{user.username}}</a>
+        <p>                
+            <a href="{% url 'user:user_profile' profile.user.username %}">{{profile.user.username}}</a>
         </p>
     </div>
 </div>

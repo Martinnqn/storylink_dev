@@ -6,7 +6,8 @@ from django.urls import reverse, reverse_lazy
 from django.forms import ValidationError
 from django.http import JsonResponse
 from django.http import HttpResponseRedirect
-import urllib
+from urllib.request import urlopen, HTTPError
+from django.core.files.base import ContentFile
 
 def setPicture(backend, strategy, details, response, user=None, *args, **kwargs):
     if (user):
@@ -155,18 +156,28 @@ def userExist(backend, strategy, details, response, user=None, *args, **kwargs):
 def update_or_create_userProfile(backend, strategy, details, response, user=None, *args, **kwargs):
     if (user and kwargs.get('is_new')):
         if (backend.name == "twitter"):
-            profile = UserProfile.objects.create(user=user, link_img_perfil=response.get('profile_image_url_https'))
+            profile = UserProfile(user=user)
+            saveImage(response.get('profile_image_url_https'), profile, user.id)
+            profile.save()
         elif (backend.name == "facebook"):
-            profile = UserProfile.objects.create(user=user, link_img_perfil=response.get('picture')['data']['url'])
+            profile = UserProfile(user=user)
+            saveImage(response.get('picture')['data']['url'], profile, user.id)
+            profile.save()
     elif (user and not kwargs.get('is_new')):
         if (backend.name == "twitter"):
             profile = user.profile.get()
-            profile.link_img_perfil = response.get('profile_image_url_https')
+            saveImage(response.get('profile_image_url_https'), profile, user.id)
             profile.save()
         elif (backend.name == "facebook"):
             profile = user.profile.get()
-            profile.link_img_perfil = response.get('picture')['data']['url']
+            saveImage(response.get('picture')['data']['url'], profile, user.id)
             profile.save()
+
+
+def saveImage(url, profile, id):
+    img = urlopen(url)
+    profile.link_img_perfil.save(str(id) + '.jpg', ContentFile(img.read()))
+
 
 def get_avatar_url(request, backend, response,  user=None, *args, **kwargs):
     """Pipeline to get user avatar from Twitter/FB via django-social-auth"""

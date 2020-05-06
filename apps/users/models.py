@@ -48,6 +48,8 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.username
 
+from django.core.files.storage import FileSystemStorage
+
 class UserProfile(models.Model):
     user = models.ForeignKey(CustomUser, related_name='profile', on_delete=models.PROTECT)
     link_img_perfil = models.ImageField(upload_to = get_upload_path, default = 'gallery/no-img-profile.png', max_length=350)
@@ -76,7 +78,7 @@ class PubSubscriptionModelAux(models.Model):
 # modelo para el registro de acciones del usuario.
 class UserEvents(models.Model):
     date_time = models.DateField(auto_now_add=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     event_type = models.CharField(max_length=5)
     id_publication = models.IntegerField()
 

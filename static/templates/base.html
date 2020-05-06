@@ -22,7 +22,7 @@
     {% block head-page %}{% endblock %}
     <script>
     {% if user.is_authenticated %}
-    js_user_id = {{user.id}};
+    js_user_id = {{user.profile.get.id}};
     {%endif%}
     </script>
 </head>
@@ -57,7 +57,7 @@
                     <div id="login-div">
                         {% if user.is_authenticated %}
                                 <a href="{%url 'user:user_profile' user.username %}">
-                                    <img class="nav-img-perfil" src="{{ user.profile.get.link_img_perfil }}" alt="img perfil">
+                                    <img class="nav-img-perfil" src="{{ user.profile.get.link_img_perfil.url }}" alt="img perfil">
                                     {{user.username}}
                                 </a>
                                 <a href="{% url 'logout' %}">Cerrar sesión</a>

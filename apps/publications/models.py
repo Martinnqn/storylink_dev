@@ -1,12 +1,12 @@
 from django.db import models
 
-from apps.users.models import CustomUser
+from apps.users.models import CustomUser, UserProfile
 
 
 # publicacion tipo historia
 class StoryPublication(models.Model):
     #datos usuario
-    own_user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    own_user = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     #contenido
     title = models.CharField(max_length=120)
     text_content = models.TextField(max_length=2000)
@@ -27,7 +27,7 @@ class StoryChapter(models.Model):
     #story principal a la que hace referencia el capitulo (para obtener el titulo, imagen, etc)
     mainStory = models.ForeignKey(StoryPublication, on_delete=models.PROTECT)
     #datos usuario
-    own_user = models.ForeignKey(CustomUser, on_delete=models.PROTECT)
+    own_user = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
     #contenido
     text_content = models.TextField(max_length=2000)
     active = models.BooleanField(default=True) # si es una publicacion activa o no.
@@ -47,7 +47,7 @@ class StoryChapter(models.Model):
 # publicacion tipo recurso
 class ResourcePublication(models.Model):
     #datos usuario
-    own_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    own_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     user_name = models.CharField(max_length=45)
     user_lastname = models.CharField(max_length=45)
     #contenido

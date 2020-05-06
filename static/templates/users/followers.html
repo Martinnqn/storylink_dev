@@ -6,8 +6,8 @@
 {% block profile-body %}
 <div class="row">
     <div class="users-preview col">
-        {% for user in followers %}
-        {% include "users/user_card_base.html" with user=user.from_user %}
+        {% for p in followers %}
+        {% include "users/user_card_base.html" with profile=p.from_user %}
         {% endfor %}
     </div>
 </div>

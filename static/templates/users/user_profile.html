@@ -17,7 +17,7 @@
             {% block profile-description %}
             <ul>
                 <li>
-                    <img alt="Imagen de perfil" class="img-perfil" src="{{ customuser.profile.get.link_img_perfil }}">
+                    <img alt="Imagen de perfil" class="img-perfil" src="{{ customuser.profile.get.link_img_perfil.url }}">
                 </li> 
                 <li>
                     <a href="{% url 'user:user_profile' customuser.username %}">{{customuser.first_name}} {{customuser.last_name}}</a>

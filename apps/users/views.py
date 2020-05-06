@@ -26,16 +26,19 @@ class ListUserPerfil(LoginRequiredMixin, generic.DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
+    def get_object(self):
+        return get_object_or_404(CustomUser, username=self.kwargs.get('username'), is_active=True)
+
     def get_context_data(self, **kwargs):
         context = super(ListUserPerfil, self).get_context_data(**kwargs)
         from_user = self.request.user
-        to_user = get_object_or_404(CustomUser, username=self.kwargs.get('username'))
-        is_following = from_user.from2To.filter(to_user = to_user).exists()
+        to_user = self.get_object()
+        is_following = from_user.profile.get().from2To.filter(to_user = to_user.profile.get()).exists()
         context.update({'is_following': is_following})
         context.update({'customuser': to_user})
-        publications = StoryPublication.objects.filter(own_user = to_user, active=True).order_by('date_time__month', '-date_time__day')
+        publications = StoryPublication.objects.filter(own_user = to_user.profile.get(), active=True).order_by('date_time__month', '-date_time__day')
         context.update({'storypublication_list': publications})
-        chaps = StoryChapter.objects.filter(own_user = to_user, active=True).order_by('date_time__month', '-date_time__day')
+        chaps = StoryChapter.objects.filter(own_user = to_user.profile.get(), active=True).order_by('date_time__month', '-date_time__day')
         context.update({'storychapter_list': chaps})
         return context
 
@@ -48,7 +51,7 @@ class ListUserFollowers(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ListUserFollowers, self).get_context_data(**kwargs)
-        followers = self.object.to2From.all()
+        followers = self.object.profile.get().to2From.all()
         context.update({'followers': followers})
         return context
 
@@ -62,7 +65,7 @@ class ListUserFollowing(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(ListUserFollowing, self).get_context_data(**kwargs)
-        following = self.object.from2To.all()
+        following = self.object.profile.get().from2To.all()
         context.update({'following': following})
         return context
 
@@ -75,7 +78,7 @@ class ListStoriesSubscription(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         user = get_object_or_404(CustomUser, username=self.kwargs["username"])
-        qs = user.pub_subscription.filter(active=True)
+        qs = user.profile.get().pub_subscription.filter(active=True)
         return qs
 
     def get_context_data(self, **kwargs):
@@ -90,7 +93,7 @@ class FollowUser(LoginRequiredMixin, generic.DetailView):
     slug_url_kwarg = 'username' 
 
     def get(self, request, username):
-        self.request.user.user_subscription.add(self.get_object());
+        self.request.user.profile.get().user_subscription.add(self.get_object().profile.get());
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': username}))
 
 #unfollow user
@@ -100,7 +103,7 @@ class UnfollowUser(LoginRequiredMixin, generic.DetailView):
     slug_url_kwarg = 'username' 
 
     def get(self, request, username):
-        self.request.user.user_subscription.remove(self.get_object());
+        self.request.user.profile.get().user_subscription.remove(self.get_object().profile.get());
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': username}))
 
 #para dar de alta un usuario
@@ -111,13 +114,15 @@ class SignUpView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(SignUpView, self).get_context_data(**kwargs)
-        form2 = AuthenticationForm()
-        context.update({'loginform': form2})
+        #form2 = AuthenticationForm()
+        #context.update({'loginform': form2})
         return context
 
 
     def form_valid(self, form):
-        user = form.save()
+        user = form.save(commit=False)
+        user.is_active = False
+        user.save()
         '''username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
@@ -133,10 +138,16 @@ class FillProfile(generic.CreateView):
         id = force_text(urlsafe_base64_decode(self.kwargs.get('uidb64')))
         user = CustomUser.objects.get(id = id)
         if (user and not user.profile.exists()): #exists por las dudas que inyecten en la url un uidb64 de un usuario ya creado.
-            profile = form.save(commit=False)
-            profile.user = user;
-            profile.save()
-            login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+            try:
+                with transaction.atomic():
+                    profile = form.save(commit=False)
+                    profile.user = user;
+                    user.is_active = True
+                    profile.save()
+                    user.save()
+                    login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+            except IntegrityError as e:
+                print("Errorrrrr "+e.message)
         return redirect('/')
 
 
@@ -149,14 +160,14 @@ class DeleteUser(LoginRequiredMixin, generic.DeleteView):
             user.is_active=False
             user.save(update_fields=['is_active'])
 
-        return redirect(request.GET.get('logout')) 
+        return redirect(request.GET.get('logout')) #revisar ese get(logout)
 
 #buscar un usuario
 class SearchUser(LoginRequiredMixin, generic.DetailView):
 
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
-            users = CustomUser.objects.filter(username__icontains=self.kwargs.get('suser'))[:5]
+            users = CustomUser.objects.filter(username__icontains=self.kwargs.get('suser'), active=True)[:5]
             us = []
             res_users = dict()
             for x in users:
