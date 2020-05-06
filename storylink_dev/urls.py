@@ -19,7 +19,7 @@ from django.urls import path
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import TemplateView
-from apps.users.views import SignUpView, mail_check, username_check, FillProfile
+from apps.users.views import SignUpView, mail_check, username_check, FillProfile, ActivateAccount, send_mail_confirm
 from apps.publications.views import ListStories
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -39,6 +39,7 @@ urlpatterns = [
     path('re_email/', mail_check.as_view(), name = 'form_new_mail'),
     path('re_username/', username_check.as_view(), name = 'form_new_username'),
     path('fillprofile/<uidb64>', FillProfile.as_view(), name = 'fill_profile'),
+    path('activate/<uidb64>/<token>', ActivateAccount.as_view(), name='activate'),
 
 ]
 

@@ -1,0 +1,4 @@
+{% autoescape off %}
+Hola, gracias por registrarte en Storylink. Para continuar, por favor confirma que este es tu correo electonico,
+, http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}
