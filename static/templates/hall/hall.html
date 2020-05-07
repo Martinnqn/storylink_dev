@@ -6,7 +6,11 @@
 <link rel="stylesheet" href="{% static 'hall/css/custom.css' %}">
 <link rel="stylesheet" href="{% static 'user/css/custom.css' %}">
 <link rel="stylesheet" href="{% static 'publication/css/custom.css' %}">
-{%block head-page-extra%}{% endblock %}
+{%block head-page-extra%}
+{% endblock %}
+<script>
+activated = "{{activated}}"
+</script>
 {% endblock %}
 
 {% block main-content %}
@@ -58,4 +62,5 @@
 
 {%block extra-script%}
 <script src="{% static 'publication/js/publication-display.js' %}"></script>
+<script src="{% static 'hall/js/hall.js' %}"></script>
 {% endblock %}

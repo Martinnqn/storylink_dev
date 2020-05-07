@@ -19,8 +19,9 @@
                     <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
                     <div id="login-div">
                         <a class="" href="{% url 'login' %}">Iniciar Sesión</a>
-                        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
                     </div>
+                        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
+                        <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-twitter btn-lg"><span class="fa fa-twitter"></span>Iniciar Sesión con Twitter</a>
                 </nav> 
             </div>
         </div>
@@ -30,7 +31,7 @@
 <div class="container-fluid">
 <div  id="presentation" class="row">
   <section id="title-welcome" class="section-light">
-    <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
+    <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" style="width:400px;" alt="Storylink logo">
     <h1 class="title-center">Bienvenido a Storylink.club</h1>
 
     <h4>Puedes <strong>crear una cuenta</strong> en Storylink llenando el siguiente formulario.</h4>

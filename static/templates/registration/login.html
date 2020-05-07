@@ -7,7 +7,9 @@
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+<script>
+  success = "{{success}}"
+</script>
 {% endblock %}
 
 {%block primary-navbar%}
@@ -18,7 +20,7 @@
                     <!-- Brand -->
                     <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
                         <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
-                        <a href="{% url 'social:begin' 'twitter' %}" class="fa fa-twitter">Login with Twitter</a>
+                        <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-twitter btn-lg"><span class="fa fa-twitter"></span>Iniciar Sesión con Twitter</a>
                     <div class="has-account">
                       <small class="text-muted">Si ya tienes una cuenta </small>
                      <form method="post" novalidate class="d-flex">

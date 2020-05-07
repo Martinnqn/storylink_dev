@@ -24,12 +24,34 @@ body {
   border-color: #263961; 
 }
 
-.btn-facebook:link, .btn-facebook:visited {
-  color: #fff;
+#primary-navbar .btn-facebook{
+    font-size: 16px;
+    min-width: max-content;
+    margin: auto;
 }
 
 .btn-facebook:active, .btn-facebook:hover {
   background: #263961;
+  color: #fff;
+}
+
+.btn-twitter {
+  background: #1DA1F2;
+  border-radius: 0;
+  color: #fff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #263961; 
+}
+
+#primary-navbar .btn-twitter{
+    font-size: 16px;
+    min-width: max-content;
+    margin: auto;
+}
+
+.btn-twitter:active, .btn-twitter:hover {
+  background: #53baec;
   color: #fff;
 }
 
@@ -93,11 +115,6 @@ body {
 }
 
 
-#primary-navbar .btn-facebook{
-    font-size: 16px;
-    min-width: max-content;
-    margin: auto;
-}
 
 .to {
     margin-top: 30px;    
@@ -124,10 +141,11 @@ strong.hall{
 .email-required-form {
     width: 30%;
     margin: auto;
+    display: none;
 }
 
 #container-form-create-account{
-    width: 50%;
+    width: 30%;
     margin-top: 25px;
     margin-bottom: 25px;
     background: whitesmoke;

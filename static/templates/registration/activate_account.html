@@ -1,4 +1,8 @@
 {% autoescape off %}
-Hola, gracias por registrarte en Storylink. Para continuar, por favor confirma que este es tu correo electonico,
-, http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+<p>Bienvenido! por favor haz click en el siguiente Enlace para confirmar tu usuario:</p>
+<a href="https://{{ domain }}{% url 'activate' uidb64=uid token=token %}">Enlace</a>
+
+<p>Gracias por formar parte de Storylink.</p>
+
+<p style="color:rgb(111,111,111)">-El equipo de Storylink.</p>
 {% endautoescape %}

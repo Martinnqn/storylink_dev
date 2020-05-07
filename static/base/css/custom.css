@@ -105,9 +105,7 @@ body a, label, p, span{
 }
 
 #login-div {
-    width: 100%;
     display: flex;
-    justify-content: space-evenly;
 }
 
 #login-div a{
@@ -124,7 +122,6 @@ body a, label, p, span{
 
 #login-div a:hover{
     background: #4e5d6a;
-    
 }
 
 #login-nav {
@@ -260,6 +257,10 @@ a:hover{
     height:25px;
     display:inline-block;
     border-radius: 12px;
+}
+
+input[type=file] {
+    padding: 2px;
 }
 
 

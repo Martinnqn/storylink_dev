@@ -145,18 +145,13 @@ class FillProfile(generic.CreateView):
         id = force_text(urlsafe_base64_decode(self.kwargs.get('uidb64')))
         user = CustomUser.objects.get(id = id)
         if (user and not user.profile.exists()): #exists por las dudas que inyecten en la url un uidb64 de un usuario ya creado.
-            try:
-                with transaction.atomic():
-                    profile = form.save(commit=False)
-                    profile.user = user;
-                    #user.is_active = True
-                    profile.save()
-                    user.save()
-                    #login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
-            except IntegrityError as e:
-                print("Errorrrrr "+e.message)
+            profile = form.save(commit=False)
+            profile.user = user;
+            profile.save()
             send_mail_confirm(self.request, user)
-        return redirect('/')
+            return redirect(reverse_lazy('hall_s', kwargs={'success': True}))
+        else:
+            return redirect('/')
 
 class ActivateAccount(View):
     def get(self, request, uidb64, token):
@@ -165,18 +160,17 @@ class ActivateAccount(View):
             user = CustomUser.objects.get(pk=uid)
         except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
             user = None
-        if user is not None and account_activation_token.check_token(user, token):
+        if user is not None and account_activation_token.check_token(user, token) and not user.is_active:
             user.is_active = True
             user.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            # return redirect('home')
-            return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
+            return redirect(reverse_lazy('hall_a', kwargs={'activated': True}))
         else:
-            return HttpResponse('Activation link is invalid!')
+            return redirect(reverse_lazy('hall_a', kwargs={'activated': False}))
 
 def send_mail_confirm(request, user):
     current_site = get_current_site(request)
-    mail_subject = 'Activate your blog account.'
+    mail_subject = 'Registro de usuario.'
     message = render_to_string('registration/activate_account.html', {
         'user': user,
         'domain': current_site.domain,
@@ -187,9 +181,8 @@ def send_mail_confirm(request, user):
     email = EmailMessage(
                 mail_subject, message, to=[to_email]
     )
+    email.content_subtype = "html"
     email.send()
-    print("envio mailllllllllllll")
-    return HttpResponse('Please confirm your email address to complete the registration')
 
 
 #Eliminar usuario. No se eliminan, se ponen inactivos
@@ -205,7 +198,6 @@ class DeleteUser(LoginRequiredMixin, generic.DeleteView):
 
 #buscar un usuario
 class SearchUser(LoginRequiredMixin, generic.DetailView):
-
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             users = CustomUser.objects.filter(username__icontains=self.kwargs.get('suser'), is_active=True)[:5]
@@ -262,3 +254,17 @@ class username_check(generic.edit.FormView):
     def form_valid(self, form):
         self.request.session['username'] = form.cleaned_data['username']
         return super().form_valid(form)
+
+'''renderiza el template para pedir un nuevo username, en caso que sea duplicado.'''
+class LoginView(generic.edit.FormView):
+    form_class = AuthenticationForm
+    template_name = 'registration/login.html'
+    success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super(LoginView, self).get_context_data(**kwargs)
+        context.update({'success': self.kwargs.get('success',None)})
+        context.update({'activated': self.kwargs.get('activated',None)})
+        return context
+
+

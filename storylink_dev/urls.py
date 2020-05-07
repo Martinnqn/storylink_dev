@@ -19,7 +19,7 @@ from django.urls import path
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import TemplateView
-from apps.users.views import SignUpView, mail_check, username_check, FillProfile, ActivateAccount, send_mail_confirm
+from apps.users.views import SignUpView, mail_check, username_check, FillProfile, ActivateAccount, LoginView
 from apps.publications.views import ListStories
 
 from django.contrib.auth.decorators import login_required, permission_required
@@ -28,7 +28,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    #path('', TemplateView.as_view(template_name='hall/hall.html'), name='hall'), # pagina principal
+    path('success/<success>', LoginView.as_view(), name='hall_s'), # pagina principal
+    path('activated/<activated>', ListStories.as_view(), name='hall_a'), # pagina principal
     path('', ListStories.as_view(), name='hall'), # pagina principal
     path('admin/site/', admin.site.urls),
     path('user/<str:username>/', include('apps.users.urls')), #matchea con un string despues del .com/ y termina de procesarlo en el archivo urls de users

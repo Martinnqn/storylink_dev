@@ -30,10 +30,8 @@
 <div class="container-fluid">
 <div  id="presentation" class="row">
   <section id="title-welcome" class="section-light">
-    <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
-    <h1 class="title-center">Bienvenido, el proceso de creacion de cuenta esta por terminar</h1>
-
-    <h4>Puedes <strong>crear una cuenta</strong> en Storylink llenando el siguiente formulario.</h4>
+    <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" style="width:400px;" alt="Storylink logo">
+    <h1 class="title-center">Genial, el proceso de creación de cuenta está por terminar</h1>
     <div class="container" id="container-form-create-account">
       <hr>
       <form class="form-create-user" method="post" enctype="multipart/form-data" novalidate>
@@ -80,8 +78,6 @@
         <div class="row justify-content-center">
         <button type="submit" class="btn-custom-2">Crear Cuenta</button>
         </div>
-        <hr>
-        <small class="form-text text-muted">Si crea una cuenta asumimos que leyó y acepta los <a href="{% url 'term_priv'%}" target="_blank" >términos de uso y políticas de privacidad</a></small>
       </form>
       <small class="form-text text-muted">* Campo no obligatorio</small>
     </div>

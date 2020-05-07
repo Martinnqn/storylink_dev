@@ -1,15 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 {% load widget_tweaks %}
-{% block title-page %}Solicitud nuevo email{% endblock %}
+{% block title-page %}:({% endblock %}
 {% block head-page %}
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
 {% endblock %}
 {% block main-content %}
  <div id="email-required" class="container">
-<h3 class="title-center">Nuevo email</h3>
+<h3 class="title-center">No se pudo completar el registro</h3>
 <div class="msg"></div>
+
   <form class="email-required-form" action="" method="post" role="form">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     <input type="hidden" name="partial_token" value="{{ partial_token }}">

@@ -171,3 +171,6 @@ $(document).on('change','input[type="file"]',function(){
         $('#modal-alert').modal({"show": true});    
     }
 });
+
+
+
