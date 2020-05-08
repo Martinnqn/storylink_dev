@@ -163,6 +163,8 @@ def update_or_create_userProfile(backend, strategy, details, response, user=None
             profile = UserProfile(user=user)
             saveImage(response.get('picture')['data']['url'], profile, user.id)
             profile.save()
+        user.email_verified = True
+        user.save()
     elif (user and not kwargs.get('is_new')):
         if (backend.name == "twitter"):
             profile = user.profile.get()

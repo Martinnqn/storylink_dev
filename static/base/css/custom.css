@@ -106,6 +106,8 @@ body a, label, p, span{
 
 #login-div {
     display: flex;
+    width: 100%;
+    justify-content: space-evenly;
 }
 
 #login-div a{
