@@ -30,7 +30,7 @@ def check_characters(value):
     return regex.match(value)
         
 def get_upload_path(instance, filename):
-      return 'user_{0}/{1}'.format(instance.user.id, filename)
+      return 'users/user_{0}/{1}'.format(instance.user.id, filename)
 
 class CustomUserManager(UserManager):
     def get_by_natural_key(self, username):

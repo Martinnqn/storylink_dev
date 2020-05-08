@@ -2,6 +2,9 @@ from django.db import models
 
 from apps.users.models import CustomUser, UserProfile
 
+        
+def get_upload_path(instance, filename):
+      return 'publications/user_profile_{0}/{1}'.format(instance.own_user.id, filename)
 
 # publicacion tipo historia
 class StoryPublication(models.Model):
@@ -11,7 +14,7 @@ class StoryPublication(models.Model):
     title = models.CharField(max_length=120)
     text_content = models.TextField(max_length=2000)
     #img_content_link = models.URLField(max_length=500)
-    img_content_link = models.ImageField(upload_to = 'gallery/publications/', default = 'gallery/no-img.png')
+    img_content_link = models.ImageField(upload_to = get_upload_path, default = 'gallery/no-img.png')
     opened = models.BooleanField(default=True) # privado=False o publico=True
     active = models.BooleanField(default=True) # si es una publicacion activa o no.
     date_time = models.DateField(auto_now_add=True)

@@ -240,7 +240,8 @@ CKEDITOR_CONFIGS = {
 AUTHENTICATION_BACKENDS=(
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
-    'django.contrib.auth.backends.ModelBackend',
+    #'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
     )
 
 
@@ -302,7 +303,6 @@ SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['username',]
 
 
 SOCIAL_AUTH_FACEBOOK_API_VERSION = '6.0'
-
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

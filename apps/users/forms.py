@@ -4,8 +4,18 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser, UserProfile
 import re
-
 from django.forms import ModelForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, authenticate
+
+#permite usuarios inactivos ser autenticados. no significa que les permita loguearse.
+class AuthenticationFormWithInactiveUsersOkay(AuthenticationForm):
+    def confirm_login_allowed(self, user):
+        if (not user.is_active and user.profile.exists()):
+            raise forms.ValidationError(
+                _("Esta cuenta está inactiva. Por favor revise su correo electrónico para activar la cuenta."),
+                code='inactive',
+            )
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):

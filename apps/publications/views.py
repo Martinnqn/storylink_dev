@@ -406,6 +406,7 @@ class ListStories(LoginRequiredMixin, FormMixin, generic.ListView):
         self.object_list = self.get_queryset()
         context = self.get_context_data(object_list=self.object_list, form=self.form)
         context.update({'activated': self.kwargs.get('activated',None)})
+        context.update({'success': self.kwargs.get('success',None)})
         return self.render_to_response(context)
 
 

@@ -5,7 +5,7 @@ from django.views import generic, View
 from django.contrib.auth import login, authenticate
 from apps.publications.models import StoryPublication, StoryChapter
 from apps.users.models import CustomUser, UserProfile
-from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck, CreateUserProfile
+from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck, CreateUserProfile, AuthenticationFormWithInactiveUsersOkay
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
@@ -136,6 +136,26 @@ class SignUpView(generic.CreateView):
         login(self.request, user)'''
         return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk))}))
 
+class CustomLoginView(generic.edit.FormView):
+    form_class = AuthenticationFormWithInactiveUsersOkay
+    template_name = 'registration/login.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        username = self.request.POST['username']
+        password = self.request.POST['password']
+        user = authenticate(self.request, username=username, password=password)
+        if user is not None:
+            if(user.is_active):
+                login(self.request, user)
+                return redirect('/')
+            else:
+                #se redirige para que complete su perfil. si tuviese el perfil completo, el form hubiese lanzado error.
+                return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk))}))
+        else:
+            return redirect('/') #no se por que llegaria a este else.
+
+
 class FillProfile(generic.CreateView):
     model = UserProfile
     form_class = CreateUserProfile
@@ -255,16 +275,9 @@ class username_check(generic.edit.FormView):
         self.request.session['username'] = form.cleaned_data['username']
         return super().form_valid(form)
 
-'''renderiza el template para pedir un nuevo username, en caso que sea duplicado.'''
-class LoginView(generic.edit.FormView):
-    form_class = AuthenticationForm
-    template_name = 'registration/login.html'
-    success_url = '/'
+class SuccessLoginView(CustomLoginView):
 
     def get_context_data(self, **kwargs):
-        context = super(LoginView, self).get_context_data(**kwargs)
-        context.update({'success': self.kwargs.get('success',None)})
-        context.update({'activated': self.kwargs.get('activated',None)})
+        context = super(SuccessLoginView, self).get_context_data(**kwargs)
+        context.update({'success': self.kwargs.get('success', None)})
         return context
-
-
