@@ -6,15 +6,15 @@ from .models import CustomUser, UserProfile
 import re
 from django.forms import ModelForm
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login, authenticate
 
 #permite usuarios inactivos ser autenticados. no significa que les permita loguearse.
 class AuthenticationFormWithInactiveUsersOkay(AuthenticationForm):
     def confirm_login_allowed(self, user):
-        if (not user.is_active and user.profile.exists()):
+        if (not user.email_verified):
             raise forms.ValidationError(
-                _("Esta cuenta está inactiva. Por favor revise su correo electrónico para activar la cuenta."),
-                code='inactive',
+                _('El correo electrónico de esta cuenta no se ha verificado. Por favor revise su correo electrónico y acceda al '+
+                    'enlace enviado para verificar que usted es el propietario del correo.'),
+                code='email_not_verified',
             )
 
 class CustomUserCreationForm(UserCreationForm):

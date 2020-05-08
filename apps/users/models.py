@@ -42,7 +42,7 @@ class CustomUser(AbstractUser):
     objects = CustomUserManager()
     username = models.CharField(unique=True, max_length=35, validators=[unique_user])
     email = models.EmailField(unique=True)
-    
+    email_verified = models.BooleanField(default=False)
     #USERNAME_FIELD = 'email'
     #REQUIRED_FIELDS =['username'] 
     def __str__(self):

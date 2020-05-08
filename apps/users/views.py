@@ -113,7 +113,7 @@ class UnfollowUser(LoginRequiredMixin, generic.DetailView):
         self.request.user.profile.get().user_subscription.remove(self.get_object().profile.get());
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': username}))
 
-#para dar de alta un usuario
+#para dar de alta un usuario. Cuando crea el usuario le envia un mail para verificar la cuenta.
 class SignUpView(generic.CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm
@@ -125,17 +125,20 @@ class SignUpView(generic.CreateView):
         #context.update({'loginform': form2})
         return context
 
-
     def form_valid(self, form):
         user = form.save(commit=False)
         user.is_active = False
         user.save()
-        '''username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password1')
-        user = authenticate(username=username, password=password)
-        login(self.request, user)'''
-        return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk))}))
+        send_mail_confirm(self.request, user)
+        return redirect(reverse_lazy('hall_s', kwargs = {'success': True}))
 
+'''
+CustomloginView permite iniciar sesion solo si un usuario tiene el email verificado y ademas tiene el UserProfile creado
+(no checkea is_active en CustomUser).
+Si el email no esta verificado el formulario lanza is_invalid. Si el mail esta verificado y el usuario aun no tiene creado
+su UserProfile, entonces se lo redirige a FillProfile para que pueda crear su profile.
+Si el usuario tiene el mail verificado, y se inicia sesion, se verifica si su estado era activo o inactivo,
+para actualizarlo.'''
 class CustomLoginView(generic.edit.FormView):
     form_class = AuthenticationFormWithInactiveUsersOkay
     template_name = 'registration/login.html'
@@ -146,16 +149,28 @@ class CustomLoginView(generic.edit.FormView):
         password = self.request.POST['password']
         user = authenticate(self.request, username=username, password=password)
         if user is not None:
-            if(user.is_active):
-                login(self.request, user)
-                return redirect('/')
+            if(user.profile.exists()):
+                if (user.is_active):
+                    login(self.request, user)
+                    return redirect('/')
+                else:
+                    #este caso es por si un usuario habia desactivado su cuenta a proposito, y luego volvio a iniciar sesion.
+                    user.is_active = True
+                    user.save()
+                    login(self.request, user)
+                    return redirect('/', kwargs = {'is_reactive': True}) #WARNINGGGGG hacer esta url
             else:
-                #se redirige para que complete su perfil. si tuviese el perfil completo, el form hubiese lanzado error.
+                #se redirige para que complete su perfil.
                 return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk))}))
         else:
-            return redirect('/') #no se por que llegaria a este else.
+            return redirect('/') #no se por que llegaria a este else. (El form lanza error si el usuario no existe, o si el usuario no verifico su mail)
 
-
+'''Permite cargar los datos de un perfil si su email ya fue verificado. Luego de cargar los datos inicia sesion.
+Si el perfil ya existia entonces omite la consulta. Si se intenta acceder a la url sin estar el mail verificado 
+redirige al /. Resulta un poco inseguro permitir que un usuario se loguee, ya que no se esta pidiendo la password,
+y no se esta accediendo desde una url con token de seguridad. Pero las probabilidades de que alguien intersecte 
+el uid de un usuario nuevo que acaba de verificar el mail son muy pequenias.
+'''
 class FillProfile(generic.CreateView):
     model = UserProfile
     form_class = CreateUserProfile
@@ -163,17 +178,32 @@ class FillProfile(generic.CreateView):
 
     def form_valid(self, form, **kwargs):
         id = force_text(urlsafe_base64_decode(self.kwargs.get('uidb64')))
-        user = CustomUser.objects.get(id = id)
+        user = get_object_or_404(CustomUser, id = id, email_verified=True)
         if (user and not user.profile.exists()): #exists por las dudas que inyecten en la url un uidb64 de un usuario ya creado.
-            profile = form.save(commit=False)
-            profile.user = user;
-            profile.save()
-            send_mail_confirm(self.request, user)
+            try:
+                with transaction.atomic():
+                    profile = form.save(commit=False)
+                    profile.user = user
+                    user.is_active = True
+                    user.save()
+                    profile.save()
+            except IntegrityError as e:
+                print("Errorrrrr "+e.message)
+            login(self.request, user, backend='django.contrib.auth.backends.AllowAllUsersModelBackend')
             return redirect(reverse_lazy('hall_s', kwargs={'success': True}))
         else:
             return redirect('/')
 
-class ActivateAccount(View):
+    def get(self, request, uidb64, **kwargs):
+        id = force_text(urlsafe_base64_decode(self.kwargs.get('uidb64')))
+        existUser = CustomUser.objects.filter(id = id, email_verified=True).exists()
+        if (existUser):
+            return super().get(self, request, uidb64, **kwargs)
+        else:
+            return redirect('/')
+        
+#verificar si es necesario calcular el uid de nuevo para el fillprofile. Creo es siempre el mismo.
+class VerifiedMail(View):
     def get(self, request, uidb64, token):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
@@ -181,12 +211,11 @@ class ActivateAccount(View):
         except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
             user = None
         if user is not None and account_activation_token.check_token(user, token) and not user.is_active:
-            user.is_active = True
+            user.email_verified = True
             user.save()
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect(reverse_lazy('hall_a', kwargs={'activated': True}))
+            return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk)), 'email_verified': True}))
         else:
-            return redirect(reverse_lazy('hall_a', kwargs={'activated': False}))
+            return redirect(reverse_lazy('hall_a', kwargs={'email_verified': False}))
 
 def send_mail_confirm(request, user):
     current_site = get_current_site(request)
@@ -274,10 +303,3 @@ class username_check(generic.edit.FormView):
     def form_valid(self, form):
         self.request.session['username'] = form.cleaned_data['username']
         return super().form_valid(form)
-
-class SuccessLoginView(CustomLoginView):
-
-    def get_context_data(self, **kwargs):
-        context = super(SuccessLoginView, self).get_context_data(**kwargs)
-        context.update({'success': self.kwargs.get('success', None)})
-        return context

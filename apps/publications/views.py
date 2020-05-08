@@ -279,7 +279,7 @@ class CreateStory(LoginRequiredMixin, generic.CreateView):
                 story.own_user = self.request.user.profile.get()
                 form.save()
         except IntegrityError as e:
-                    print("Errorrrrr "+e.message)
+            print("Errorrrrr "+e.message)
         addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
 
