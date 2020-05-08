@@ -144,6 +144,11 @@ class CustomLoginView(generic.edit.FormView):
     template_name = 'registration/login.html'
     success_url = '/'
 
+    def get_context_data(self, **kwargs):
+        context = super(CustomLoginView, self).get_context_data(**kwargs)
+        context.update({'success': self.kwargs.get('success', None)})
+        return context
+
     def form_valid(self, form):
         username = self.request.POST['username']
         password = self.request.POST['password']
@@ -176,6 +181,11 @@ class FillProfile(generic.CreateView):
     form_class = CreateUserProfile
     template_name = 'registration/fill_user_profile.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(FillProfile, self).get_context_data(**kwargs)
+        context.update({'email_verified': self.kwargs.get('email_verified', None)})
+        return context
+
     def form_valid(self, form, **kwargs):
         id = force_text(urlsafe_base64_decode(self.kwargs.get('uidb64')))
         user = get_object_or_404(CustomUser, id = id, email_verified=True)
@@ -190,15 +200,15 @@ class FillProfile(generic.CreateView):
             except IntegrityError as e:
                 print("Errorrrrr "+e.message)
             login(self.request, user, backend='django.contrib.auth.backends.AllowAllUsersModelBackend')
-            return redirect(reverse_lazy('hall_s', kwargs={'success': True}))
+            return redirect(reverse_lazy('hall_a', kwargs={'activated': True}))
         else:
             return redirect('/')
 
-    def get(self, request, uidb64, **kwargs):
+    def get(self, *args, **kwargs):
         id = force_text(urlsafe_base64_decode(self.kwargs.get('uidb64')))
         existUser = CustomUser.objects.filter(id = id, email_verified=True).exists()
         if (existUser):
-            return super().get(self, request, uidb64, **kwargs)
+            return super().get(*args, **kwargs)
         else:
             return redirect('/')
         
@@ -231,7 +241,7 @@ def send_mail_confirm(request, user):
                 mail_subject, message, to=[to_email]
     )
     email.content_subtype = "html"
-    email.send()
+    #email.send()
 
 
 #Eliminar usuario. No se eliminan, se ponen inactivos

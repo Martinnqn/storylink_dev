@@ -1,7 +1,7 @@
 $(document).ready(function() {
   if(activated=='True'){
     $('#modal-alert').modal({"show":true});
-    $('#modal-alert .modal-title').text("¡Cuenta activada con éxito!")
+    $('#modal-alert .modal-title').text("¡Perfil creado con éxito!")
     $('#modal-alert .modal-body').html("<h5>Gracias por completar el proceso de registro</h5>"+
       "<p>¡Diviertete!</p>")
   }else if (activated=='False'){

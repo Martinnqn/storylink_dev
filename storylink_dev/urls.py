@@ -28,7 +28,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('success/<success>', ListStories.as_view(), name='hall_s'), # pagina principal
+    path('success/<success>', CustomLoginView.as_view(), name='hall_s'), # pagina principal
     path('activated/<activated>', ListStories.as_view(), name='hall_a'), # pagina principal
     path('', ListStories.as_view(), name='hall'), # pagina principal
     path('admin/site/', admin.site.urls),

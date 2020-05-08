@@ -7,6 +7,10 @@
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{% static 'registration/css/custom.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+    email_verified = "{{email_verified}}";
+    success = "{{success}}";
+</script>
 {% endblock %}
 
 
@@ -81,4 +85,8 @@
       </form>
       <small class="form-text text-muted">* Campo no obligatorio</small>
     </div>
+{% endblock %}
+
+{%block extra-script%}
+<script src="{% static 'registration/js/reg.js' %}"></script>
 {% endblock %}

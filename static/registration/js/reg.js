@@ -16,6 +16,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+  console.log("entra")
   if (success=='True'){
     $('#modal-alert').modal({"show":true});
     $('#modal-alert .modal-title').text("¡Cuenta creada con éxito!")
@@ -23,15 +24,16 @@ $(document).ready(function() {
       "<p>Para completar el registro, por favor ingrese a su cuenta de correo electrónico y haga click en el enlace"+
       " que se le ha enviado para activar su cuenta.</p>"+
       "<p>Si <strong>no puede</strong> encontrar el correo electrónico, por favor revise su correo no deseado.</p>")
-  }else if(activated=='True'){
+  }else if(email_verified=='True'){
     $('#modal-alert').modal({"show":true});
-    $('#modal-alert .modal-title').text("¡Cuenta activada con éxito!")
-    $('#modal-alert .modal-body').html("<h5>Gracias por completar el proceso de registro</h5>."+
-      "<p>¡Diviertete!.</p>.")
-  }else if (activated=='False'){
+    $('#modal-alert .modal-title').text("¡Email verificado con éxito!")
+    $('#modal-alert .modal-body').html("<h5>Gracias por verificar su email</h5>"+
+      "<p>El proceso de creación de cuenta ha terminado.</p>"+
+      "<p>Antes de poder iniciar sesión, debe agregar informacion a su perfil. No es obligatorio llenar los campos!</p>")
+  }else if (email_verified=='False'){
     $('#modal-alert').modal({"show":true});
     $('#modal-alert .modal-title').text(":(")
-    $('#modal-alert .modal-body').html("<h5>El link de activación de cuenta es inválido.</h5>.")
+    $('#modal-alert .modal-body').html("<h5>El link de verificación de email es inválido.</h5>")
   }
 });
 
