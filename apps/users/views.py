@@ -241,7 +241,7 @@ def send_mail_confirm(request, user):
                 mail_subject, message, to=[to_email]
     )
     email.content_subtype = "html"
-    #email.send()
+    email.send()
 
 
 #Eliminar usuario. No se eliminan, se ponen inactivos

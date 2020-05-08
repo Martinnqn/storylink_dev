@@ -23,7 +23,7 @@
                     <a href="{% url 'user:user_profile' customuser.username %}">{{customuser.first_name}} {{customuser.last_name}}</a>
                 </li>
                 <li>
-                    {{customuser.description}}
+                    {{customuser.profile.get.description}}
                 </li>     
                 <li>
                     {{customuser.tags}}
