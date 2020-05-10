@@ -1,5 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic, View
 from django.contrib.auth import login, authenticate
@@ -8,15 +7,10 @@ from apps.users.models import CustomUser, UserProfile
 from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck, CreateUserProfile, AuthenticationFormWithInactiveUsersOkay
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from django.forms.models import model_to_dict
-from django.contrib.auth.forms import AuthenticationForm
-from social_django.utils import psa, load_strategy
+from social_django.utils import load_strategy
 from django.db import transaction, IntegrityError
-from social_django.models import UserSocialAuth
-from django.conf import settings
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
@@ -121,7 +115,7 @@ class SignUpView(generic.CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(SignUpView, self).get_context_data(**kwargs)
-        #form2 = AuthenticationForm()
+        #form2 = AuthenticationFormWithInactiveUsersOkay()
         #context.update({'loginform': form2})
         return context
 

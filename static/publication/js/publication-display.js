@@ -8,7 +8,7 @@ function showTheater() {
         });
         $("body").css({
             'overflow': 'hidden',
-    });
+        });
     }
 }
 
@@ -49,6 +49,27 @@ function subUnsubToStory(url) {
             }else{
                 $("#subscribe-story").css({display:'inline-block'});
                 $("#unsubscribe-story").css({display:'none'});
+            }
+        }
+    });
+}
+
+function likeUnlikeToPublication(url, pubid) {
+    //console.log(url)
+    $.ajax({
+        url:  url,
+        type:  'get',
+        dataType:  'text/json',
+        complete: function  (data) {
+            cont = JSON.parse(data.responseText);
+            if (cont.is_liked){
+                $("#unlike-pub_"+pubid).css({'display':'inline-block'});
+                $("#like-pub_"+pubid).css({'display': 'none'});
+                $("#cant-likes_"+pubid).text(parseInt($("#cant-likes_"+pubid).text())+1);
+            }else{
+                $("#like-pub_"+pubid).css({'display':'inline-block'});
+                $("#unlike-pub_"+pubid).css({'display':'none'});
+                $("#cant-likes_"+pubid).text(parseInt($("#cant-likes_"+pubid).text())-1);
             }
         }
     });
@@ -353,6 +374,17 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
             $("#pre-story_"+pubid).attr('onclick',`animateScroll('#theater-view_`+idPubToIdUnique.get(idParent)+`')`);
         }
         $("#displacement-menu_"+pubid).css({'display':"flex"});
+    }
+
+    $("#unlike-pub_"+pubid).attr('onclick', `likeUnlikeToPublication('`+cont.url_unlike+`','`+pubid+`')`);
+    $("#like-pub_"+pubid).attr('onclick', `likeUnlikeToPublication('`+cont.url_like+`','`+pubid+`')`);
+    $("#cant-likes_"+pubid).text(cont.cant_likes);
+    if (cont.is_liked){
+        $("#unlike-pub_"+pubid).css({'display': 'inline-block'});
+        $("#like-pub_"+pubid).css({'display': 'none'});
+    }else{
+        $("#like-pub_"+pubid).css({'display': 'inline-block'});
+        $("#unlike-pub_"+pubid).css({'display': 'none'});
     }
 
     $("#tags_"+pubid+" .tags-story").empty();

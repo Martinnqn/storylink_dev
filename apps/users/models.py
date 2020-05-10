@@ -1,18 +1,14 @@
 from django.db import models
-
-from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 import re
-from django.contrib.auth.models import AbstractUser, UserManager
-from django.conf import settings
+from django.contrib.auth.models import UserManager
 
 #from apps.publications.models import StoryPublication #import circular! solucionado con app_level.ModelName (publications.StoryPublication)
 
 #funcion para validar si el usuario es unico (equalsIgnoreCase) y no contiene punto
 def unique_user(value):
-    regex = re.compile('[.@\w]+$')
     if (not check_characters(value)):
         raise ValidationError(
             _('No se permiten utilizar caracteres especiales como ", ?,¡, &, %%, ., comas, espacios, etc en los nombres de usuario.'),
@@ -47,8 +43,6 @@ class CustomUser(AbstractUser):
     #REQUIRED_FIELDS =['username'] 
     def __str__(self):
         return self.username
-
-from django.core.files.storage import FileSystemStorage
 
 class UserProfile(models.Model):
     user = models.ForeignKey(CustomUser, related_name='profile', on_delete=models.PROTECT)

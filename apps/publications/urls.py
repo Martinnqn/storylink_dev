@@ -1,6 +1,5 @@
 from django.urls import path
 
-from . import views
 from apps.publications.views import *
 
 app_name='pub'
@@ -18,6 +17,10 @@ path('edit-story/<int:pk>', EditStory.as_view(), name='edit_story'),
 path('edit-chapter/<int:pk>', EditStoryChapter.as_view(), name='edit_chapter'),
 path('subscribe/<int:pk>', SubscribeStory.as_view(), name='subs_story'),
 path('unsubscribe/<int:pk>', UnsubscribeStory.as_view(), name='unsubs_story'),
+path('story/like/<int:pk>', LikeStory.as_view(), name='like_story'),
+path('story/unlike/<int:pk>', UnlikeStory.as_view(), name='unlike_story'),
+path('chapter/like/<int:pk>', LikeChapter.as_view(), name='like_chapter'),
+path('chapter/unlike/<int:pk>', UnlikeChapter.as_view(), name='unlike_chapter'),
 path('continuations/<int:pk>', StoryContinuations.as_view(), name='conts_story'),
 path('continuations-chapter/<int:pk>', ChapterContinuations.as_view(), name='conts_chap'),
 #path('create-resource', CreateResource.as_view(), name='create_resource'),

@@ -396,6 +396,18 @@
     list-style: initial;
 }
 
+.like .material-icons{
+    vertical-align: text-bottom;
+}
+
+.like .cant-likes{
+    color: #a6a6a6;
+}
+
+.btn-liked {
+    color: #ff6567;
+}
+
 @media (min-width: 992px) {
      .publication-container {
         max-height: 450px;

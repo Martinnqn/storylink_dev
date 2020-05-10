@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.users.models import CustomUser, UserProfile
+from apps.users.models import UserProfile
 
         
 def get_upload_path(instance, filename):
@@ -22,6 +22,7 @@ class StoryPublication(models.Model):
     valoration = models.IntegerField(default=0)
     tag = models.ManyToManyField('Tag')
     color = models.CharField(max_length=7, default="#4a4a4a")
+    like = models.ManyToManyField(UserProfile, through='StoryLike', related_name='storyLikes', symmetrical=False)
     def __str__(self):
         return self.title+' '+str(self.id)
 
@@ -41,11 +42,21 @@ class StoryChapter(models.Model):
     prevChapter = models.ForeignKey('self', null=True, blank=True, on_delete=models.PROTECT) #capitulo anterior.
     #responde a pregunta
     quest_answ = models.CharField(max_length=100, null=False)
+    like = models.ManyToManyField(UserProfile, through='ChapterLike', related_name='chapterLikes', symmetrical=False)
 
     def __str__(self):
         return self.mainStory.title+' - '+str(self.quest_answ)
 
+class StoryLike(models.Model):
+    date_time = models.DateField(auto_now_add=True)
+    from_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='likeToStory')
+    to_story = models.ForeignKey(StoryPublication, on_delete=models.CASCADE, related_name='storyLikedBy')
 
+class ChapterLike(models.Model):
+    date_time = models.DateField(auto_now_add=True)
+    from_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='likeToChapter')
+    to_chapter = models.ForeignKey(StoryChapter, on_delete=models.CASCADE, related_name='chapterLikedBy')
+        
 
 # publicacion tipo recurso
 class ResourcePublication(models.Model):
