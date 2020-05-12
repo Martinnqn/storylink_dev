@@ -3,6 +3,19 @@ User: nk_user
 Pw: 1234
 host: localhost
 
+--------------------------------
+PARA INSTALAR LA BD EN LINUX/DEBIAN
+
+$ sudo apt-get install postgresql postgresql-contrib postgresql-client
+
+Para crear la base de datos crear primero el usuario nk_user
+
+$ sudo -u postgres createuser -P -d nk_user
+$ createdb nk_db -U nk_user -h localhost
+
+
+para mas referencias https://rukbottoland.com/blog/como-instalar-y-configurar-postgresql/
+
+
 Para crear un superusuario admin para acceder a 127.0.0.1:8000/admin/site o para loguearse en la pagina usar:
-$ python3 manage.py createsuperuser 
-(yo lo instale con pip3 a Django asique uso python3 porque otro no me anda)
+$ python3.7 manage.py createsuperuser 
