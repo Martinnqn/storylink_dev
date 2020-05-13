@@ -111,12 +111,12 @@ class UnfollowUser(LoginRequiredMixin, generic.DetailView):
 class SignUpView(generic.CreateView):
     model = CustomUser
     form_class = CustomUserCreationForm
-    template_name = 'registration/signup.html'
+    template_name = 'registration/login.html'
 
     def get_context_data(self, **kwargs):
         context = super(SignUpView, self).get_context_data(**kwargs)
-        #form2 = AuthenticationFormWithInactiveUsersOkay()
-        #context.update({'loginform': form2})
+        context.update({'formSignUp': self.get_form()})
+        context.update({'formLogin': AuthenticationFormWithInactiveUsersOkay})
         return context
 
     def form_valid(self, form):
@@ -141,6 +141,8 @@ class CustomLoginView(generic.edit.FormView):
     def get_context_data(self, **kwargs):
         context = super(CustomLoginView, self).get_context_data(**kwargs)
         context.update({'success': self.kwargs.get('success', None)})
+        context.update({'formSignUp': CustomUserCreationForm})
+        context.update({'formLogin': self.get_form()})
         return context
 
     def form_valid(self, form):
@@ -163,6 +165,9 @@ class CustomLoginView(generic.edit.FormView):
                 return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk))}))
         else:
             return redirect('/') #no se por que llegaria a este else. (El form lanza error si el usuario no existe, o si el usuario no verifico su mail)
+
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
 '''Permite cargar los datos de un perfil si su email ya fue verificado. Luego de cargar los datos inicia sesion.
 Si el perfil ya existia entonces omite la consulta. Si se intenta acceder a la url sin estar el mail verificado 

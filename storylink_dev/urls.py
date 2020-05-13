@@ -30,7 +30,7 @@ urlpatterns = [
     path('', ListStories.as_view(), name='hall'), # pagina principal
     path('admin/site/', admin.site.urls),
     path('user/<str:username>/', include('apps.users.urls')), #matchea con un string despues del .com/ y termina de procesarlo en el archivo urls de users
-    path('accounts/login/', CustomLoginView.as_view(), name="custom_login"), # para la administracion de la cuenta de usuario
+    path('accounts/login/', CustomLoginView.as_view(), name="custom_login"), # para iniciar sesion con el formulario que permite usuarios inactivos
     path('accounts/', include('django.contrib.auth.urls')), # para la administracion de la cuenta de usuario
     path('signup/', SignUpView.as_view(), name='sign_up'), 
     path('terminos_privacidad/', TemplateView.as_view(template_name='term_priv.html'),  name='term_priv'),

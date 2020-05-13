@@ -8,7 +8,7 @@ PARA INSTALAR LA BD EN LINUX/DEBIAN
 
 $ sudo apt-get install postgresql postgresql-contrib postgresql-client
 
-Para crear la base de datos crear primero el usuario nk_user
+la base de datos debe tener la contraseña 1234. Para crear la base de datos crear primero el usuario nk_user
 
 $ sudo -u postgres createuser -P -d nk_user
 $ createdb nk_db -U nk_user -h localhost

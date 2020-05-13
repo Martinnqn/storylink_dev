@@ -1,0 +1,75 @@
+{% load widget_tweaks %}
+{% comment %}
+  Si el formulario esta ligado a una instancia, se abre el modal automaticamente
+{% endcomment %}
+{% if formSignUp.is_bound %}
+    <script>
+    document.addEventListener('DOMContentLoaded',function() {
+    showSignUpModal();
+    });
+    </script>
+{% endif %}
+<div class="modal fade" id="modal-signUp" tabindex="-1" role="dialog" aria-labelledby="modal-signUp-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-signUp-title">Crear cuenta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <form class="form-create-user" method="post" action="{% url 'sign_up' %}" novalidate>
+          {% csrf_token %}
+
+          {% for hidden_field in formSignUp.hidden_fields %}
+            {{ hidden_field }}
+          {% endfor %}
+
+          {% if formSignUp.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for error in formSignUp.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% for field in formSignUp.visible_fields %}
+            <div class="form-group">
+              {{ field.label_tag }}
+              {%if not field.field.required or field.id_for_label|stringformat:"s" == "id_link_img_perfil" %}
+                  <span class="not-required-field">*</span>
+              {%endif%}
+              {% if formSignUp.is_bound %}
+                {% if field.errors %}
+                  {% render_field field class="form-control is-invalid" %}
+                  {% for error in field.errors %}
+                    <div class="invalid-feedback">
+                      {{ error }}
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  {% render_field field class="form-control is-valid" %}
+                {% endif %}
+              {% else %}
+                {% render_field field class="form-control" %}
+              {% endif %}
+
+              {% if field.help_text %}
+                <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %}
+            </div>
+          {% endfor %}
+          <div class="row justify-content-center">
+          <button type="submit" class="btn-custom-2">Crear Cuenta</button>
+          </div>
+          <hr>
+          <small class="form-text text-muted">Si crea una cuenta asumimos que leyó y acepta los <a href="{% url 'term_priv'%}" target="_blank" >términos de uso y políticas de privacidad</a></small>
+        </form>
+  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

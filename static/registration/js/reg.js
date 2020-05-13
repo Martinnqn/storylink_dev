@@ -16,7 +16,6 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-  console.log("entra")
   if (success=='True'){
     $('#modal-alert').modal({"show":true});
     $('#modal-alert .modal-title').text("¡Cuenta creada con éxito!")
@@ -64,31 +63,6 @@ window.onscroll = function() {
   prevScrollpos = currentScrollPos;
 }
 
-/*
-$(document).ready(function(){
-  // Add smooth scrolling to all links
-  $("a").on('click', function(event) {
-
-    // Make sure this.hash has a value before overriding default behavior
-    if (this.hash !== "") {
-      // Prevent default anchor click behavior
-      event.preventDefault();
-
-      // Store hash
-      var hash = this.hash;
-
-      // Using jQuery's animate() method to add smooth page scroll
-      // The optional number (800) specifies the number of milliseconds it takes to scroll to the specified area
-      $('html, body').animate({
-        scrollTop: $(hash).offset().top
-      }, 800, function(){
-
-        // Add hash (#) to URL when done scrolling (default click behavior)
-        window.location.hash = hash;
-      });
-    } // End if
-  });
-});*/
 
 function animateScroll(target) {
     /*console.log($('#theater-main').scrollTop())
@@ -100,10 +74,15 @@ function animateScroll(target) {
     alert(window.pageYOffset-$(target).offset().top)
     alert($(target).offset().top)*/
     //el scrollTop necesita restarle el pageYoffset porque nose pero funciona.
-    console.log($(target).offset().top)
-    console.log($('body').scrollTop())
     $('html, body').animate({
       scrollTop: $('body').scrollTop()+$(target).offset().top,
     }, 800);
-
   }
+
+function showLoginModal() {
+   $('#modal-login').modal({"show":true});
+}
+
+function showSignUpModal() {
+   $('#modal-signUp').modal({"show":true});
+}
