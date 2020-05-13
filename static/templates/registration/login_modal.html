@@ -20,12 +20,14 @@
         </button>
       </div>
       <div class="modal-body">
-        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
-          <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-twitter btn-lg"><span class="fa fa-twitter"></span>Iniciar Sesión con Twitter</a>
+        <div class="social-login">
+        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
+          <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-twitter"><span class="fa fa-twitter"></span>Iniciar Sesión con Twitter</a>
+        </div>
         <hr>
         <div class="has-account">
         <small class="text-muted">Si ya tienes una cuenta </small>
-        <form method="post" action="{%url 'custom_login' %}" novalidate class="d-flex">
+        <form method="post" action="{%url 'custom_login' %}" novalidate>
           {% csrf_token %}
 
           {% for hidden_field in formLogin.hidden_fields %}
@@ -44,17 +46,17 @@
               {{ field.label_tag }}                          
               {% if formLogin.is_bound %}
                 {% if field.errors %}
-                  {% render_field field class="is-invalid" %}
+                  {% render_field field class="form-control is-invalid" %}
                   {% for error in field.errors %}
                     <div class="invalid-feedback">
                       {{ error }}
                     </div>
                   {% endfor %}
                 {% else %}
-                  {% render_field field class="is-valid" %}
+                  {% render_field field class="form-control is-valid" %}
                 {% endif %}
               {% else %}
-                {% render_field field  %}
+                {% render_field field  class="form-control" %}
               {% endif %}
 
               {% if field.help_text %}
@@ -62,7 +64,9 @@
               {% endif %}
             </div>
           {% endfor %}
-          <button type="submit" class="btn-custom-2">Iniciar sesión</button>
+          <div class="row justify-content-center">
+            <button type="submit" class="btn-custom-2">Iniciar sesión</button>
+          </div>
         </form>
         </div>
       </div>

@@ -15,6 +15,16 @@ body {
     cursor: pointer;
 }
 
+.social-login{
+    margin: auto;
+    display: grid;
+    width: 80%;
+}
+
+.social-login a{
+    margin-top: 10px;
+}
+
 .btn-facebook {
   background: #3B5998;
   border-radius: 0;
@@ -78,35 +88,15 @@ body {
   }
 }
 
-.has-account {
-    width: auto;
-    height: auto;
-    display: grid;
-}
 
 .has-account .text-muted {
     color: #acabab !important;
 }
 
-.has-account .alert {
+/*.has-account .alert {
     position: absolute;
     margin-top: 100px;
-}
-
-.has-account .form-group{
-    margin:auto;
-    width: 130px;
-}
-
-.has-account input {
-    height: 35px;
-    width: 100px;
-}
-
-.has-account label {
-    margin: auto;
-    color: white;
-}
+}*/
 
 #primary-navbar .btn-custom-2 {
     font-size: 15px;
@@ -264,7 +254,7 @@ background: moccasin;
 }
 
 
-@media(max-width:500px) {
+@media(max-width:572px) {
     #container-form-create-account{
         width: 90%;
         margin-top: 25px;
@@ -278,6 +268,12 @@ background: moccasin;
     .email-required-form {
         width: 90%;
     }
+
+    .social-login a{
+        width: 100%;
+        font-size: 16px;
+    }
+
 }
 
 
