@@ -20,11 +20,9 @@
                 <nav id="primary-navbar" class="navbar navbar-expand-lg navbar-dark">
                     <!-- Brand -->
                     <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
+                    <div id="login-div">
                     <a href="javascript:void(0)" onclick="showLoginModal()">Iniciar sesión</a>
-                    <div class="to-register">
-                      <small class="form-text text-muted msg-create-acc">
-                      Si aún no tienes una cuenta </small>
-                      <a href="javascript:void(0)" onclick="showSignUpModal()">Crea una</a>
+                    <a href="javascript:void(0)" onclick="showSignUpModal()">Crea cuenta</a>
                     </div>
                 </nav> 
             </div>
@@ -39,6 +37,9 @@
     <h1 class="title-center">Bienvenido a Storylink.club</h1>
     <div class="to container">
       <h3>¿Dónde estoy? presiona sobre las <em>Esferalinks</em> para enterarte!</h3>
+      <div class="m-welcome">
+        <img id="welcome-img" src="{% static 'imgs/mascota/mascota_sonriendo.png' %}" alt="">
+      </div>
       <span class="material-icons arrow">play_for_work</span>
       <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#what-is')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
       <div class="section-link"></div>
@@ -51,6 +52,9 @@
     <div class="to container">
       <h1>Estás en Storylink.club!, una plataforma desarrollada para <strong>escribir y leer Storylinks!</strong></h1>
       <h3>¿Qué es una Storylink?</h3>
+      <div class="m-welcome">
+        <img id="welcome-img-2" src="{% static 'imgs/mascota/mascota_sorprendida.png' %}" alt="">
+      </div>
       <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#what-is-sl')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
       <div class="section-link"></div>
     </div>
@@ -76,6 +80,9 @@
       </div>
       <h4>¿Quieres saber más?</h4>
       <h4>SI!</h4>
+      <div class="m-welcome">
+        <img id="welcome-img" src="{% static 'imgs/mascota/mascota_feliz.png' %}" alt="">
+      </div>
       <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#why')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
       <div class="section-link"></div>
   </section>
@@ -96,11 +103,19 @@
         </div>
       </div>
       <div class="row justify-content-center">
+        <div class="">
+          <img id="welcome-img" src="{% static 'imgs/mascota/mascota_confianza.png' %}" alt="">
+        </div>
         <div class="col-md-8">
-        <a class="a-create-acc" href="{% url 'sign_up' %}">Crea una cuenta en Storylink</a>
-        <br>o
-        <hr>
+        <a class="a-create-acc" href="javascript:void(0)" onclick="showSignUpModal()">Crea una cuenta en Storylink</a>
+        <div class="separate">
+        <span class="o">o</span>
+        <hr class="horizontal-separate">
+        </div>
+        <div class="social-login">
         <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook btn-lg"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
+        <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-twitter"><span class="fa fa-twitter"></span>Iniciar Sesión con Twitter</a>
+        </div>
         </div>
       </div> 
     </div>

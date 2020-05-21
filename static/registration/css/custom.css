@@ -88,6 +88,17 @@ body {
   }
 }
 
+.m-welcome {
+}
+
+#welcome-img {
+    width: 150px;
+}
+
+#welcome-img-2 {
+    width: 150px;
+    margin-left: 200px;
+}
 
 .has-account .text-muted {
     color: #acabab !important;
@@ -110,9 +121,14 @@ body {
     margin-top: 30px;    
 }
 
-.to-register {
-    margin:auto;
-    margin-left: 20px;
+.separate .o {
+    position: relative;
+    background: moccasin;
+    padding: 4px;
+}
+
+.separate .horizontal-separate {
+    margin-top: -10px;
 }
 
 strong.hall{
