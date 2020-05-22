@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_bleach',
     'ckeditor',
     'social_django',
+    'django.forms',
 ]
 
 if DEBUG:
@@ -78,6 +79,8 @@ TEMPLATES = [
         },
     },
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'storylink_dev.wsgi.application'
 

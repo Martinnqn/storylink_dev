@@ -1,15 +1,9 @@
 from django.forms import ModelForm
 from django import forms
 from .models import StoryPublication, ResourcePublication, StoryChapter
-from django.shortcuts import get_object_or_404
 from django_bleach.forms import BleachField
-from ckeditor.fields import RichTextField
-from ckeditor.widgets import CKEditorWidget
-import bleach
-from django.utils.html import conditional_escape, escape
 from django.forms import ValidationError
 
-from django.utils.safestring import mark_safe
 
 CHOICES = (
     ('#4a4a4a', '<span style="background:#4a4a4a;" class="palette-color-pub"></span>'),

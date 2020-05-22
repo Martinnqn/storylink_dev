@@ -1,0 +1,19 @@
+{% extends "users/user_profile.html" %}
+
+{% load static %}
+{% block title-page %}{{customuser.first_name}} {{customuser.last_name}}{% endblock %}
+{% block head-page-extra %}
+<!-- Custom CSS -->
+<link rel="stylesheet" href="{% static 'publication/css/custom.css' %}">
+<!-- Icons star CSS -->
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+{% endblock %}
+
+{% block profile-side-left %}
+<div class="container" id="profile-description">
+    <ul class="edit-menu">
+      <li><a href="{% url 'user:edit_account' user.username %}">Configuración general</a></li>
+      <li><a href="{% url 'user:edit_profile' user.username %}">Configuración de perfil</a></li>
+    </ul>
+</div>
+{%endblock%}

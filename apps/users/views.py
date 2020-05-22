@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate
 from apps.publications.models import StoryPublication, StoryChapter
 from apps.users.models import CustomUser, UserProfile
 from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck, CreateUserProfile, AuthenticationFormWithInactiveUsersOkay
+from apps.users.forms import EditUserProfile, EditAccount
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from social_django.utils import load_strategy
@@ -312,3 +313,36 @@ class username_check(generic.edit.FormView):
     def form_valid(self, form):
         self.request.session['username'] = form.cleaned_data['username']
         return super().form_valid(form)
+
+
+class EditUserProfile(LoginRequiredMixin, generic.edit.UpdateView):
+    model = UserProfile
+    form_class = EditUserProfile
+    template_name = 'users/edit_profile.html'
+
+    def get_success_url(self):
+        return reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username})
+
+    def get_object(self, queryset=None):
+        return self.request.user.profile.get()
+
+    def get_context_data(self, **kwargs):
+        context = super(EditUserProfile, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username': self.request.user.username}})
+        return context
+
+class EditUserAccount(LoginRequiredMixin, generic.edit.UpdateView):
+    model = CustomUser
+    form_class = EditAccount
+    template_name = 'users/edit_user_account.html'
+
+    def get_success_url(self):
+        return reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username})
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super(EditUserAccount, self).get_context_data(**kwargs)
+        context.update({'customuser': {'username': self.request.user.username}})
+        return context

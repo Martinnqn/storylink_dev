@@ -15,6 +15,8 @@ urlpatterns = [
     path('delete/<int:id>', DeleteUser.as_view(), name='user_delete'),
     path('publication/', include('apps.publications.urls')),
     path('search/<suser>', SearchUser.as_view(), name='user_search'),
+    path('edit-account/', EditUserAccount.as_view(), name='edit_account'),
+    path('edit-profile/', EditUserProfile.as_view(), name='edit_profile'),
 
 ]
 

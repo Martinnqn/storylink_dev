@@ -25,6 +25,22 @@
     js_user_id = {{user.profile.get.id}};
     {%endif%}
     </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '2674235692866237');
+      fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=2674235692866237&ev=PageView&noscript=1"/></noscript>
+    <!-- End Facebook Pixel Code -->
 </head>
 <body>
     <div id="page-container">
@@ -60,6 +76,7 @@
                                     <img class="nav-img-perfil" src="{{ user.profile.get.link_img_perfil.url }}" alt="img perfil">
                                     {{user.username}}
                                 </a>
+                                <a href="{% url 'user:edit_account' user.username %}"><span class="material-icons">settings</span></a>
                                 <a href="{% url 'logout' %}">Cerrar sesión</a>
                         {% else %}
                                 <a class="" href="{% url 'sign_up' %}">Registrarse</a>
