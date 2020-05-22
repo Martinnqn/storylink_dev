@@ -249,10 +249,14 @@ a:hover{
     margin-top: 2px;
 }
 
-.color-pub li{
+.color-pub ul li{
     display: inline-grid;
     list-style: none;
     margin-left: 10px;
+}
+
+.color-pub input[type=radio]{
+    height: 5px;
 }
 
 .palette-color-pub {

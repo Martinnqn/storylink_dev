@@ -3,7 +3,8 @@ from django import forms
 from .models import StoryPublication, ResourcePublication, StoryChapter
 from django_bleach.forms import BleachField
 from django.forms import ValidationError
-
+from .widgets import CustomColorSelect
+from apps.users.widgets import CustomImageField
 
 CHOICES = (
     ('#4a4a4a', '<span style="background:#4a4a4a;" class="palette-color-pub"></span>'),
@@ -42,7 +43,8 @@ class StoryCreationForm(ModelForm):
         self.fields['img_content_link'].label = "Agregar Portada"
         self.fields['img_content_link'].validators.append(validate_image)
         self.fields['img_content_link'].help_text = "Los formatos permitidos son jpg, jpeg y png, con un tamaño máximo de 5MB."
-        self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
+        self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget= CustomColorSelect())
+        self.fields['color'].initial = '#4a4a4a'
         self.fields['color'].help_text = "Puedes seleccionar un color para personalizar la publicación."
         self.fields['opened'].label = "Abierta"
         self.fields['opened'].help_text = "Tilda la casilla para permitir que otros usuarios puedan continuar la trama."
@@ -77,6 +79,9 @@ class StoryEditForm(ModelForm):
         model = StoryPublication
         fields = ('title', 'text_content', 'img_content_link', 'color', 'opened')
         error_css_class = 'error'
+        widgets = {
+        'img_content_link': CustomImageField
+        }
 
     def __init__(self, *args, **kwargs):
         super(StoryEditForm, self).__init__(*args, **kwargs)
@@ -84,7 +89,7 @@ class StoryEditForm(ModelForm):
         self.fields['img_content_link'].required = False
         self.fields['img_content_link'].validators.append(validate_image)
         self.fields['img_content_link'].help_text = "Los formatos permitidos son jpg, jpeg y png, con un tamaño máximo de 5MB."
-        self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect()) 
+        self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget= CustomColorSelect()) 
         fpub = kwargs.get('instance', None);
         if (fpub):
             self.initial['tag'] = " ".join([t.tag for t in fpub.tag.all()])

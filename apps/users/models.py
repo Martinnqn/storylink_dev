@@ -14,12 +14,12 @@ def unique_user(value):
             _('No se permiten utilizar caracteres especiales como ", ?,¡, &, %%, ., comas, espacios, etc en los nombres de usuario.'),
             params={'value': value},
         )
-    exist = CustomUser.objects.filter(username__iexact=value).exists()
+    '''exist = CustomUser.objects.filter(username__iexact=value).exists()
     if (exist):
         raise ValidationError(
             _('El nombre de usuario "%(value)s" ya está en uso.'),
             params={'value': value},
-        )
+        )'''
 
 def check_characters(value):
     regex = re.compile('[.@\w]+$')
@@ -36,7 +36,7 @@ class CustomUserManager(UserManager):
 # usuario
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
-    username = models.CharField(unique=True, max_length=35, validators=[unique_user])
+    username = models.CharField('Nombre de usuario', unique=True, max_length=35, validators=[unique_user])
     email = models.EmailField(unique=True)
     email_verified = models.BooleanField(default=False)
     #USERNAME_FIELD = 'email'

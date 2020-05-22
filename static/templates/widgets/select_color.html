@@ -1,0 +1,44 @@
+{% comment %}
+  Este widget es para seleccionar los colores de una story. Se utilizo multiple_input.html en el cual se reemplazo el input_option.html para customizar el estilo con el que se muestran los colores. En el original la variable label se muestra nosafe por lo que no se renderiza el color. Tambien se cambio de lugar el input, en el original esta dentro del label.
+  {% endcomment %}
+
+  <div class="color-pub">
+    {% with id=widget.attrs.id %}
+    <ul{% if id %} id="{{ id }}"{% endif %}>
+    {% for group, options, index in widget.optgroups %}
+    {% if group %}
+    <li>{{ group }}
+      <ul{% if id %} id="{{ id }}_{{ index }}"{% endif %}>{% endif %}
+      {% for option in options %}
+      <li>
+        {% include "django/forms/widgets/input.html" with widget=option %}
+        {% if option.wrap_label %}
+          <label{% if option.attrs.id %} for="{{ option.attrs.id }}"{% endif %}>
+          {{ option.label|safe }}
+          </label>
+        {% endif %}
+      </li>
+    {% endfor %}
+    {% if group %}
+  </ul>
+</li>
+{% endif %}
+{% endfor %}
+</ul>
+{% endwith %}
+</div>
+
+{% comment %} 
+
+<div class="color-pub">
+{% for choice in form.fields.color.choices %}
+    <li>
+      <input type="radio" name="{{field.name|safe}}" value="{{choice.0|safe}}"
+        {% ifequal field.data|safe choice.0|safe %} 
+           checked="checked"
+        {% endifequal %}/>
+      <label for="">{{choice.1|safe}}</label>
+   </li>
+  {% endfor %}
+</div>
+{% endcomment %}

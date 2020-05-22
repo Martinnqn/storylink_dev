@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser, UserProfile
 import re
 from django.contrib.auth.forms import AuthenticationForm
-
+from .widgets import CustomImageField
 
 #permite usuarios inactivos ser autenticados. no significa que les permita loguearse.
 class AuthenticationFormWithInactiveUsersOkay(AuthenticationForm):
@@ -68,7 +68,7 @@ class UsernameCheck(ModelForm):
 
 
 class EditAccount(ModelForm):
-    class Meta(UserCreationForm.Meta):
+    class Meta():
         model = CustomUser
         fields = ('username', 'first_name', 'last_name',) #por ahora el email y la contrasenia no se pueden editar.
         error_css_class = 'error'
@@ -83,11 +83,6 @@ class EditAccount(ModelForm):
         self.fields['last_name'].label= "Apellido"
         self.fields['last_name'].validators.append(only_chars)
 
-class CustomImageField(forms.widgets.ClearableFileInput):
-    template_name = 'widgets/custom_image_field.html'
-    input_text = 'Cambiar imagen'
-    def __init__(self, *args, **kwargs):
-        super(CustomImageField, self).__init__(*args, **kwargs)
 
 class EditUserProfile(ModelForm):
     class Meta:
