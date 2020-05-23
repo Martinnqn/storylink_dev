@@ -6,6 +6,7 @@ from .models import CustomUser, UserProfile
 import re
 from django.contrib.auth.forms import AuthenticationForm
 from .widgets import CustomImageField
+from social_django.models import UserSocialAuth
 
 #permite usuarios inactivos ser autenticados. no significa que les permita loguearse.
 class AuthenticationFormWithInactiveUsersOkay(AuthenticationForm):
@@ -82,6 +83,10 @@ class EditAccount(ModelForm):
         self.fields['last_name']= forms.CharField(required = True) 
         self.fields['last_name'].label= "Apellido"
         self.fields['last_name'].validators.append(only_chars)
+        if (kwargs.get('instance', None)):
+            if(UserSocialAuth.objects.filter(user=kwargs.get('instance')).exists()):
+                self.fields['first_name'].disabled = True
+                self.fields['last_name'].disabled = True
 
 
 class EditUserProfile(ModelForm):

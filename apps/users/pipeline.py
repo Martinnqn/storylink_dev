@@ -165,7 +165,7 @@ def update_or_create_userProfile(backend, strategy, details, response, user=None
             profile.save()
         user.email_verified = True
         user.save()
-    elif (user and not kwargs.get('is_new')):
+    '''elif (user and not kwargs.get('is_new')):
         if (backend.name == "twitter"):
             profile = user.profile.get()
             saveImage(response.get('profile_image_url_https'), profile, user.id)
@@ -173,7 +173,7 @@ def update_or_create_userProfile(backend, strategy, details, response, user=None
         elif (backend.name == "facebook"):
             profile = user.profile.get()
             saveImage(response.get('picture')['data']['url'], profile, user.id)
-            profile.save()
+            profile.save()'''
 
 
 def saveImage(url, profile, id):
