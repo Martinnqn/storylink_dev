@@ -337,6 +337,7 @@ class EditUserAccount(LoginRequiredMixin, generic.edit.UpdateView):
     template_name = 'users/edit_user_account.html'
 
     def get_success_url(self):
+        self.request.user.refresh_from_db()
         return reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username})
 
     def get_object(self, queryset=None):
@@ -345,6 +346,4 @@ class EditUserAccount(LoginRequiredMixin, generic.edit.UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditUserAccount, self).get_context_data(**kwargs)
         context.update({'customuser': {'username': self.request.user.username}})
-        print("get context data retornaaa")
-        print(self.request.user.username)
         return context
