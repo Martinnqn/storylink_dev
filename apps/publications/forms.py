@@ -28,7 +28,7 @@ class StoryCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80) 
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened')
+        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened', 'privated')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):
@@ -55,7 +55,7 @@ class StoryContinuationCreationForm(ModelForm):
 
     class Meta:
         model = StoryChapter
-        fields = ('quest_answ', 'text_content')
+        fields = ('quest_answ', 'text_content', 'privated')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):
@@ -77,7 +77,7 @@ class StoryEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened')
+        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened', 'privated')
         error_css_class = 'error'
         widgets = {
         'img_content_link': CustomImageField
@@ -104,7 +104,7 @@ class StoryChapterEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryChapter
-        fields = ('quest_answ', 'text_content')
+        fields = ('quest_answ', 'text_content', 'privated')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):

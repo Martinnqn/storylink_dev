@@ -1,7 +1,149 @@
 from django.db import models
+from django.db.models import Q
+from django.db.models import Count
 
 from apps.users.models import UserProfile
 
+'''Consideraciones de las clases Manager. Dado que se utiliza un soft delete, los registros que se retornan
+siempren deben estar filtrados por su respectivo campo que indica si fue eliminado o no (por lo general, 
+el campo active). Por cuestiones de practicidad se podria modificar el metodo get_query_set de cada manager
+para que retorne siempre registros no eliminados, sin embargo trae complicaciones por ejemplo cuando los 
+administradores quieren acceder a esos registros. Hasta encontrar una solucion que no comprometa los resultados
+de las busquedas, cada consulta debe asegurarse de retornar registros no eliminados.'''
+
+''' ChapterQuery sirve para abstraer los filtros que se usan en ChapterManager'''
+class ChapterQuery(models.QuerySet):
+    def public(self):
+        return self.filter(privated=False)
+
+    def active(self):
+        return self.filter(active=True)
+
+    def title(self, title):
+        return self.filter(title__icontains=title)
+
+    def tags(self, tag):
+        q = Q()
+        for t in tag.split():
+            q |= Q(tag__tag__icontains = t)
+        return self.filter(q)
+
+    '''Filtra los primeros capitulos. (los que no tienen capitulos previos).'''
+    def first_chapter(self):
+        return self.filter(prevChapter__isnull = True)
+    
+    '''Filtra los capitulo pertenecientes a una story con id = idStory'''
+    def by_story(self, idStory):
+        return self.filter(mainStory = idStory)
+
+    '''Filtra los chapters pertenecientes a otro chapter con prevChapter = idChapter.
+    (Las continuaciones de un chapters)'''
+    def by_chapter(self, idChapter):
+        return self.filter(prevChapter = idChapter)
+
+    '''retorna los chapter de un usuario'''    
+    def by_user(self, userProfile):
+        return self.filter(own_user=userProfile)
+
+    '''Retorna las stories publicas.
+    Si el usuario que hace la consulta es el duenio de la story tambien retorna las privadas.
+    Si se conocen ambos usuarios antes de ejecutar la consulta entonces no usar este filtro
+     porque es mas ineficiente que preguntar si los usuarios son los mismos.
+    Ver get_chapters_by_user() como ejemplo.'''
+    def publicOrOwner(self, userProfile):
+        q1 = Q(privated=False)
+        q2 = Q(own_user=userProfile)
+        return self.filter(q1|q2)
+
+'''La clase ChapterManager sirve para abstraer las consultas que se usan en las views'''
+class ChapterManager(models.Manager):
+    def get_queryset(self):
+        return ChapterQuery(self.model, using=self._db)  
+
+    def get_by_title(self, title):
+        return self.get_queryset().active().title(title)
+
+    '''Retorna los chapter de ownerUser. Si ownerUser y user son el mismo, entonces
+    retorna todos los chapters de ownerUser, en caso contrario solo retorna 
+    los chapters publicos.'''
+    def get_chapters_by_user(self, ownerUser, user):
+        if (ownerUser==user):
+            return self.get_queryset().by_user(ownerUser.profile.get()).active()
+        else:
+            return self.get_queryset().by_user(ownerUser.profile.get()).active().public()
+
+    '''Retorna los primeros capitulos de una Story (las primeras continuaciones)'''
+    def story_continuations(self, idStory, user):
+        return self.get_queryset().by_story(idStory).first_chapter().active().publicOrOwner(user.profile.get())
+
+    '''Retorna las continuaciones de un chapter'''
+    def chapter_continuations(self, idChapter, user):
+        return self.get_queryset().by_chapter(idChapter).active().publicOrOwner(user.profile.get())
+
+''' StoryPublicationQuery sirve para abstraer los filtros que se usan en StoryPublicationManager'''
+class StoryPublicationQuery(models.QuerySet):
+
+    '''Retorna las stories publicas.
+    Si el usuario que hace la consulta es el duenio de la story tambien retorna las privadas.
+    Si se conocen ambos usuarios antes de ejecutar la consulta entonces no usar este filtro
+     porque es mas ineficiente que preguntar si los usuarios son los mismos.
+    Ver get_stories_by_user() como ejemplo.'''
+    def publicOrOwner(self, userProfile):
+        q1 = Q(privated=False)
+        q2 = Q(own_user=userProfile)
+        return self.filter(q1|q2)
+
+    '''retorna las stories de un usuario'''    
+    def by_user(self, userProfile):
+        return self.filter(own_user=userProfile)
+
+    def public(self):
+        return self.filter(privated=False)
+
+    def active(self):
+        return self.filter(active=True)
+
+    def title(self, title):
+        return self.filter(title__icontains=title)
+
+    def tags(self, tag):
+        q = Q()
+        for t in tag.split():
+            q |= Q(tag__tag__icontains = t)
+        return self.filter(q)
+
+'''StoryPublicationManager sirve para abstraer las consultas que se usan en las views'''
+class StoryPublicationManager(models.Manager):
+    def get_queryset(self):
+        return StoryPublicationQuery(self.model, using=self._db)  
+
+    def get_by_title(self, title):
+        return self.get_queryset().active().title(title)
+
+    #retorna las stories de ownerUser. Si ownerUser y user son el mismo, entonces
+    #retorna todas las stories de ownerUser, en caso contrario solo retorna 
+    #las stories publicas.
+    def get_stories_by_user(self, ownerUser, user):
+        if (ownerUser==user):
+            return self.get_queryset().by_user(ownerUser.profile.get()).active()
+        else:
+            return self.get_queryset().by_user(ownerUser.profile.get()).active().public()
+
+    '''retorna las publicaciones que se van a visualizar en el hall por defecto. 
+    tambien agrega los filtros necesarios por titulo y tags.
+    La consulta implica: publicaciones activas y publicas, que contengan el titulo o al menos
+    un tag. Se ordenan por cantidad de tags que tenga cada story de manera descendente y por fecha.
+    Osea las que tienen igual cantidad de tags se organizan entre si por fecha, las
+    menos recientes primero'''
+    def publications_hall(self, title, tags):
+        qs = self.get_queryset().active().public()
+        if (title is not '' and title is not None):
+            qs = qs.title(title)
+        if (tags is not '' and tags is not None):
+            qs = qs.tags(tags)
+            qs = qs.annotate(count=Count('tag')).order_by('-count')
+        qs = qs.order_by('date_time')
+        return qs.distinct()
         
 def get_upload_path(instance, filename):
       return 'publications/user_profile_{0}/{1}'.format(instance.own_user.id, filename)
@@ -23,6 +165,10 @@ class StoryPublication(models.Model):
     tag = models.ManyToManyField('Tag')
     color = models.CharField(max_length=7, default="#4a4a4a")
     like = models.ManyToManyField(UserProfile, through='StoryLike', related_name='storyLikes', symmetrical=False)
+    privated = models.BooleanField('privada', default=False)
+
+    objects = StoryPublicationManager()
+
     def __str__(self):
         return self.title+' '+str(self.id)
 
@@ -43,6 +189,9 @@ class StoryChapter(models.Model):
     #responde a pregunta
     quest_answ = models.CharField(max_length=100, null=False)
     like = models.ManyToManyField(UserProfile, through='ChapterLike', related_name='chapterLikes', symmetrical=False)
+    privated = models.BooleanField('privada', default=False)
+    
+    objects = ChapterManager()
 
     def __str__(self):
         return self.mainStory.title+' - '+str(self.quest_answ)

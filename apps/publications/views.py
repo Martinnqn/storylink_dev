@@ -12,8 +12,6 @@ from apps.publications.forms import FilterHall
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.db import transaction, IntegrityError
-from django.db.models import Q
-from django.db.models import Count
 from django.conf import settings
 
 default_img = settings.MEDIA_URL+'/gallery/no-img.png'
@@ -26,7 +24,7 @@ class ListUserStories(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         user = get_object_or_404(CustomUser, username=self.kwargs["username"])
-        qs = StoryPublication.objects.filter(own_user=user.profile.get())
+        qs = StoryPublication.objects.get_stories_by_user(user, self.request.user).order_by('date_time__month', '-date_time__day')
         return qs.order_by('date_time__month', '-date_time__day')
 
     def get_context_data(self, **kwargs):
@@ -40,7 +38,7 @@ class StoryContinuations(LoginRequiredMixin, generic.ListView):
     template_name = 'publications/story/list_chapters_preview.html'
 
     def get_queryset(self):
-        qs = self.model.objects.filter(mainStory=self.kwargs["pk"], prevChapter__isnull = True)
+        qs = self.model.objects.story_continuations(self.kwargs["pk"], self.request.user)
         return qs
 
 #retornar las continuaciones de un chapter
@@ -49,7 +47,7 @@ class ChapterContinuations(LoginRequiredMixin, generic.ListView):
     template_name = 'publications/story/list_chapters_preview.html'
 
     def get_queryset(self):
-        qs = self.model.objects.filter(prevChapter = self.kwargs["pk"])
+        qs = self.model.objects.chapter_continuations(self.kwargs["pk"], self.request.user)
         return qs
 
 
@@ -66,50 +64,51 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             publication = self.get_object()
-            own_user = publication.own_user
             data =  dict()
-            data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'img_content_link', 'like'])
-            data['content_pub'].update({'id': 'story_'+str(publication.id)})
-            data['content_pub'].update({'own_username': own_user.user.username})
-            data['content_pub'].update({'user_name': own_user.user.first_name})
-            data['content_pub'].update({'user_lastname': own_user.user.last_name})
-            data['content_pub'].update({'own_user': own_user.id})
-            data['content_pub'].update({'own_first_story': own_user.id})
-            data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_unsubscribe': reverse_lazy('user:pub:unsubs_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_like': reverse_lazy('user:pub:like_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_unlike': reverse_lazy('user:pub:unlike_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.user.username})})
-            data['content_pub'].update({'active': publication.active})
-            data['content_pub'].update({'color': publication.color})
-            data['content_pub'].update({'opened': publication.opened})
-            
-            fromUser = self.request.user
-            is_liked = fromUser.profile.get().likeToStory.filter(to_story = publication).exists();
-            data['content_pub'].update({'is_liked': is_liked})
-            
-            cantLikes = publication.like.count();
-            data['content_pub'].update({'cant_likes': cantLikes})
+            own_user = publication.own_user
+            if (not publication.privated or own_user==self.request.user.profile.get()):
+                data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'img_content_link', 'like'])
+                data['content_pub'].update({'id': 'story_'+str(publication.id)})
+                data['content_pub'].update({'own_username': own_user.user.username})
+                data['content_pub'].update({'user_name': own_user.user.first_name})
+                data['content_pub'].update({'user_lastname': own_user.user.last_name})
+                data['content_pub'].update({'own_user': own_user.id})
+                data['content_pub'].update({'own_first_story': own_user.id})
+                data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_unsubscribe': reverse_lazy('user:pub:unsubs_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_like': reverse_lazy('user:pub:like_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_unlike': reverse_lazy('user:pub:unlike_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_story', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.user.username})})
+                data['content_pub'].update({'active': publication.active})
+                data['content_pub'].update({'color': publication.color})
+                data['content_pub'].update({'opened': publication.opened})
+                
+                fromUser = self.request.user
+                is_liked = fromUser.profile.get().likeToStory.filter(to_story = publication).exists();
+                data['content_pub'].update({'is_liked': is_liked})
+                
+                cantLikes = publication.like.count();
+                data['content_pub'].update({'cant_likes': cantLikes})
 
-            profile = own_user
-            data['content_pub'].update({'own_user_image': profile.link_img_perfil.url})
+                profile = own_user
+                data['content_pub'].update({'own_user_image': profile.link_img_perfil.url})
 
-            if (publication.active):
-                tags = []
-                for x in publication.tag.all():
-                    tags.append(x.tag)
-                data['content_pub'].update({'tags': tags})
-                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(publication.img_content_link.url)})
-                is_subscribed = fromUser.profile.get().user2Pub.filter(pub = publication).exists();
-                data['content_pub'].update({'is_subscribed': is_subscribed})
-            else:
-                data['content_pub'].update({'tags': []})
-                data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
+                if (publication.active):
+                    tags = []
+                    for x in publication.tag.all():
+                        tags.append(x.tag)
+                    data['content_pub'].update({'tags': tags})
+                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(publication.img_content_link.url)})
+                    is_subscribed = fromUser.profile.get().user2Pub.filter(pub = publication).exists();
+                    data['content_pub'].update({'is_subscribed': is_subscribed})
+                else:
+                    data['content_pub'].update({'tags': []})
+                    data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
+                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
             return JsonResponse(data)
         else:
             return super().get(*args, **kwargs)
@@ -130,63 +129,64 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             own_user = publication.own_user
             mainStory = publication.mainStory
             data =  dict()
-            data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'like'])
-            data['content_pub'].update({'id': 'chapter_'+str(publication.id)})
-            data['content_pub'].update({'own_username': own_user.user.username})
-            data['content_pub'].update({'user_name': own_user.user.first_name})
-            data['content_pub'].update({'user_lastname': own_user.user.last_name})
-            data['content_pub'].update({'own_user': own_user.id})
-            data['content_pub'].update({'title': mainStory.title})
-            data['content_pub'].update({'own_first_story': mainStory.own_user.id})
-            data['content_pub'].update({'own_name_first_story': mainStory.own_user.user.username})
-            data['content_pub'].update({'question': publication.quest_answ})
-            data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_chapt', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_chapter', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.user.username, 'pk': mainStory.id})})
-            data['content_pub'].update({'url_unsubscribe': reverse_lazy('user:pub:unsubs_story', kwargs={'username': own_user.user.username, 'pk': mainStory.id})})
-            data['content_pub'].update({'url_like': reverse_lazy('user:pub:like_chapter', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_unlike': reverse_lazy('user:pub:unlike_chapter', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.user.username, 'pk': mainStory.id, 'pkchapter': publication.id})})
-            data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_chap', kwargs={'username': own_user.user.username, 'pk': publication.id})})
-            data['content_pub'].update({'url_first_story': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.user.username, 'pk': mainStory.id})})
-            data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.user.username})})
-            data['content_pub'].update({'url_autor_init': reverse_lazy('user:user_profile', kwargs={'username': mainStory.own_user.user.username})})
-            data['content_pub'].update({'color': mainStory.color})
-            data['content_pub'].update({'id_main_story': mainStory.id})
-            data['content_pub'].update({'opened': mainStory.opened})
-            fromUser = self.request.user
-            is_subscribed = fromUser.profile.get().user2Pub.filter(pub = mainStory).exists();
-            data['content_pub'].update({'is_subscribed': is_subscribed})
-            
-            is_liked = fromUser.profile.get().likeToChapter.filter(to_chapter = publication).exists();
-            data['content_pub'].update({'is_liked': is_liked})
-            
-            cantLikes = publication.like.count();
-            data['content_pub'].update({'cant_likes': cantLikes})
+            if (not publication.privated or own_user==self.request.user.profile.get()):
+                data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'like'])
+                data['content_pub'].update({'id': 'chapter_'+str(publication.id)})
+                data['content_pub'].update({'own_username': own_user.user.username})
+                data['content_pub'].update({'user_name': own_user.user.first_name})
+                data['content_pub'].update({'user_lastname': own_user.user.last_name})
+                data['content_pub'].update({'own_user': own_user.id})
+                data['content_pub'].update({'title': mainStory.title})
+                data['content_pub'].update({'own_first_story': mainStory.own_user.id})
+                data['content_pub'].update({'own_name_first_story': mainStory.own_user.user.username})
+                data['content_pub'].update({'question': publication.quest_answ})
+                data['content_pub'].update({'url_delete': reverse_lazy('user:pub:delete_chapt', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_edit': reverse_lazy('user:pub:edit_chapter', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_subscribe': reverse_lazy('user:pub:subs_story', kwargs={'username': own_user.user.username, 'pk': mainStory.id})})
+                data['content_pub'].update({'url_unsubscribe': reverse_lazy('user:pub:unsubs_story', kwargs={'username': own_user.user.username, 'pk': mainStory.id})})
+                data['content_pub'].update({'url_like': reverse_lazy('user:pub:like_chapter', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_unlike': reverse_lazy('user:pub:unlike_chapter', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_continuate': reverse_lazy('user:pub:create_story_cont', kwargs={'username': own_user.user.username, 'pk': mainStory.id, 'pkchapter': publication.id})})
+                data['content_pub'].update({'url_continuations': reverse_lazy('user:pub:conts_chap', kwargs={'username': own_user.user.username, 'pk': publication.id})})
+                data['content_pub'].update({'url_first_story': reverse_lazy('user:pub:story_content', kwargs={'username': own_user.user.username, 'pk': mainStory.id})})
+                data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.user.username})})
+                data['content_pub'].update({'url_autor_init': reverse_lazy('user:user_profile', kwargs={'username': mainStory.own_user.user.username})})
+                data['content_pub'].update({'color': mainStory.color})
+                data['content_pub'].update({'id_main_story': mainStory.id})
+                data['content_pub'].update({'opened': mainStory.opened})
+                fromUser = self.request.user
+                is_subscribed = fromUser.profile.get().user2Pub.filter(pub = mainStory).exists();
+                data['content_pub'].update({'is_subscribed': is_subscribed})
+                
+                is_liked = fromUser.profile.get().likeToChapter.filter(to_chapter = publication).exists();
+                data['content_pub'].update({'is_liked': is_liked})
+                
+                cantLikes = publication.like.count();
+                data['content_pub'].update({'cant_likes': cantLikes})
 
-            profile = own_user
-            data['content_pub'].update({'own_user_image': profile.link_img_perfil.url})
+                profile = own_user
+                data['content_pub'].update({'own_user_image': profile.link_img_perfil.url})
 
-            prev =publication.prevChapter
-            if (prev):
-                data['content_pub'].update({'previous_pub_id': 'chapter_'+str(prev.id)})
-                data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:chapter_content', kwargs={'username': own_user.user.username, 'pk': publication.prevChapter.id})})
-            else:
-                data['content_pub'].update({'previous_pub_id': 'story_'+str(mainStory.id)})
-                data['content_pub'].update({'url_prev_chapter': None})
+                prev =publication.prevChapter
+                if (prev):
+                    data['content_pub'].update({'previous_pub_id': 'chapter_'+str(prev.id)})
+                    data['content_pub'].update({'url_prev_chapter': reverse_lazy('user:pub:chapter_content', kwargs={'username': own_user.user.username, 'pk': publication.prevChapter.id})})
+                else:
+                    data['content_pub'].update({'previous_pub_id': 'story_'+str(mainStory.id)})
+                    data['content_pub'].update({'url_prev_chapter': None})
 
-            data['content_pub'].update({'active': publication.active})
+                data['content_pub'].update({'active': publication.active})
 
-            if (publication.active):
-                tags = []
-                for x in publication.tag.all():
-                    tags.append(x.tag)
-                data['content_pub'].update({'tags': tags})
-                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(mainStory.img_content_link.url)})
-            else:
-                data['content_pub'].update({'tags': []})
-                data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
+                if (publication.active):
+                    tags = []
+                    for x in publication.tag.all():
+                        tags.append(x.tag)
+                    data['content_pub'].update({'tags': tags})
+                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(mainStory.img_content_link.url)})
+                else:
+                    data['content_pub'].update({'tags': []})
+                    data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
+                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
             return JsonResponse(data)
         else:
             return super().get(*args, **kwargs)
@@ -434,25 +434,10 @@ class ListStories(LoginRequiredMixin, FormMixin, generic.ListView):
     form_class = FilterHall
     paginate_by = 30
 
-    '''retorna las publicaciones activas que sean la raiz de las stories, filtradas por el titulo y el tag. 
-    Si hay mas de un tag se filtran con un "or", por lo que pueden devolver duplicadas por eso se usa el
-    distinct. Se ordenan por cantidad de tags que tenga cada story de manera descendente y por fecha.
-    Osea las que tienen igual cantidad de tags se organizan entre si por fecha menos recientes primero'''
     def get_queryset(self):
-        qact = Q(active=True)
-        qs1 = qact
-        qs = StoryPublication.objects.filter(qs1)
-        qs2 = Q()
-        if ('title' in self.request.GET):
-            qs1 &= Q(title__icontains = self.request.GET['title'])
-            qs = qs.filter(qs1)
-        if ('tag' in self.request.GET):
-            for t in self.request.GET['tag'].split():
-                qs2 |= Q(tag__tag__icontains = t)
-            qs = qs.filter(qs2)
-        qs = qs.annotate(count=Count('tag')).order_by('-count', 'date_time')
-        return qs.distinct()
-
+        qs = StoryPublication.objects.publications_hall(self.request.GET.get('title',None),
+         self.request.GET.get('tag', None))
+        return qs
 
     def get(self, request, *args, **kwargs):
         form_class = self.get_form_class()
