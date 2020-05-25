@@ -38,7 +38,7 @@ class StoryCreationForm(ModelForm):
         self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Storylink"
         self.fields['tag'].help_text='''Los tags ayudan a los lectores a encontrar las Storylinks de su interés.
-         Puedes probar con "ficcion", "terror", "storyAventura", "cienciaFiccion", "storyLove", "storyKid", etc.
+         Puedes probar con ficcion, terror, storyAventura, cienciaFiccion, storyLove, storyKid, etc.
          Los tags se separan con espacios, y pueden tener máximo 80 caracteres.'''
         self.fields['img_content_link'].label = "Agregar Portada"
         self.fields['img_content_link'].validators.append(validate_image)
@@ -47,7 +47,10 @@ class StoryCreationForm(ModelForm):
         self.fields['color'].initial = '#4a4a4a'
         self.fields['color'].help_text = "Puedes seleccionar un color para personalizar la publicación."
         self.fields['opened'].label = "Abierta"
-        self.fields['opened'].help_text = "Tilda la casilla para permitir que otros usuarios puedan continuar la trama."
+        self.fields['opened'].help_text = "Activa la casilla para permitir que otros usuarios puedan continuar la trama."
+        self.fields['privated'].help_text = '''Las publicaciones privadas solo pueden ser vistas por sus autores. 
+                                            Para que otros lectores puedan leer la publicación, desactiva la casilla.
+                                            Las publicaciones públicas no pueden volver a ser privadas.'''
 
 class StoryContinuationCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
@@ -55,7 +58,7 @@ class StoryContinuationCreationForm(ModelForm):
 
     class Meta:
         model = StoryChapter
-        fields = ('quest_answ', 'text_content', 'privated')
+        fields = ('quest_answ', 'text_content')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):
@@ -67,7 +70,7 @@ class StoryContinuationCreationForm(ModelForm):
         self.fields['text_content'].label = "Story"
         self.fields['tag'].initial = ""
         self.fields['tag'].help_text='''Los tags ayudan a los lectores a encontrar las Storylinks de su interés.
-         Puedes probar con "ficcion", "terror", "storyAventura", "cienciaFiccion", "storyLove", "storyKid", etc.
+         Puedes probar con ficcion, terror, storyAventura, cienciaFiccion, storyLove, storyKid, etc.
          Los tags se separan con espacios y pueden tener máximo 80 caracteres.'''
         self.fields['quest_answ'].label = "Pregunta decisiva para el lector"
         self.fields['quest_answ'].help_text='''La Pregunta Decisiva ayuda al lector a identificar cómo continúa la trama en esta Storylink.
@@ -93,6 +96,13 @@ class StoryEditForm(ModelForm):
         fpub = kwargs.get('instance', None);
         if (fpub):
             self.initial['tag'] = " ".join([t.tag for t in fpub.tag.all()])
+            if (not fpub.privated):
+                self.fields['privated'].disabled = True
+                self.fields['privated'].help_text = "<span class='material-icons'>error_outline</span> Esta publicación ya no puede ser privada."
+            else:
+                self.fields['privated'].help_text = '''Esta publicación es privada. 
+                                            Para que otros lectores puedan leer la publicación, desactiva la casilla.
+                                            Las publicaciones públicas no pueden volver a ser privadas.'''
         self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Story"
         self.fields['title'].label = "Título"
@@ -104,7 +114,7 @@ class StoryChapterEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryChapter
-        fields = ('quest_answ', 'text_content', 'privated')
+        fields = ('quest_answ', 'text_content')
         error_css_class = 'error'
 
     def __init__(self, *args, **kwargs):

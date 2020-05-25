@@ -129,7 +129,7 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
             own_user = publication.own_user
             mainStory = publication.mainStory
             data =  dict()
-            if (not publication.privated or own_user==self.request.user.profile.get()):
+            if (not mainStory.privated or own_user==self.request.user.profile.get()):
                 data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'like'])
                 data['content_pub'].update({'id': 'chapter_'+str(publication.id)})
                 data['content_pub'].update({'own_username': own_user.user.username})

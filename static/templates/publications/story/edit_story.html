@@ -16,7 +16,7 @@
   </div>
 
 
-  <form method="post" enctype="multipart/form-data" novalidate>
+  <form id="story_form" method="post" enctype="multipart/form-data" novalidate>
   {% csrf_token %}
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
@@ -48,15 +48,38 @@
       {% endif %}
 
       {% if field.help_text %}
-        <small class="form-text text-muted">{{ field.help_text }}</small>
+        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
       {% endif %}
     </div>
   {% endfor %}
   <div class="row justify-content-center">
-  <button type="submit" class="btn-custom-2">Guardar cambios</button>
+  <button type="button" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn-custom-2">Guardar cambios</button>
   </div>
 </form>
 </div>
 
+<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Confirmar edición
+            </div>
+            <div class="modal-body">
+              <ul id="attributes"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <a href="#" id="submit" class="btn btn-success success">Submit</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
+{% block extra-script %}
+{% comment %}
+  Agregar el SUPER tambien!
+{% endcomment %}
+  <script src="{% static 'publication/js/edition_story.js' %}"></script>
+{% endblock %}
