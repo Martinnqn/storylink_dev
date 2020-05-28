@@ -259,6 +259,10 @@ a:hover{
     height: 5px;
 }
 
+#id_status  input[type=radio]{
+    height: 5px;
+}
+
 .palette-color-pub {
     width:25px;
     height:25px;

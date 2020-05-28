@@ -1,3 +1,4 @@
 /static/ckeditor/
-/env/
+env/
+env/*
 /media/

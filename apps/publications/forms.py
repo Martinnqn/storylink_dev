@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from .models import StoryPublication, ResourcePublication, StoryChapter
+from .models import StoryPublication, ResourcePublication, StoryChapter, Permission
 from django_bleach.forms import BleachField
 from django.forms import ValidationError
 from .widgets import CustomColorSelect
@@ -28,8 +28,11 @@ class StoryCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80) 
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened', 'privated')
+        fields = ('title', 'text_content', 'img_content_link', 'color', 'status')
         error_css_class = 'error'
+        widgets = {
+        'status': forms.widgets.RadioSelect
+        }
 
     def __init__(self, *args, **kwargs):
         super(self.__class__, self).__init__(*args, **kwargs)
@@ -46,11 +49,11 @@ class StoryCreationForm(ModelForm):
         self.fields['color'] = forms.ChoiceField(choices=CHOICES, widget= CustomColorSelect())
         self.fields['color'].initial = '#4a4a4a'
         self.fields['color'].help_text = "Puedes seleccionar un color para personalizar la publicación."
-        self.fields['opened'].label = "Abierta"
-        self.fields['opened'].help_text = "Activa la casilla para permitir que otros usuarios puedan continuar la trama."
-        self.fields['privated'].help_text = '''Las publicaciones privadas solo pueden ser vistas por sus autores. 
-                                            Para que otros lectores puedan leer la publicación, desactiva la casilla.
-                                            Las publicaciones públicas no pueden volver a ser privadas.'''
+        self.fields['status'].label = "Elige qué acción pueden realizar otros usuarios"
+        self.fields['status'].help_text = '''Elige cómo es la visibilidad y qué acciones pueden realizar otros 
+                                            usuarios sobre esta publicación. <ul><li>La opción "Leer y Continuar" no podrá
+                                            modificarse una vez creada la publicación.</li> <li>La opción "Solo leer" podrá cambiar a "Leer y Escribir"
+                                            cuando lo desees.</li> <li>La opción "No leer" podrá cambiarse por cualquiera de las otras opciones.</li></ul>'''
 
 class StoryContinuationCreationForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
@@ -80,10 +83,11 @@ class StoryEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)
     class Meta:
         model = StoryPublication
-        fields = ('title', 'text_content', 'img_content_link', 'color', 'opened', 'privated')
+        fields = ('title', 'text_content', 'img_content_link', 'color', 'status')
         error_css_class = 'error'
         widgets = {
-        'img_content_link': CustomImageField
+        'img_content_link': CustomImageField,
+        'status': forms.widgets.RadioSelect
         }
 
     def __init__(self, *args, **kwargs):
@@ -96,19 +100,26 @@ class StoryEditForm(ModelForm):
         fpub = kwargs.get('instance', None);
         if (fpub):
             self.initial['tag'] = " ".join([t.tag for t in fpub.tag.all()])
-            if (not fpub.privated):
-                self.fields['privated'].disabled = True
-                self.fields['privated'].help_text = "<span class='material-icons'>error_outline</span> Esta publicación ya no puede ser privada."
+            self.fields['status'].label = "Elige qué acción pueden realizar otros usuarios"
+            if (fpub.status==Permission.WR):
+                self.fields['status'].disabled = True
+                self.fields['status'].help_text = "<span class='material-icons'>error_outline</span> No se pueden cambiar los permisos de esta publicación."
+            elif(fpub.status==Permission.R):
+                self.fields['status'].help_text = '''Otros usuarios solo pueden leer esta publicación. 
+                                            Para que otros usuarios puedan continuar la trama, selecciona la opción "Leer y Continuar".
+                                            Las publicaciones con la opción "Leer y Continuar" no pueden cambiarse.'''
             else:
-                self.fields['privated'].help_text = '''Esta publicación es privada. 
-                                            Para que otros lectores puedan leer la publicación, desactiva la casilla.
-                                            Las publicaciones públicas no pueden volver a ser privadas.'''
+                self.fields['status'].help_text = '''Solo tú puedes ver esta publicación. 
+                                            <ul><li>Para que otros usuarios puedan continuar la trama, selecciona la opción "Leer y Continuar".
+                                            Las publicaciones con la opción "Leer y Continuar" no pueden cambiarse.</li>
+                                            <li>Para que otros usuarios puedan leer esta publicación, selecciona la opción "Solo leer". 
+                                            La opción "Solo leer" puede cambiarse a "Leer y Continuar".</li>
+                                            <li>Las publicaciones no pueden volver al estado "No ver".</li>
+                                            </ul>'''
         self.fields['text_content'] = BleachField()
         self.fields['text_content'].label = "Story"
         self.fields['title'].label = "Título"
         self.fields['title'].max_length= 120
-        self.fields['opened'].label = "Abierta"
-        self.fields['opened'].help_text = "Tilda la casilla para permitir que otros usuarios puedan continuar la trama."
 
 class StoryChapterEditForm(ModelForm):
     tag = forms.CharField(label='Tags', widget=forms.TextInput(), max_length= 80)

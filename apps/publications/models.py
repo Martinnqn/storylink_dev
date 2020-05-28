@@ -1,7 +1,8 @@
 from django.db import models
 from django.db.models import Q
 from django.db.models import Count
-
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext_lazy as _
 from apps.users.models import UserProfile
 
 '''Consideraciones de las clases Manager. Dado que se utiliza un soft delete, los registros que se retornan
@@ -15,7 +16,7 @@ de las busquedas, cada consulta debe asegurarse de retornar registros no elimina
 ''' ChapterQuery sirve para abstraer los filtros que se usan en ChapterManager'''
 class ChapterQuery(models.QuerySet):
     def public(self):
-        return self.filter(mainStory__privated=False)
+        return self.filter(~Q(mainStory__status=Permission.NR))
 
     def active(self):
         return self.filter(active=True)
@@ -80,7 +81,7 @@ class StoryPublicationQuery(models.QuerySet):
      porque es mas ineficiente que preguntar si los usuarios son los mismos.
     Ver get_stories_by_user() como ejemplo.'''
     def publicOrOwner(self, userProfile):
-        q1 = Q(privated=False)
+        q1 = ~Q(status=Permission.NR)
         q2 = Q(own_user=userProfile)
         return self.filter(q1|q2)
 
@@ -89,7 +90,7 @@ class StoryPublicationQuery(models.QuerySet):
         return self.filter(own_user=userProfile)
 
     def public(self):
-        return self.filter(privated=False)
+        return self.filter(~Q(status=Permission.NR))
 
     def active(self):
         return self.filter(active=True)
@@ -139,6 +140,12 @@ class StoryPublicationManager(models.Manager):
 def get_upload_path(instance, filename):
       return 'publications/user_profile_{0}/{1}'.format(instance.own_user.id, filename)
 
+
+class Permission(models.TextChoices):
+    WR = 'WR', _('Leer y Continuar: permite que otros usuarios puedan leer la publicación y continuar la trama.')
+    R = 'R', _('Solo leer: permite que otros usuarios solo puedan leer la publicación.')
+    NR = 'NR', _('No ver: solo tú podrás ver esta publicación.')
+
 # publicacion tipo historia
 class StoryPublication(models.Model):
     #datos usuario
@@ -148,7 +155,6 @@ class StoryPublication(models.Model):
     text_content = models.TextField(max_length=2000)
     #img_content_link = models.URLField(max_length=500)
     img_content_link = models.ImageField(upload_to = get_upload_path, default = 'gallery/no-img.png')
-    opened = models.BooleanField(default=True) # privado=False o publico=True
     active = models.BooleanField(default=True) # si es una publicacion activa o no.
     date_time = models.DateField(auto_now_add=True)
     views = models.IntegerField(default=0) #cantidad de visitas
@@ -156,7 +162,7 @@ class StoryPublication(models.Model):
     tag = models.ManyToManyField('Tag')
     color = models.CharField(max_length=7, default="#4a4a4a")
     like = models.ManyToManyField(UserProfile, through='StoryLike', related_name='storyLikes', symmetrical=False)
-    privated = models.BooleanField('privada', default=False)
+    status = models.CharField(max_length=2, choices=Permission.choices, default=Permission.WR)
 
     objects = StoryPublicationManager()
 

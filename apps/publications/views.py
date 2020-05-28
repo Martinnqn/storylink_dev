@@ -1,7 +1,7 @@
 from django.views import generic, View
 from django.views.generic.edit import FormMixin
 from django.urls import reverse_lazy
-from apps.publications.models import StoryPublication, StoryChapter, ResourcePublication, Tag
+from apps.publications.models import StoryPublication, StoryChapter, ResourcePublication, Tag, Permission
 from apps.users.models import CustomUser
 from apps.users.views import ListUserPerfil
 from django.shortcuts import get_object_or_404, render, redirect
@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.publications.forms import StoryCreationForm, StoryContinuationCreationForm, StoryEditForm, StoryChapterEditForm
 from apps.publications.forms import ResourceEditForm, ResourceCreationForm
 from apps.publications.forms import FilterHall
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.forms.models import model_to_dict
 from django.db import transaction, IntegrityError
 from django.conf import settings
@@ -62,11 +62,11 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
         return context
 
     def get(self, *args, **kwargs):
+        publication = self.get_object()
+        own_user = publication.own_user
         if (self.request.is_ajax()):
-            publication = self.get_object()
             data =  dict()
-            own_user = publication.own_user
-            if (not publication.privated or own_user==self.request.user.profile.get()):
+            if (not publication.status==Permission.NR or own_user==self.request.user.profile.get()):
                 data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'img_content_link', 'like'])
                 data['content_pub'].update({'id': 'story_'+str(publication.id)})
                 data['content_pub'].update({'own_username': own_user.user.username})
@@ -85,7 +85,8 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
                 data['content_pub'].update({'url_autor': reverse_lazy('user:user_profile', kwargs={'username': own_user.user.username})})
                 data['content_pub'].update({'active': publication.active})
                 data['content_pub'].update({'color': publication.color})
-                data['content_pub'].update({'opened': publication.opened})
+                opened = (publication.status==Permission.WR)
+                data['content_pub'].update({'opened': opened})
                 
                 fromUser = self.request.user
                 is_liked = fromUser.profile.get().likeToStory.filter(to_story = publication).exists();
@@ -111,7 +112,9 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
                     data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
             return JsonResponse(data)
         else:
-            return super().get(*args, **kwargs)
+            if (not publication.status==Permission.NR or own_user==self.request.user.profile.get()):
+                return super().get(*args, **kwargs)
+            raise Http404()
 
 #listar el contenido de un capitulo
 class ListContentChapter(LoginRequiredMixin, generic.DetailView):
@@ -124,12 +127,12 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
         return context
         
     def get(self, *args, **kwargs):
+        publication = self.get_object()
+        own_user = publication.own_user
+        mainStory = publication.mainStory
         if (self.request.is_ajax()):
-            publication = self.get_object()
-            own_user = publication.own_user
-            mainStory = publication.mainStory
             data =  dict()
-            if (not mainStory.privated or own_user==self.request.user.profile.get()):
+            if (not mainStory.status==Permission.NR or own_user==self.request.user.profile.get()):
                 data['content_pub'] = model_to_dict(publication, exclude=['id', 'tag', 'own_user', 'like'])
                 data['content_pub'].update({'id': 'chapter_'+str(publication.id)})
                 data['content_pub'].update({'own_username': own_user.user.username})
@@ -153,7 +156,8 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
                 data['content_pub'].update({'url_autor_init': reverse_lazy('user:user_profile', kwargs={'username': mainStory.own_user.user.username})})
                 data['content_pub'].update({'color': mainStory.color})
                 data['content_pub'].update({'id_main_story': mainStory.id})
-                data['content_pub'].update({'opened': mainStory.opened})
+                opened = (mainStory.status==Permission.WR)
+                data['content_pub'].update({'opened': opened})
                 fromUser = self.request.user
                 is_subscribed = fromUser.profile.get().user2Pub.filter(pub = mainStory).exists();
                 data['content_pub'].update({'is_subscribed': is_subscribed})
@@ -189,7 +193,9 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
                     data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
             return JsonResponse(data)
         else:
-            return super().get(*args, **kwargs)
+            if (not mainStory.status==Permission.NR or own_user==self.request.user.profile.get()):
+                return super().get(*args, **kwargs)
+            raise Http404()
 
 
 #Eliminar story. No se eliminan, se ponen inactivas
@@ -317,7 +323,7 @@ class CreateStoryContinuation(LoginRequiredMixin, generic.DetailView, generic.Cr
 
     def form_valid(self, form):
         storyMain = get_object_or_404(StoryPublication, id = self.kwargs.get('pk'))
-        if (storyMain.opened or (self.request.user.profile.get() == storyMain.own_user)):
+        if (not storyMain.status==Permission.WR or (self.request.user.profile.get() == storyMain.own_user)):
             try:
                 with transaction.atomic():
                     story = form.save(commit=False)
@@ -336,11 +342,11 @@ class CreateStoryContinuation(LoginRequiredMixin, generic.DetailView, generic.Cr
             addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
     
-    #si opened es true o el usuario que la modifica es el duenio entonces se procede normalmente, sino se redirige al hall.
+    #si status es WR o el usuario que la modifica es el duenio entonces se procede normalmente, sino se redirige al hall.
     def get(self, *args, **kwargs):
         fromUser = self.request.user
         storyMain = get_object_or_404(StoryPublication, id = self.kwargs.get('pk'))
-        if (storyMain.opened or (fromUser.profile.get() == storyMain.own_user)):
+        if (storyMain.status==Permission.WR or (fromUser.profile.get() == storyMain.own_user)):
             return super().get(*args, **kwargs)
         return redirect(reverse_lazy('hall'))
 
