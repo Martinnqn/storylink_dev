@@ -19,6 +19,13 @@
         </button>
       </div>
       <div class="modal-body">
+        <small class="text-muted">Puedes iniciar sesión con una cuenta de red social o completar el formulario para crear una cuenta en Storylink. </small>
+        <div class="social-login">
+        <a href="{%url 'social:begin' 'facebook' %}" title="Facebook" class="btn btn-facebook"><i class="fa fa-facebook fa-fw"></i>Iniciar Sesión con Facebook</a>
+          <a href="{% url 'social:begin' 'twitter' %}" class="btn btn-twitter"><span class="fa fa-twitter"></span>Iniciar Sesión con Twitter</a>
+        </div>
+        <hr>
+        <div class="has-account">
       <form class="form-create-user" method="post" action="{% url 'sign_up' %}" novalidate>
           {% csrf_token %}
 

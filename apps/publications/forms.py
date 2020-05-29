@@ -3,7 +3,7 @@ from django import forms
 from .models import StoryPublication, ResourcePublication, StoryChapter, Permission
 from django_bleach.forms import BleachField
 from django.forms import ValidationError
-from .widgets import CustomColorSelect
+from .widgets import CustomColorSelect, CustomPermissionSelect
 from apps.users.widgets import CustomImageField
 
 CHOICES = (
@@ -31,7 +31,7 @@ class StoryCreationForm(ModelForm):
         fields = ('title', 'text_content', 'img_content_link', 'color', 'status')
         error_css_class = 'error'
         widgets = {
-        'status': forms.widgets.RadioSelect
+        'status': CustomPermissionSelect
         }
 
     def __init__(self, *args, **kwargs):
@@ -87,7 +87,7 @@ class StoryEditForm(ModelForm):
         error_css_class = 'error'
         widgets = {
         'img_content_link': CustomImageField,
-        'status': forms.widgets.RadioSelect
+        'status': CustomPermissionSelect
         }
 
     def __init__(self, *args, **kwargs):
