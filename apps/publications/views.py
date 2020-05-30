@@ -323,7 +323,7 @@ class CreateStoryContinuation(LoginRequiredMixin, generic.DetailView, generic.Cr
 
     def form_valid(self, form):
         storyMain = get_object_or_404(StoryPublication, id = self.kwargs.get('pk'))
-        if (not storyMain.status==Permission.WR or (self.request.user.profile.get() == storyMain.own_user)):
+        if (storyMain.status==Permission.WR or (self.request.user.profile.get() == storyMain.own_user)):
             try:
                 with transaction.atomic():
                     story = form.save(commit=False)
