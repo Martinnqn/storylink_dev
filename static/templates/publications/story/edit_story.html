@@ -1,6 +1,7 @@
 {% extends "users/profile_base.html" %}
 {% load static %}
 {% load widget_tweaks %}
+{% load bleach_tags %}
 
 {%block head-page-extra%}
     <script>window.CKEDITOR_BASEPATH = "{% static 'ckeditor/ckeditor/' %}";</script>
@@ -16,7 +17,7 @@
   </div>
 
 
-  <form id="story_form" method="post" enctype="multipart/form-data" novalidate>
+<form id="story_form" method="post" enctype="multipart/form-data" novalidate>
   {% csrf_token %}
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
@@ -53,7 +54,7 @@
     </div>
   {% endfor %}
   <div class="row justify-content-center">
-  <button type="button" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn-custom-2">Guardar cambios</button>
+  <button type="button" id="submitBtnEdit" data-toggle="modal" data-target="#confirm-submit" class="btn-custom-2">Guardar cambios</button>
   </div>
 </form>
 </div>
@@ -65,11 +66,11 @@
                 Confirmar edición
             </div>
             <div class="modal-body">
-              <ul id="attributes"></ul>
+              <div id="attributes"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a href="#" id="submit" class="btn btn-success success">Submit</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <a href="#" id="submit" class="btn btn-success success">Confirmar</a>
             </div>
         </div>
     </div>

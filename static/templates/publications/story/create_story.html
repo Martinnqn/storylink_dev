@@ -15,7 +15,9 @@
   <div class="row justify-content-center">
     <h4>Escribe una Storylink!</h4>
   </div>
-<form method="post" enctype="multipart/form-data" novalidate>
+
+
+<form id="story_form" method="post" enctype="multipart/form-data" novalidate>
   {% csrf_token %}
   {% for hidden_field in form.hidden_fields %}
     {{ hidden_field }}
@@ -52,9 +54,33 @@
     </div>
   {% endfor %}
   <div class="row justify-content-center">
-  <button type="submit" class="btn-custom-2">Crear Storylink</button>
+  <button type="button" id="submitBtnCreate" data-toggle="modal" data-target="#confirm-submit" class="btn-custom-2">Crear Storylink</button>
   </div>
 </form>
 </div>
+
+<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Creando Storylink
+            </div>
+            <div class="modal-body">
+              <div id="attributes"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <a href="#" id="submit" class="btn btn-success success">Crear</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
+{% block extra-script %}
+{% comment %}
+  Agregar el SUPER tambien!
+{% endcomment %}
+  <script src="{% static 'publication/js/edition_story.js' %}"></script>
+{% endblock %}
