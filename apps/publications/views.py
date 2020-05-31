@@ -103,13 +103,13 @@ class ListContentStory(LoginRequiredMixin, generic.DetailView):
                     for x in publication.tag.all():
                         tags.append(x.tag)
                     data['content_pub'].update({'tags': tags})
-                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(publication.img_content_link.url)})
+                    data['content_pub'].update({'img_content_link': publication.img_content_link.url})
                     is_subscribed = fromUser.profile.get().user2Pub.filter(pub = publication).exists();
                     data['content_pub'].update({'is_subscribed': is_subscribed})
                 else:
                     data['content_pub'].update({'tags': []})
                     data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
+                    data['content_pub'].update({'img_content_link': default_img})
             return JsonResponse(data)
         else:
             if (not publication.status==Permission.NR or own_user==self.request.user.profile.get()):
@@ -186,11 +186,11 @@ class ListContentChapter(LoginRequiredMixin, generic.DetailView):
                     for x in publication.tag.all():
                         tags.append(x.tag)
                     data['content_pub'].update({'tags': tags})
-                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(mainStory.img_content_link.url)})
+                    data['content_pub'].update({'img_content_link': mainStory.img_content_link.url})
                 else:
                     data['content_pub'].update({'tags': []})
                     data['content_pub'].update({'text_content': "No se puede visualizar el contenido de esta Storylink."})
-                    data['content_pub'].update({'img_content_link': self.request.build_absolute_uri(default_img)})
+                    data['content_pub'].update({'img_content_link': default_img})
             return JsonResponse(data)
         else:
             if (not mainStory.status==Permission.NR or own_user==self.request.user.profile.get()):

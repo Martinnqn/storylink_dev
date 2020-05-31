@@ -256,6 +256,12 @@ background: moccasin;
     font-size: 22px;
 }
 
+.rolegame {
+    font-size: 28px;
+    font-weight: bold;
+    color: #f00b0b; 
+}
+
 @media(max-width:900px) {
     #container-form-create-account{
         width: 50%;
