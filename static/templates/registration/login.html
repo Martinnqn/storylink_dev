@@ -15,6 +15,7 @@
 
 {%block primary-navbar%}
         <div id="header-base" class="sticky-top">
+            <small style="color:white; margin:auto;">Beta</small>
             <!-- navBar primario -->   
             <div class="container">
                 <nav id="primary-navbar" class="navbar navbar-expand-lg navbar-dark">
@@ -22,7 +23,6 @@
                     <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
                     <div id="login-div">
                     <a href="javascript:void(0)" onclick="showLoginModal()">Iniciar sesión</a>
-                    <a href="javascript:void(0)" onclick="showSignUpModal()">Crea cuenta</a>
                     </div>
                 </nav> 
             </div>
@@ -35,11 +35,20 @@
   <section id="title-welcome" class="section-light">
     <img id="img-portada" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
     <h1 class="title-center">Bienvenido a Storylink.club</h1>
-    <div class="to container">
-      <h3>¿Dónde estoy? presiona sobre las <em>Esferalinks</em> para enterarte!</h3>
       <div class="m-welcome">
         <img id="welcome-img" src="{% static 'imgs/mascota/mascota_sonriendo.png' %}" alt="">
       </div>
+    <div class="to container">
+      <ul>
+      <li><p>Storylink.club es una plataforma que ha sido creada con la intención de agrupar contenido literario gratuito y accesible para cualquier usuario.</p>
+        </li>
+        <li><p>La fortaleza de Storylink.club es su capacidad para permitir escribir historias al estilo <strong>Elige tu Propia Aventura</strong>, lo que agrega flexibilidad y creatividad a las narrativas!</p></li>
+        <li><p>Aquellos jugadores de <strong>juegos de rol</strong> se ven beneficiados al poder crear, editar y organizar todas las decisiones de sus aventuras, y tenerlas en una pantalla interactiva para navegar por su historia.</p></li>
+        <li><p>También puedes escribir historias y permitir que el resto de la comunidad las continúe!</p></li>
+        <li><p>Sumerge al lector en decisiones difíciles para elegir qué camino tomar.</p></li>
+      </ul>
+      
+      <h3>Presiona sobre las <em>Esferalinks</em> para seguir leyendo!</h3>
       <span class="material-icons arrow">play_for_work</span>
       <a href="javascript: void(0)" class="a-scroll" onclick="animateScroll('#what-is')"><img class="tell-more" src="{% static 'imgs/sl_esfera.png' %}" alt="Cuentame mas"></a>
       <div class="section-link"></div>
@@ -50,8 +59,8 @@
       <img class="target-link" src="{% static 'imgs/target_link.png' %}" alt="target">
     </div> 
     <div class="to container">
-      <h1>Estás en Storylink.club!, una plataforma desarrollada para <strong>escribir y leer Storylinks!</strong></h1>
-      <h3>¿Qué es una Storylink?</h3>
+      <h1>En Storylink.club nombramos a cada publicación como <strong>Storylink</strong>, ya que nos permite reconocer que cada publicación es una historia que puede enlazarse con otra historia.</h1>
+      <h3>Aprende más sobre qué es una Storylink</h3>
       <div class="m-welcome">
         <img id="welcome-img-2" src="{% static 'imgs/mascota/mascota_sorprendida.png' %}" alt="">
       </div>
@@ -79,7 +88,7 @@
         <img class="target-link" src="{% static 'imgs/target_link.png' %}" alt="target">
       </div>
       <div class="to container">
-      <h3>Crear Storylinks es <strong>fácil!</strong>. Puedes comenzar con una historia desde el inicio, o continuar una existente. En el momento que quieras puedes hacer que los personajes tomen <strong>diferentes decisiones ante una misma situación</strong>, dividiendo la trama principal en dos o más caminos. Alimenta tu creatividad!</h3>
+      <h3>Crear Storylinks es <strong>fácil!</strong>. Puedes comenzar con una historia desde el inicio, o continuar una existente. En el momento que quieras puedes hacer que los personajes tomen <strong>diferentes decisiones ante una misma situación</strong>, dividiendo la trama principal en dos o más caminos</h3>
       </div>
       <h4>¿Quieres saber más?</h4>
       <h4>SI!</h4>
@@ -96,7 +105,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-4">
-        <p class="paragraph-presentation"> En Storylink promovemos el desarrollo de historias de todos los géneros. Puedes crear Storylinks <em>abiertas</em> para permitir que todos los usuarios puedan aportar sus ideas y tramas, o puedes dejarlas <em>cerradas</em> para que solo tú decidas el camino que tomarán los personajes. </p>
+        <p class="paragraph-presentation"> En Storylink promovemos el desarrollo de historias de todos los géneros. Puedes crear Storylinks <em>abiertas</em> para permitir que todos los usuarios puedan aportar sus ideas y tramas, o puedes dejarlas <em>cerradas</em> para que solo tú decidas el camino que tomarán los personajes.</p>
         </div>
         <div class="col-md-4">
         <p class="paragraph-presentation">¿Tuviste una idea y no sabes cómo continuarla, o te gustaría compartirla con otros lectores y escritores? ¿Leíste algo que te gustó y tuviste un <em>insigth</em>? <strong>Crea</strong> tu propia trama y <strong>compártelo</strong> con el resto de los usuarios de <strong>Storylink.club</strong> para que cada lector pueda elegir la trama que más <strong>disfrute</strong>, o <strong>elegir</strong> cómo termina una historia!</p>
