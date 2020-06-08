@@ -26,6 +26,22 @@ function hideTheater() {
     $("body").css({'overflow-y': 'scroll'});
 }
 
+function hideMenuPub() {
+    $("#menu-pub").addClass('hided-menu-pub');
+    $("#menu-pub").removeClass('showed-menu-pub');
+    $(".pub-data-init").css({'display': 'none'});
+    $("#open-menu-pub").css({'display': 'block'});
+    $("#close-menu-pub").css({'display': 'none'});
+}
+
+function showMenuPub() {
+    $("#menu-pub").removeClass('hided-menu-pub');
+    $("#menu-pub").addClass('showed-menu-pub');
+    $(".pub-data-init").css({'display': 'block'});
+    $("#open-menu-pub").css({'display': 'none'});
+    $("#close-menu-pub").css({'display': 'block'});
+}
+
 /*para salir del modo theater*/
 $('body').on('keydown', function (e) {
     if (e.which == 27 && !$('#story-read-mode').attr('aria-modal')) {

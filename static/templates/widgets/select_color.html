@@ -11,7 +11,7 @@
       <ul{% if id %} id="{{ id }}_{{ index }}"{% endif %}>{% endif %}
       {% for option in options %}
       <li>
-        {% include "django/forms/widgets/input.html" with widget=option %}
+        <input type="{{ option.type }}" name="{{ option.name }}"{% if option.value != None %} value="{{ option.value|stringformat:'s' }}"{% endif %} class="" {% for name, value in option.attrs.items %}{% if value is not False %} {{ name }}{% if value is not True%}="{{ value|stringformat:'s' }}"{% endif %}{% endif %}{% endfor %}>
         {% if option.wrap_label %}
           <label{% if option.attrs.id %} for="{{ option.attrs.id }}"{% endif %}>
           {{ option.label|safe }}

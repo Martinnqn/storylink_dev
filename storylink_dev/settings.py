@@ -25,7 +25,7 @@ SECRET_KEY = '6-v$$swa_e8*9i4ga#37#w&c$tr5_&#cjy!d^ymf*i@s2wsct+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.47', 'localhost', 'dev-storylink.club']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.39', 'localhost', 'dev-storylink.club']
 
 
 # Application definition
@@ -164,7 +164,7 @@ LOGOUT_REDIRECT_URL = '/'
 #configuracion django-bleach
 
 # Which HTML tags are allowed
-BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'ul', 'li' 'ol', 'em', 'strong', 'span', 's']
+BLEACH_ALLOWED_TAGS = ['p', 'b', 'i', 'u', 'ul', 'li' 'ol', 'em', 'strong', 'span', 's', 'br']
 
 # Which HTML attributes are allowed
 BLEACH_ALLOWED_ATTRIBUTES = ['style']
@@ -236,6 +236,10 @@ CKEDITOR_CONFIGS = {
             #'dialogui',
             #'elementspath'
         ]),
+        'entities': False,
+        'basicEntities': False,
+        'fillEmptyBlocks': False,
+        'autoParagraph': False,
     }
 }
 

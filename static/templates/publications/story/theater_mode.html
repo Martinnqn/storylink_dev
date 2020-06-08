@@ -4,9 +4,12 @@ Formato de tarjeta de una publicacion
 {%load static%}
 <div class="container">
   <div id="display-pub-detail" class="">
-    <nav id="theater-header" class="sticky-top">
-      <div class="container d-flex justify-content-between">
-        <h6 id="title-pub-detail" class="title-pub-detail"></h6>
+    <nav id="theater-header" class="sticky-top container-fluid">
+      <div class="container">
+        <div class="row justify-content-between">
+        <a id="open-menu-pub" class="btn-menu-pub" href="javascript: void(0)" onclick="showMenuPub()">
+          <span class="material-icons">description</span>
+        </a>
         <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
           Desuscribirse 
         </a>
@@ -16,25 +19,29 @@ Formato de tarjeta de una publicacion
         <a class="btn-close" href="javascript: void(0)" onclick="hideTheater()">
           Cerrar visor <span class="material-icons">settings_backup_restore</span>
         </a>
-      </div>
-    </nav>
-    <div class="container d-flex">
-      <div class="menu-pub">
-        <span class="material-icons">
-          navigate_next
-        </span>
-        <div class="container pub-data-init">
-          <div class="row">
-            <div class="col-8">
-              <div id="header-image" class=""></div>
-            </div>
-            <div class="col-4">
-              Autor inicial: 
-              <a href="" id="name-autor-init"></a>
+        <div id="menu-pub" class="container hided-menu-pub">
+          <div class="content-menu-pub">
+            <a id="close-menu-pub" class="" href="javascript: void(0)" onclick="hideMenuPub()">
+              <span class="material-icons">highlight_off</span>
+            </a>
+            <h6 id="title-pub-detail" class="title-pub-detail"></h6>
+            <div class="container pub-data-init">
+              <div class="row">
+                <div class="col-sm-4 data-autor">
+                  Autor inicial: 
+                  <a href="" id="name-autor-init"></a>
+                </div>
+                <div class="col-sm-8">
+                  <div id="header-image" class="header-image"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        </div>
       </div>
+    </nav>
+    <div class="container-fluid">
       <div class="container clearfix" id="theater-main">
         <div class="theater-view" id="theater-view-template">
           <div class="container publication-node">
@@ -43,69 +50,69 @@ Formato de tarjeta de una publicacion
                 <div class="content-pub">
                   <div class="publication-container">
                     <div class="publication-header d-flex justify-content-between">
-                    <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
-                     <div class="dropdown" id="card-options-owner">
-                      <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
-                      <div class="dropdown-content">
-                        <a id="btn-delete" class='btn-delete'>Eliminar</a>
-                        <a id="btn-edit" class='btn-edit'>Editar</a>
+                      <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
+                      <div class="dropdown" id="card-options-owner">
+                        <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
+                        <div class="dropdown-content">
+                          <a id="btn-delete" class='btn-delete'>Eliminar</a>
+                          <a id="btn-edit" class='btn-edit'>Editar</a>
+                        </div>
                       </div>
+                    </div>  
+                    <h3 id="answer-chapter" class="title-theater-view"></h3>
+                    <div class="body-publication">
+                      <div id="publication-content" class="publication-content"></div>
                     </div>
-                  </div>  
-                  <h3 id="answer-chapter" class="title-theater-view"></h3>
-                  <div class="body-publication">
-                    <div id="publication-content" class="publication-content"></div>
-                  </div>
-                  <div class="card-options">
-                    <div class="like">
-                    <span id="cant-likes" class="cant-likes"></span>
-                    <a id="like-pub" class="btn-like" href="javascript: void(0)">
-                      Me gusta 
-                      <span class="material-icons">thumb_up</span>
-                    </a>
-                    <a id="unlike-pub" class="btn-liked" href="javascript: void(0)">
-                      Me gusta 
-                      <span class="material-icons">thumb_up</span>
-                    </a>
+                    <div class="card-options">
+                      <div class="like">
+                        <span id="cant-likes" class="cant-likes"></span>
+                        <a id="like-pub" class="btn-like" href="javascript: void(0)">
+                          Me gusta 
+                          <span class="material-icons">thumb_up</span>
+                        </a>
+                        <a id="unlike-pub" class="btn-liked" href="javascript: void(0)">
+                          Me gusta 
+                          <span class="material-icons">thumb_up</span>
+                        </a>
+                      </div>
+                      <a href="javascript: void(0)" class="btn-custom-2" data-toggle="modal" data-target="#story-read-mode" id="btn-read-mode">
+                        Leer
+                      </a>
                     </div>
-                    <a href="javascript: void(0)" class="btn-custom-2" data-toggle="modal" data-target="#story-read-mode" id="btn-read-mode">
-                      Leer
-                    </a>
-                  </div>
-                  <div class="container tags" id="tags">
-                    <div class="tags-story"></div>
+                    <div class="container tags" id="tags">
+                      <div class="tags-story"></div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div id="displacement-menu" class="displacement-menu">
-                <a id="first-story" class="scroll-smooth-left" href="javascript: void(0)">
-                  Ir al comienzo
-                </a>
-                <a class="btn-previous scroll-smooth-left" id="pre-story" href="javascript: void(0)">
-                  Storylink Anterior
-                </a>
-              </div>
-            </div>
-            {%block mini-preview%}
-            <div class="col-12 col-lg-4 content-previews">
-              <h3 class="title-center">Continuaciones</h3>
-              <div id="scroll-previews" class="scroll-previews-container">
-              </div>
-              <div class="container">
-                <div class="row create-continuation">
-                  <a class="btn-custom-2" href="#" id="btn-create-continuation">
-                    Continuar Storylink <span class="material-icons">rate_review</span>
+                <div id="displacement-menu" class="displacement-menu">
+                  <a id="first-story" class="scroll-smooth-left" href="javascript: void(0)">
+                    Ir al comienzo
+                  </a>
+                  <a class="btn-previous scroll-smooth-left" id="pre-story" href="javascript: void(0)">
+                    Storylink Anterior
                   </a>
                 </div>
               </div>
+              {%block mini-preview%}
+              <div class="col-12 col-lg-4 content-previews">
+                <h3 class="title-center">Continuaciones</h3>
+                <div id="scroll-previews" class="scroll-previews-container">
+                </div>
+                <div class="container">
+                  <div class="row create-continuation">
+                    <a class="btn-custom-2" href="#" id="btn-create-continuation">
+                      Continuar Storylink <span class="material-icons">rate_review</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endblock %} 
             </div>
-            {% endblock %} 
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 {%block modal-read-mode%}
@@ -124,7 +131,7 @@ Formato de tarjeta de una publicacion
         <div class="row justify-content-center">
           <div class="col-sm-8">
             <ul>
-            <p>¿Confirma que desea eliminar la storylink?</p>
+              <p>¿Confirma que desea eliminar la storylink?</p>
               <li>
                 Tenga en cuenta que esta acción no se puede deshacer.
               </li>
@@ -136,12 +143,12 @@ Formato de tarjeta de una publicacion
         </div>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn" id="modal-btn-si">Eliminar</button>
-          <button type="button" class="btn btn-primary" id="modal-btn-no">Cancelar</button>
+        <button type="button" class="btn" id="modal-btn-si">Eliminar</button>
+        <button type="button" class="btn btn-primary" id="modal-btn-no">Cancelar</button>
       </div>
       <div class="container">
         <div class="row justify-content-center">
-        <small>Si la publicación tiene continuaciones, aún podrá ser accedida, pero su contenido no será visible.</small>
+          <small>Si la publicación tiene continuaciones, aún podrá ser accedida, pero su contenido no será visible.</small>
         </div>
       </div>
     </div>
