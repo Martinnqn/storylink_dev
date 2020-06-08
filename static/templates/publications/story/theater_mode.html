@@ -1,5 +1,5 @@
 {%comment%}
-Formato de tarjeta de una publicacion
+Theater mode para mostrar publicacion y continuaciones
 {%endcomment%}
 {%load static%}
 <div class="container">
@@ -24,7 +24,7 @@ Formato de tarjeta de una publicacion
             <a id="close-menu-pub" class="" href="javascript: void(0)" onclick="hideMenuPub()">
               <span class="material-icons">highlight_off</span>
             </a>
-            <h6 id="title-pub-detail" class="title-pub-detail"></h6>
+            <h3 id="title-pub-detail" class="title-pub-detail"></h3>
             <div class="container pub-data-init">
               <div class="row">
                 <div class="col-sm-4 data-autor">
@@ -57,7 +57,7 @@ Formato de tarjeta de una publicacion
                           <a id="btn-delete" class='btn-delete'>Eliminar</a>
                           <a id="btn-edit" class='btn-edit'>Editar</a>
                         </div>
-                      </div>
+                      </div>              
                     </div>  
                     <h3 id="answer-chapter" class="title-theater-view"></h3>
                     <div class="body-publication">
@@ -121,7 +121,7 @@ Formato de tarjeta de una publicacion
 
 {%block modal-delete-story%}
 <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

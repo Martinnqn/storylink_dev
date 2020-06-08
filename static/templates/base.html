@@ -63,8 +63,15 @@
                                     <img class="nav-img-perfil" src="{{ user.profile.get.link_img_perfil.url }}" alt="img perfil">
                                     {{user.username}}
                                 </a>
-                                <a href="{% url 'user:edit_account' user.username %}"><span class="material-icons">settings</span></a>
-                                <a href="{% url 'logout' %}">Cerrar sesión</a>
+                                <div class="dropdown">
+                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  </button>
+                                  <div class="dropdown-menu" style="right: 0;left: initial;" aria-labelledby="dropdownMenuLink">
+                                   <a href="{% url 'user:edit_account' user.username %}">Configuración</a>
+                                   <div class="dropdown-divider"></div>
+                                   <a href="{% url 'logout' %}">Cerrar sesión</a>
+                                  </div>
+                                </div>
                         {% else %}
                                 <a class="" href="{% url 'sign_up' %}">Registrarse</a>
                                 <a class="" href="{% url 'login' %}">Iniciar Sesión</a>

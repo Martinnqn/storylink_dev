@@ -111,7 +111,7 @@ to {
     justify-content: space-evenly;
 }
 
-#login-div a{
+#login-div a, .dropdown{
     margin-left: 5px; 
     display: inline-block;
     padding-left: 3px;
@@ -125,6 +125,10 @@ to {
 
 #login-div a:hover{
     background: #4e5d6a;
+}
+
+#login-div .dropdown-menu {
+    background: #314455;
 }
 
 #login-nav {
@@ -141,7 +145,7 @@ to {
     background-color: #314455;
 }
 
-#header-base a{
+#header-base a, #header-base .btn{
     color: white;
 }
 
@@ -163,6 +167,9 @@ to {
 a:hover{
     text-decoration: none;
 }
+
+
+
 
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 400; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-regular.woff') format('woff')}
 @font-face { font-family: 'Dancing Script'; font-style: normal; font-weight: 500; src: url('../../fonts/dancing-script-v14-latin/dancing-script-v14-latin-500.woff') format('woff')}

@@ -1,8 +1,10 @@
 $('#submitBtnEdit').click(function() {
-   var value = $("input[name='status']:checked"). val();
-   var list = getConf($("input[name='status']")[1].disabled, value);
-   $('#attributes').html(list);
-   $('#attributes').append('<p>¿Confirmar cambios?</p>');
+  var value = $("input[name='status']:checked"). val();
+  if ($("input[name='status']").length>0){
+    var list = getConf($("input[name='status']")[1].disabled, value);
+    $('#attributes').html(list);
+  }
+  $('#attributes').append('<p>¿Confirmar cambios?</p>');
 });
 
 $('#submitBtnCreate').click(function() {
