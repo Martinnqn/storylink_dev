@@ -24,7 +24,7 @@ Para mostrar la lista de chapters que continuan una trama. Se viusalizan diferen
             </a>
         </div>
         {%if chap.active %}
-          <div class="description">{{chap.text_content|safe|truncatechars:200}}</div>
+          <div class="description">{{chap.text_content|safe|truncatechars_html:200}}</div>
           <div class="tags-story">
             {%for t in chap.tag.all %}
             <span>{{ t.tag }}</span>

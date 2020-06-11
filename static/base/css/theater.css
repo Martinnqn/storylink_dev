@@ -71,10 +71,6 @@ to {
     position: static;
 }
 
-.publication-header{
-    overflow-y: hidden;
-}
-
 .hided-menu-pub {
     width: 0px;
     height: 0px;
@@ -341,6 +337,7 @@ to {
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
+    position: absolute;
     border: 1px solid black;
     display: none;
     min-width: 160px;

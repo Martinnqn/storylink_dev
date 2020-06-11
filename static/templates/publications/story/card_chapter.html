@@ -16,7 +16,7 @@ Crea un card-story con el contenido de un chapter a partir de la variable storyc
             {{storychapter.mainStory.title|truncatechars:35}}
         </h3>
           <div class="answer"><h5>{{storychapter.quest_answ}}</h5></div>
-        <div class="description">{{storychapter.text_content|safe|truncatechars:150}}</div>
+        <div class="description">{{storychapter.text_content|safe|truncatechars_html:150}}</div>
         <div class="tags-story">
           {% for h in storychapter.tag.all %}
           <span>{{ h.tag }}</span>
