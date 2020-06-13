@@ -1,0 +1,55 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Envio de emails{% endblock %}
+{% block extrastyle %}
+    {% comment %}
+      <link rel="stylesheet" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.min.css' %}">
+    {% endcomment %}
+{% endblock %}
+{% block content %}
+<div id="content-main">
+  <h1>Enviar emails a usuarios y administradores</h1>
+  <form class="" method="post" novalidate>
+        {% csrf_token %}
+        {% for hidden_field in form.hidden_fields %}
+          {{ hidden_field }}
+        {% endfor %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger" role="alert">
+            {% for error in form.non_field_errors %}
+              {{ error }}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% for field in form.visible_fields %}
+          <div class="form-group">
+            {{ field.label_tag }}
+            {% if form.is_bound %}
+              {% if field.errors %}
+                {% render_field field class="form-control is-invalid" %}
+                {% for error in field.errors %}
+                  <div class="invalid-feedback">
+                    {{ error }}
+                  </div>
+                {% endfor %}
+              {% else %}
+                {% render_field field class="form-control is-valid" %}
+              {% endif %}
+            {% else %}
+              {% render_field field class="radio-inline form-control" %}
+            {% endif %}
+
+            {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <div class="row justify-content-center">
+        <button type="submit" class="btn-custom-2">Enviar</button>
+        </div>
+      </form>
+      <small class="form-text text-muted">* Campo no obligatorio</small>
+{% endblock %}

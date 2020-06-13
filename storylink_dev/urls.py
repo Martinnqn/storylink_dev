@@ -40,6 +40,8 @@ urlpatterns = [
     path('fillprofile/<uidb64>/', FillProfile.as_view(), name = 'fill_profile'),
     path('fillprofile/<uidb64>/<email_verified>', FillProfile.as_view(), name = 'fill_profile'),
     path('activate/<uidb64>/<token>', VerifiedMail.as_view(), name='activate'),
+    path('site/', include('apps.site_manager.urls')),
+
 
 ]
 

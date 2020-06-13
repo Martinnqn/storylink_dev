@@ -225,7 +225,7 @@ class VerifiedMail(View):
             user.save()
             return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk)), 'email_verified': True}))
         else:
-            return redirect(reverse_lazy('hall_a', kwargs={'email_verified': False}))
+            return redirect(reverse_lazy('hall_a', kwargs={'activated': False}))
 
 def send_mail_confirm(request, user):
     current_site = get_current_site(request)

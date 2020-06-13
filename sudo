@@ -1,0 +1,2 @@
+“deb http://www.rabbitmq.com/debian/ testing main” /etc/apt/sources.list
+“deb http://www.rabbitmq.com/debian/ testing main” /etc/apt/sources.list

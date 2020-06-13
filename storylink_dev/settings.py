@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'ckeditor',
     'social_django',
     'django.forms',
+    'apps.site_manager',
+    'djcelery',
+    'djcelery_email',
 ]
 
 if DEBUG:
@@ -326,11 +329,16 @@ SOCIAL_AUTH_TWITTER_EXTRA_DATA = [                 # add this
 ]
 
 #configuracion correo
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #para no enviar mail reales, los imprime en consola
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_HOST_USER = 'storylink@hotmail.com'
 DEFAULT_FROM_EMAIL = 'storylink@hotmail.com'
 EMAIL_HOST_PASSWORD = '38082317story'
 EMAIL_PORT = 587
+
+
+#CELERY CONF
+CELERY_BROKER_URL = 'amqp://rabbit-user:rabbit12345@localhost:5672/stvhost'
