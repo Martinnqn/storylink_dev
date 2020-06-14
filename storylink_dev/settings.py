@@ -330,8 +330,9 @@ SOCIAL_AUTH_TWITTER_EXTRA_DATA = [                 # add this
 
 #configuracion correo
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #para no enviar mail reales, los imprime en consola
-EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #para no enviar mail reales, los imprime en consola
+#EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+CELERY_EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp-mail.outlook.com'
 EMAIL_HOST_USER = 'storylink@hotmail.com'

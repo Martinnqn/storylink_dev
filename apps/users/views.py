@@ -14,11 +14,8 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
 from .token import account_activation_token
-from django.core.mail import EmailMessage
-
-
+from .tasks import send_mail_confirm
 
 
 #retorna el perfil del usuario
@@ -124,8 +121,10 @@ class SignUpView(generic.CreateView):
         user = form.save(commit=False)
         user.is_active = False
         user.save()
-        send_mail_confirm(self.request, user)
+        domain = get_current_site(self.request).domain
+        send_mail_confirm.s(user.pk, user.username, user.email, domain).apply_async()
         return redirect(reverse_lazy('hall_s', kwargs = {'success': True}))
+
 
 '''
 CustomloginView permite iniciar sesion solo si un usuario tiene el email verificado y ademas tiene el UserProfile creado
@@ -220,28 +219,12 @@ class VerifiedMail(View):
             user = CustomUser.objects.get(pk=uid)
         except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
             user = None
-        if user is not None and account_activation_token.check_token(user, token) and not user.is_active:
+        if user is not None and account_activation_token.check_token(user.pk, token) and not user.is_active:
             user.email_verified = True
             user.save()
             return redirect(reverse_lazy('fill_profile', kwargs = {'uidb64': urlsafe_base64_encode(force_bytes(user.pk)), 'email_verified': True}))
         else:
             return redirect(reverse_lazy('hall_a', kwargs={'activated': False}))
-
-def send_mail_confirm(request, user):
-    current_site = get_current_site(request)
-    mail_subject = 'Registro de usuario.'
-    message = render_to_string('registration/activate_account.html', {
-        'user': user,
-        'domain': current_site.domain,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': account_activation_token.make_token(user),
-    })
-    to_email = user.email
-    email = EmailMessage(
-                mail_subject, message, to=[to_email]
-    )
-    email.content_subtype = "html"
-    email.send()
 
 
 #Eliminar usuario. No se eliminan, se ponen inactivos

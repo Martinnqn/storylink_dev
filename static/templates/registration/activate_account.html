@@ -1,5 +1,5 @@
 {% autoescape off %}
-<p>Bienvenido! por favor haz click en el siguiente Enlace para confirmar tu usuario:</p>
+<p>Bienvenido {{username}}! por favor haz click en el siguiente Enlace para confirmar tu usuario:</p>
 <a href="https://{{ domain }}{% url 'activate' uidb64=uid token=token %}">Enlace</a>
 
 <p>Gracias por formar parte de Storylink.</p>
