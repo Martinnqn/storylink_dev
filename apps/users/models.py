@@ -4,6 +4,7 @@ from django.forms import ValidationError
 from django.utils.translation import gettext_lazy as _
 import re
 from django.contrib.auth.models import UserManager
+from apps.site_manager.models import Category
 
 #from apps.publications.models import StoryPublication #import circular! solucionado con app_level.ModelName (publications.StoryPublication)
 
@@ -54,6 +55,8 @@ class UserProfile(models.Model):
     pub_subscription = models.ManyToManyField('publications.StoryPublication', through='PubSubscriptionModelAux', symmetrical=False)
     # si el usuario tiene la cuenta reportada
     is_reported = models.BooleanField(default=False)
+    cat_unsubscribed = models.ManyToManyField(Category, related_name='unsubscribeMail', null=True, blank=True)
+
 
 # modelo intermedio para las suscripciones de un usuario a otro usuario. from_user esta suscripto a to_user
 class UserSubscriptionModelAux(models.Model):
