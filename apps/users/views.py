@@ -18,7 +18,13 @@ from django.template.loader import render_to_string
 from .token import account_activation_token
 from django.core.mail import EmailMessage
 
+class ReactV(generic.TemplateView):
+    template_name = 'test.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ReactV, self).get_context_data(**kwargs)
+        context.update({'customuser': 'to_user'})
+        return context
 
 
 #retorna el perfil del usuario

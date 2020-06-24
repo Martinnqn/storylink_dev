@@ -1,0 +1,30 @@
+{% load static %}
+{% load render_bundle from webpack_loader %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    {{customuser}}
+     <script>
+      window.django = {
+        csrf: "{{ csrf_token }}",
+        urls: {
+          login: "{% url 'login' %}",
+          logout: "{% url "logout" %}"        },
+        user: {
+          authenticated: {% autoescape off %}("True" === "{{ user.is_authenticated }}"){% endautoescape %},
+          username: "{{ request.user.username }}",
+          full_name: "{{ request.user.get_full_name }}",
+          last_login: "{{ request.user.last_login }}",
+          permissions: {% autoescape off %}JSON.parse('{{ permissions }}'){% endautoescape %}
+        }
+      };
+    </script>
+
+    {% render_bundle 'main' %}
+</body>
+</html>

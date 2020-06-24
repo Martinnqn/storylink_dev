@@ -335,3 +335,12 @@ EMAIL_HOST_USER = 'storylink@hotmail.com'
 DEFAULT_FROM_EMAIL = 'storylink@hotmail.com'
 EMAIL_HOST_PASSWORD = '38082317story'
 EMAIL_PORT = 587
+
+
+#WEBPACK LOADER
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'st-front/bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'st-front/webpack-stats.json'),
+    }
+}
