@@ -8,7 +8,7 @@ module.exports = {
   entry: './src/js/index',
 
   output: {
-      path: path.resolve('./src/bundles/'),
+      path: path.resolve('./bundles/'),
       filename: "[name]-[hash].js",
       publicPath: '/static/', //path relativo donde se sirven los archivos estaticos (127.0.0.1:8000/static/)
   },

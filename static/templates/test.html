@@ -8,12 +8,11 @@
 </head>
 <body>
     <div id="app"></div>
-    {{customuser}}
      <script>
       window.django = {
         urls: {
           login: "{% url 'login' %}",
-          logout: "{% url "logout" %}"        },
+          logout: "{% url 'logout' %}"        },
         user: {
           authenticated: {% autoescape off %}("True" === "{{ user.is_authenticated }}"){% endautoescape %},
           username: "{{ request.user.username }}",

@@ -6,11 +6,11 @@ function Welcome(props) {
   return <h1>Hello, {props.name}</h1>;
 }
 
-const element = <Welcome name="world" />;
+const element = <Welcome name={window.django.user.username} />;
 const div = document.getElementById('app');
-console.log(div); 
 
 ReactDOM.render(
   element,
   div
 );
+

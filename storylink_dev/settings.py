@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'social_django',
     'django.forms',
-    'webpack_loader'
+    'webpack_loader',
+    'corsheaders',
 ]
 
 if DEBUG:
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'storylink_dev.urls'
@@ -149,7 +151,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'st-front/src/bundles'),
+    os.path.join(BASE_DIR, 'st-front/bundles'),
 )
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -336,6 +338,11 @@ DEFAULT_FROM_EMAIL = 'storylink@hotmail.com'
 EMAIL_HOST_PASSWORD = '38082317story'
 EMAIL_PORT = 587
 
+#CROSS ORIGIN
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+    'http://localhost:3000'
+)
 
 #WEBPACK LOADER
 WEBPACK_LOADER = {
