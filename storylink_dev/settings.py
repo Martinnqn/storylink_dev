@@ -147,10 +147,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
+STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    'static/',
-]
+    os.path.join(BASE_DIR, 'st-front/src/bundles'),
+)
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
@@ -340,7 +340,7 @@ EMAIL_PORT = 587
 #WEBPACK LOADER
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'BUNDLE_DIR_NAME': 'st-front/bundles/',
+        'BUNDLE_DIR_NAME': '',
         'STATS_FILE': os.path.join(BASE_DIR, 'st-front/webpack-stats.json'),
     }
 }

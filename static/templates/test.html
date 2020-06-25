@@ -11,16 +11,12 @@
     {{customuser}}
      <script>
       window.django = {
-        csrf: "{{ csrf_token }}",
         urls: {
           login: "{% url 'login' %}",
           logout: "{% url "logout" %}"        },
         user: {
           authenticated: {% autoescape off %}("True" === "{{ user.is_authenticated }}"){% endautoescape %},
           username: "{{ request.user.username }}",
-          full_name: "{{ request.user.get_full_name }}",
-          last_login: "{{ request.user.last_login }}",
-          permissions: {% autoescape off %}JSON.parse('{{ permissions }}'){% endautoescape %}
         }
       };
     </script>
