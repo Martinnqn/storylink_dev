@@ -342,6 +342,9 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
     }
     $("#publication-content_"+pubid).html(cont.text_content);
 
+    $("#view-tree-story").attr('data-pubid', cont.id.replace(typePubli+'_',''));
+    $("#view-tree-story").attr('data-username', cont.own_username);
+
     if ((typePubli == 'story' && cont.own_user != user_id) || (typePubli == 'chapter' && cont.own_first_story != user_id)){
         $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
         $("#subscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_subscribe+`')`);

@@ -341,8 +341,10 @@ EMAIL_PORT = 587
 #CROSS ORIGIN
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
+    'http://127.0.0.1:8000',
     'http://localhost:3000'
 )
+
 
 #WEBPACK LOADER
 WEBPACK_LOADER = {

@@ -1,4 +1,5 @@
 {% load static %}
+{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -107,7 +108,8 @@
     <!-- Smooth Scroll to Link -->
     <script src="{% static 'publication/js/scroll_smooth.js' %}"></script>
     <script src="{% static 'base/js/base.js' %}"></script>
-
+    {% render_bundle 'main' %}
+    
     {% block extra-script%}
 
     {%endblock%} <!--extras scripts -->

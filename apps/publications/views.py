@@ -464,7 +464,7 @@ class StoryContinuationsTitle(LoginRequiredMixin, FormMixin, generic.ListView):
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             data =  dict()
-            data['items'].update({'title1': "eltl1", 'title2': "eltl2", 'title3': "elti3"})
+            data['items'] = {'title1': "eltl1", 'title2': "eltl2", 'title3': "elti3"}
             return JsonResponse(data)
         else:
             raise Http404()
@@ -476,7 +476,7 @@ class ChapterContinuationsTitle(LoginRequiredMixin, FormMixin, generic.ListView)
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
             data =  dict()
-            data['items'].update({'subTitle1': "S1", 'subTitle2': "S2", 'subTitle3': "S3"})
+            data['items'] = {'subTitle1': "S1", 'subTitle2': "S2", 'subTitle3': "S3"}
             return JsonResponse(data)
         else:
             raise Http404()
