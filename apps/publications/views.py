@@ -458,25 +458,29 @@ class ListStories(LoginRequiredMixin, FormMixin, generic.ListView):
 
 #API DESDE ACA
 
-class StoryContinuationsTitle(LoginRequiredMixin, FormMixin, generic.ListView):
-    model = StoryPublication
+class StoryContinuationsTitle(LoginRequiredMixin, View):
+    model = StoryChapter
     
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
-            data = { 'childs': [{'pubId': "1", 'title': 'Story1'},
-             {'pubId': "2", 'title': 'Story2'}, {'pubId': "3", 'title': 'Story3'}]}
+            conts = self.model.objects.story_continuations(self.kwargs["pk"], self.request.user)
+            data = {'childs':[]}
+            for c in conts:
+                data['childs']+=[{'pubId': c.id, 'title': c.quest_answ}]
             return JsonResponse(data)
         else:
             raise Http404()
             
         
-class ChapterContinuationsTitle(LoginRequiredMixin, FormMixin, generic.ListView):
-    model = StoryPublication
+class ChapterContinuationsTitle(LoginRequiredMixin, generic.DetailView):
+    model = StoryChapter
     
     def get(self, *args, **kwargs):
         if (self.request.is_ajax()):
-            data = data = { 'childs': [{'pubId': "1", 'title': 'ssStory1'},
-             {'pubId': "2", 'title': 'ssStory2'}, {'pubId': "3", 'title': 'ssStory3'}]}
+            conts = self.model.objects.chapter_continuations(self.kwargs["pk"], self.request.user)
+            data = {'childs':[]}
+            for c in conts:
+                data['childs']+=[{'pubId': c.id, 'title': c.quest_answ}]
             return JsonResponse(data)
         else:
             raise Http404()

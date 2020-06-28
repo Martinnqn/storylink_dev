@@ -10,9 +10,9 @@ const StoryTree = (props) => {
     async function fetchData() {
         var url = '';
         if ('story'==props.type){
-            url = "/user/"+props.username+"/publication/continuations-titles/"+props.pubId;
+            url = "/user/"+props.username+"/publication/continuations-titles/"+pub;
         }else{
-            url = "/user/"+props.username+"/publication/continuations-chapter-titles/"+props.pubId;
+            url = "/user/"+props.username+"/publication/continuations-chapter-titles/"+pub;
         }
         const res = await fetch(url, {method: "GET",
             headers: {
@@ -29,22 +29,23 @@ const StoryTree = (props) => {
         .catch(err => setErrors(err));
     }
 
+    useEffect(() => {
+        setData([]);
+        setPub(props.pubId)
+    },[props.pubId]);
+
     const callFirstChapters = () => {
         fetchData();
     }
 
-    /*useEffect(() => {
-        fetchData();
-    },[props.pubId]);*/
-
-    var childNodes= null;
+    var childNodes = null;
     if (data.childs != undefined && data.childs.length > 0){
-        childNodes = data.childs.map((child, index) =>
+        childNodes = data.childs.map((child) =>
             <StoryTree username={props.username}
             pubId={child.pubId}
             title={child.title}
-            type='chapter' />
-        );
+            type='chapter' key={child.pubId} />
+            );
     }
 
     return <>

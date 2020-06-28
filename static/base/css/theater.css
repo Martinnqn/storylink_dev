@@ -34,6 +34,14 @@ to {
     color: white;
 }
 
+#index-tree {
+    position: fixed;
+    background: black;
+    max-height: 100vh;
+    max-width: 100vh;
+    overflow: scroll;
+}
+
 .publication-node {
     -webkit-animation: opactiyTransition 0.3s ease-in 1 normal;
     -moz-animation: opactiyTransition 0.3s ease-in 1 normal;
