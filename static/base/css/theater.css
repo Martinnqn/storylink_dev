@@ -31,6 +31,7 @@ to {
     position: fixed;
     background: black;
     font-family: sans-serif, sans-serif, "Sans-Pro-Regular","Helvetica Neue",Helvetica,Arial;
+    color: white;
 }
 
 .publication-node {

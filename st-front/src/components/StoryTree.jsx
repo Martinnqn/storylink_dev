@@ -15,15 +15,14 @@ const StoryTree = (props) => {
             url = "/user/"+props.username+"/publication/continuations-chapter-titles/"+props.pubId;
         }
         const res = await fetch(url, {method: "GET",
-        headers: {
-            "X-Requested-With": "XMLHttpRequest",
-            "X-CSRFToken": getCookie("csrftoken"),
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        credentials: 'same-origin',
-    });
-        console.log(res)
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            credentials: 'same-origin',
+        });
         res
         .json()
         .then(res => {setData(res); console.log(res)})
@@ -31,37 +30,28 @@ const StoryTree = (props) => {
     }
 
     const callFirstChapters = () => {
-        console.log("ddsdasdas")
-        if (props.pubId!=undefined){
-            fetchData();
-        }
+        fetchData();
     }
 
-    useEffect(() => {
-        if (props.pubId!=""){
-        console.log("props.pubId")
-        console.log(props.pubId)
+    /*useEffect(() => {
         fetchData();
-        }
-    },[props.pubId]);
+    },[props.pubId]);*/
 
-    var childNodes='';
+    var childNodes= null;
     if (data.childs != undefined && data.childs.length > 0){
-        childNodes = data.childs.map(function(child, index) {
-            <li>
-            <StoryTree username={this.props.username}
+        childNodes = data.childs.map((child, index) =>
+            <StoryTree username={props.username}
             pubId={child.pubId}
+            title={child.title}
             type='chapter' />
-            </li>
-        });
-        childNodes = <ul>childNodes</ul>
+        );
     }
 
     return <>
     <li onClick={callFirstChapters}>
-    {data.title}
+    {props.title}
+    {{childNodes} && <ul>{childNodes}</ul>}
     </li>
-    {childNodes}
     </>;
 
 }
