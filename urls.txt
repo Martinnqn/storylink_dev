@@ -1,0 +1,175 @@
+/	apps.publications.views.ListStories	hall
+/accounts/login/	apps.users.views.CustomLoginView	custom_login
+/accounts/login/	django.contrib.auth.views.LoginView	login
+/accounts/logout/	django.contrib.auth.views.LogoutView	logout
+/accounts/password_change/	django.contrib.auth.views.PasswordChangeView	password_change
+/accounts/password_change/done/	django.contrib.auth.views.PasswordChangeDoneView	password_change_done
+/accounts/password_reset/	django.contrib.auth.views.PasswordResetView	password_reset
+/accounts/password_reset/done/	django.contrib.auth.views.PasswordResetDoneView	password_reset_done
+/accounts/reset/<uidb64>/<token>/	django.contrib.auth.views.PasswordResetConfirmView	password_reset_confirm
+/accounts/reset/done/	django.contrib.auth.views.PasswordResetCompleteView	password_reset_complete
+/activate/<uidb64>/<token>	apps.users.views.VerifiedMail	activate
+/activated/<activated>	apps.publications.views.ListStories	hall_a
+/admin/site/	django.contrib.admin.sites.index	admin:index
+/admin/site/<app_label>/	django.contrib.admin.sites.app_index	admin:app_list
+/admin/site/admin/logentry/	django.contrib.admin.options.changelist_view	admin:admin_logentry_changelist
+/admin/site/admin/logentry/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/admin/logentry/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:admin_logentry_change
+/admin/site/admin/logentry/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:admin_logentry_delete
+/admin/site/admin/logentry/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:admin_logentry_history
+/admin/site/admin/logentry/add/	django.contrib.admin.options.add_view	admin:admin_logentry_add
+/admin/site/admin/logentry/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:admin_logentry_autocomplete
+/admin/site/auth/group/	django.contrib.admin.options.changelist_view	admin:auth_group_changelist
+/admin/site/auth/group/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/auth/group/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:auth_group_change
+/admin/site/auth/group/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:auth_group_delete
+/admin/site/auth/group/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:auth_group_history
+/admin/site/auth/group/add/	django.contrib.admin.options.add_view	admin:auth_group_add
+/admin/site/auth/group/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:auth_group_autocomplete
+/admin/site/jsi18n/	django.contrib.admin.sites.i18n_javascript	admin:jsi18n
+/admin/site/login/	django.contrib.admin.sites.login	admin:login
+/admin/site/logout/	django.contrib.admin.sites.logout	admin:logout
+/admin/site/password_change/	django.contrib.admin.sites.password_change	admin:password_change
+/admin/site/password_change/done/	django.contrib.admin.sites.password_change_done	admin:password_change_done
+/admin/site/publications/chapterlike/	django.contrib.admin.options.changelist_view	admin:publications_chapterlike_changelist
+/admin/site/publications/chapterlike/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/publications/chapterlike/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:publications_chapterlike_change
+/admin/site/publications/chapterlike/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:publications_chapterlike_delete
+/admin/site/publications/chapterlike/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:publications_chapterlike_history
+/admin/site/publications/chapterlike/add/	django.contrib.admin.options.add_view	admin:publications_chapterlike_add
+/admin/site/publications/chapterlike/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:publications_chapterlike_autocomplete
+/admin/site/publications/resourcepublication/	django.contrib.admin.options.changelist_view	admin:publications_resourcepublication_changelist
+/admin/site/publications/resourcepublication/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/publications/resourcepublication/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:publications_resourcepublication_change
+/admin/site/publications/resourcepublication/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:publications_resourcepublication_delete
+/admin/site/publications/resourcepublication/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:publications_resourcepublication_history
+/admin/site/publications/resourcepublication/add/	django.contrib.admin.options.add_view	admin:publications_resourcepublication_add
+/admin/site/publications/resourcepublication/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:publications_resourcepublication_autocomplete
+/admin/site/publications/storychapter/	django.contrib.admin.options.changelist_view	admin:publications_storychapter_changelist
+/admin/site/publications/storychapter/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/publications/storychapter/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:publications_storychapter_change
+/admin/site/publications/storychapter/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:publications_storychapter_delete
+/admin/site/publications/storychapter/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:publications_storychapter_history
+/admin/site/publications/storychapter/add/	django.contrib.admin.options.add_view	admin:publications_storychapter_add
+/admin/site/publications/storychapter/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:publications_storychapter_autocomplete
+/admin/site/publications/storylike/	django.contrib.admin.options.changelist_view	admin:publications_storylike_changelist
+/admin/site/publications/storylike/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/publications/storylike/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:publications_storylike_change
+/admin/site/publications/storylike/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:publications_storylike_delete
+/admin/site/publications/storylike/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:publications_storylike_history
+/admin/site/publications/storylike/add/	django.contrib.admin.options.add_view	admin:publications_storylike_add
+/admin/site/publications/storylike/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:publications_storylike_autocomplete
+/admin/site/publications/storypublication/	django.contrib.admin.options.changelist_view	admin:publications_storypublication_changelist
+/admin/site/publications/storypublication/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/publications/storypublication/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:publications_storypublication_change
+/admin/site/publications/storypublication/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:publications_storypublication_delete
+/admin/site/publications/storypublication/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:publications_storypublication_history
+/admin/site/publications/storypublication/add/	django.contrib.admin.options.add_view	admin:publications_storypublication_add
+/admin/site/publications/storypublication/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:publications_storypublication_autocomplete
+/admin/site/publications/tag/	django.contrib.admin.options.changelist_view	admin:publications_tag_changelist
+/admin/site/publications/tag/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/publications/tag/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:publications_tag_change
+/admin/site/publications/tag/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:publications_tag_delete
+/admin/site/publications/tag/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:publications_tag_history
+/admin/site/publications/tag/add/	django.contrib.admin.options.add_view	admin:publications_tag_add
+/admin/site/publications/tag/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:publications_tag_autocomplete
+/admin/site/r/<int:content_type_id>/<path:object_id>/	django.contrib.contenttypes.views.shortcut	admin:view_on_site
+/admin/site/social_django/association/	django.contrib.admin.options.changelist_view	admin:social_django_association_changelist
+/admin/site/social_django/association/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/social_django/association/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:social_django_association_change
+/admin/site/social_django/association/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:social_django_association_delete
+/admin/site/social_django/association/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:social_django_association_history
+/admin/site/social_django/association/add/	django.contrib.admin.options.add_view	admin:social_django_association_add
+/admin/site/social_django/association/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:social_django_association_autocomplete
+/admin/site/social_django/nonce/	django.contrib.admin.options.changelist_view	admin:social_django_nonce_changelist
+/admin/site/social_django/nonce/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/social_django/nonce/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:social_django_nonce_change
+/admin/site/social_django/nonce/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:social_django_nonce_delete
+/admin/site/social_django/nonce/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:social_django_nonce_history
+/admin/site/social_django/nonce/add/	django.contrib.admin.options.add_view	admin:social_django_nonce_add
+/admin/site/social_django/nonce/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:social_django_nonce_autocomplete
+/admin/site/social_django/usersocialauth/	django.contrib.admin.options.changelist_view	admin:social_django_usersocialauth_changelist
+/admin/site/social_django/usersocialauth/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/social_django/usersocialauth/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:social_django_usersocialauth_change
+/admin/site/social_django/usersocialauth/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:social_django_usersocialauth_delete
+/admin/site/social_django/usersocialauth/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:social_django_usersocialauth_history
+/admin/site/social_django/usersocialauth/add/	django.contrib.admin.options.add_view	admin:social_django_usersocialauth_add
+/admin/site/social_django/usersocialauth/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:social_django_usersocialauth_autocomplete
+/admin/site/users/customuser/	django.contrib.admin.options.changelist_view	admin:users_customuser_changelist
+/admin/site/users/customuser/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/users/customuser/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:users_customuser_change
+/admin/site/users/customuser/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:users_customuser_delete
+/admin/site/users/customuser/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:users_customuser_history
+/admin/site/users/customuser/add/	django.contrib.admin.options.add_view	admin:users_customuser_add
+/admin/site/users/customuser/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:users_customuser_autocomplete
+/admin/site/users/pubsubscriptionmodelaux/	django.contrib.admin.options.changelist_view	admin:users_pubsubscriptionmodelaux_changelist
+/admin/site/users/pubsubscriptionmodelaux/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/users/pubsubscriptionmodelaux/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:users_pubsubscriptionmodelaux_change
+/admin/site/users/pubsubscriptionmodelaux/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:users_pubsubscriptionmodelaux_delete
+/admin/site/users/pubsubscriptionmodelaux/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:users_pubsubscriptionmodelaux_history
+/admin/site/users/pubsubscriptionmodelaux/add/	django.contrib.admin.options.add_view	admin:users_pubsubscriptionmodelaux_add
+/admin/site/users/pubsubscriptionmodelaux/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:users_pubsubscriptionmodelaux_autocomplete
+/admin/site/users/userevents/	django.contrib.admin.options.changelist_view	admin:users_userevents_changelist
+/admin/site/users/userevents/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/users/userevents/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:users_userevents_change
+/admin/site/users/userevents/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:users_userevents_delete
+/admin/site/users/userevents/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:users_userevents_history
+/admin/site/users/userevents/add/	django.contrib.admin.options.add_view	admin:users_userevents_add
+/admin/site/users/userevents/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:users_userevents_autocomplete
+/admin/site/users/userprofile/	django.contrib.admin.options.changelist_view	admin:users_userprofile_changelist
+/admin/site/users/userprofile/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/users/userprofile/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:users_userprofile_change
+/admin/site/users/userprofile/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:users_userprofile_delete
+/admin/site/users/userprofile/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:users_userprofile_history
+/admin/site/users/userprofile/add/	django.contrib.admin.options.add_view	admin:users_userprofile_add
+/admin/site/users/userprofile/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:users_userprofile_autocomplete
+/admin/site/users/usersubscriptionmodelaux/	django.contrib.admin.options.changelist_view	admin:users_usersubscriptionmodelaux_changelist
+/admin/site/users/usersubscriptionmodelaux/<path:object_id>/	django.views.generic.base.RedirectView
+/admin/site/users/usersubscriptionmodelaux/<path:object_id>/change/	django.contrib.admin.options.change_view	admin:users_usersubscriptionmodelaux_change
+/admin/site/users/usersubscriptionmodelaux/<path:object_id>/delete/	django.contrib.admin.options.delete_view	admin:users_usersubscriptionmodelaux_delete
+/admin/site/users/usersubscriptionmodelaux/<path:object_id>/history/	django.contrib.admin.options.history_view	admin:users_usersubscriptionmodelaux_history
+/admin/site/users/usersubscriptionmodelaux/add/	django.contrib.admin.options.add_view	admin:users_usersubscriptionmodelaux_add
+/admin/site/users/usersubscriptionmodelaux/autocomplete/	django.contrib.admin.options.autocomplete_view	admin:users_usersubscriptionmodelaux_autocomplete
+/fillprofile/<uidb64>/	apps.users.views.FillProfile	fill_profile
+/fillprofile/<uidb64>/<email_verified>	apps.users.views.FillProfile	fill_profile
+/media/<path>	django.views.static.serve
+/re_email/	apps.users.views.mail_check	form_new_mail
+/re_username/	apps.users.views.username_check	form_new_username
+/signup/	apps.users.views.SignUpView	sign_up
+/social/complete/<backend>/	social_django.views.complete	social:complete
+/social/disconnect/<backend>/	social_django.views.disconnect	social:disconnect
+/social/disconnect/<backend>/<association_id>/	social_django.views.disconnect	social:disconnect_individual
+/social/login/<backend>/	social_django.views.auth	social:begin
+/success/<success>	apps.users.views.CustomLoginView	hall_s
+/terminos_privacidad/	django.views.generic.base.TemplateView	term_priv
+/test	apps.users.views.ReactV	activate
+/user/<str:username>/	apps.users.views.ListUserPerfil	user:user_profile
+/user/<str:username>/delete/<int:id>	apps.users.views.DeleteUser	user:user_delete
+/user/<str:username>/edit-account/	apps.users.views.EditUserAccount	user:edit_account
+/user/<str:username>/edit-profile/	apps.users.views.EditUserProfile	user:edit_profile
+/user/<str:username>/follow/	apps.users.views.FollowUser	user:user_follow
+/user/<str:username>/followers/	apps.users.views.ListUserFollowers	user:user_followers
+/user/<str:username>/following/	apps.users.views.ListUserFollowing	user:user_following
+/user/<str:username>/publication/<int:pk>/<int:pkchapter>/create-story	apps.publications.views.CreateStoryContinuation	user:pub:create_story_cont
+/user/<str:username>/publication/<int:pk>/create-story	apps.publications.views.CreateStoryContinuation	user:pub:create_story_cont
+/user/<str:username>/publication/chapter-content/<int:pk>	apps.publications.views.ListContentChapter	user:pub:chapter_content
+/user/<str:username>/publication/chapter/like/<int:pk>	apps.publications.views.LikeChapter	user:pub:like_chapter
+/user/<str:username>/publication/chapter/unlike/<int:pk>	apps.publications.views.UnlikeChapter	user:pub:unlike_chapter
+/user/<str:username>/publication/continuations-chapter-titles/<int:pk>	apps.publications.views.ChapterContinuationsTitle	user:pub:conts_title_chap
+/user/<str:username>/publication/continuations-chapter/<int:pk>	apps.publications.views.ChapterContinuations	user:pub:conts_chap
+/user/<str:username>/publication/continuations-titles/<int:pk>	apps.publications.views.StoryContinuationsTitle	user:pub:conts_title_st
+/user/<str:username>/publication/continuations/<int:pk>	apps.publications.views.StoryContinuations	user:pub:conts_story
+/user/<str:username>/publication/create-story	apps.publications.views.CreateStory	user:pub:create_story
+/user/<str:username>/publication/delete-chapter/<int:pk>	apps.publications.views.DeleteChapter	user:pub:delete_chapt
+/user/<str:username>/publication/delete-story/<int:pk>	apps.publications.views.DeleteStory	user:pub:delete_story
+/user/<str:username>/publication/edit-chapter/<int:pk>	apps.publications.views.EditStoryChapter	user:pub:edit_chapter
+/user/<str:username>/publication/edit-story/<int:pk>	apps.publications.views.EditStory	user:pub:edit_story
+/user/<str:username>/publication/story-content/<int:pk>	apps.publications.views.ListContentStory	user:pub:story_content
+/user/<str:username>/publication/story/	apps.publications.views.ListUserStories	user:pub:user_stories_own
+/user/<str:username>/publication/story/like/<int:pk>	apps.publications.views.LikeStory	user:pub:like_story
+/user/<str:username>/publication/story/unlike/<int:pk>	apps.publications.views.UnlikeStory	user:pub:unlike_story
+/user/<str:username>/publication/subscribe/<int:pk>	apps.publications.views.SubscribeStory	user:pub:subs_story
+/user/<str:username>/publication/unsubscribe/<int:pk>	apps.publications.views.UnsubscribeStory	user:pub:unsubs_story
+/user/<str:username>/search/<suser>	apps.users.views.SearchUser	user:user_search
+/user/<str:username>/stories-subscription/	apps.users.views.ListStoriesSubscription	user:user_stories_subscription
+/user/<str:username>/unfollow/	apps.users.views.UnfollowUser	user:user_unfollow

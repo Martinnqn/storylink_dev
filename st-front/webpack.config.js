@@ -4,8 +4,11 @@ var BundleTracker = require('webpack-bundle-tracker');
 
 module.exports = {
   context: __dirname,
-
-  entry: ['babel-polyfill', './src/js/index',],
+  //mode: 'production',
+  entry: {
+    main: ['babel-polyfill', './src/js/index'],
+    otra: '../static/publication/js/publication_display.js'
+  },
 
   output: {
       path: path.resolve('./bundles/'),
@@ -28,6 +31,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx']
+  },
+  optimization: {
+    minimize: false,
   }
 
 };

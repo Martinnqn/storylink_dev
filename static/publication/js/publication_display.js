@@ -1,8 +1,12 @@
-var isTheaterOn = false;
+window.isTheaterOn = false;
 var first_story;
+
 function showTheater() {
-    if (!isTheaterOn){
-        isTheaterOn = true;
+
+    //par mantener consistencia con react
+    $('#index-tree').removeClass('hided-menu-pub');
+    if (!window.isTheaterOn){
+        window.isTheaterOn = true;
         $("#display-pub-detail").css({
             'display': 'flex',
         });
@@ -13,7 +17,9 @@ function showTheater() {
 }
 
 function hideTheater() {
-    isTheaterOn = false;
+    window.isTheaterOn = false;
+    //par mantener consistencia con react
+    $('#index-tree').addClass('hided-menu-pub');
     $("#display-pub-detail").css({
         'opacity': '0',
     })

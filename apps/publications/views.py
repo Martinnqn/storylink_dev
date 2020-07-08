@@ -301,11 +301,6 @@ class CreateStory(LoginRequiredMixin, generic.CreateView):
         addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
 
-    def form_invalid(self, form):
-        context = dict()
-        context.update({'customuser': {'username':self.kwargs["username"]}})
-        context.update({'form':form});
-        return render(self.request, 'publications/story/create_story.html', context)
 
 #para dar de alta un chapter. Esta clase requiere detail y create view. create para obtener
 #un formulario correspondiente al StoryContinuationCreationForm, junto con su form_isvalid().
