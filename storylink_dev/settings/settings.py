@@ -11,21 +11,31 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
+
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+# reading .env file
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6-v$$swa_e8*9i4ga#37#w&c$tr5_&#cjy!d^ymf*i@s2wsct+'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.39', 'localhost', 'dev-storylink.club']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.1.39',
+                 'localhost', 'dev-storylink.club']
 
 
 # Application definition
@@ -69,7 +79,7 @@ ROOT_URLCONF = 'storylink_dev.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'static/templates')],
+        'DIRS': ['./static/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,14 +103,7 @@ WSGI_APPLICATION = 'storylink_dev.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nk_db',
-        'USER': 'nk_user',
-        'HOST': 'localhost',
-        'PASSWORD': '1234',
-        'client_encoding': 'UTF8',
-    }
+    'default': env.db()
 }
 
 
@@ -151,13 +154,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'st-front/bundles'),
+    './static',
+    './st-front/bundles',
 )
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = './media'
 
 CSRF_COOKIE_SECURE = not DEBUG
 
@@ -166,7 +169,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-#CROSS ORIGIN
+# CROSS ORIGIN
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
     'http://127.0.0.1:8000',
@@ -174,16 +177,16 @@ CORS_ORIGIN_WHITELIST = (
 )
 
 
-#WEBPACK LOADER
+# WEBPACK LOADER
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': '',
-        'STATS_FILE': os.path.join(BASE_DIR, 'st-front/webpack-stats.json'),
+        'STATS_FILE': './st-front/webpack-stats.json',
     }
 }
 
-#graphviz
+# graphviz
 GRAPH_MODELS = {
-  'all_applications': True,
-  'group_models': True,
+    'all_applications': True,
+    'group_models': True,
 }
