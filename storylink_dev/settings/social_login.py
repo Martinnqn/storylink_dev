@@ -1,3 +1,11 @@
+import environ
+
+env = environ.Env()
+
+# reading .env file
+environ.Env.read_env()
+
+
 #para inicio sesion facebook
 AUTHENTICATION_BACKENDS=(
     'social_core.backends.facebook.FacebookOAuth2',
@@ -7,8 +15,8 @@ AUTHENTICATION_BACKENDS=(
     )
 
 
-SOCIAL_AUTH_FACEBOOK_KEY = '1606554956167156'
-SOCIAL_AUTH_FACEBOOK_SECRET = '93ef55779217814620b94a889c9a5ad1'
+SOCIAL_AUTH_FACEBOOK_KEY = env('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = env('SOCIAL_AUTH_FACEBOOK_SECRET')
 
 SOCIAL_AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -71,8 +79,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 #inicio de sesion con twitter
 
-SOCIAL_AUTH_TWITTER_KEY = 'WhsrYleC9s4kq03LpNdecLvqc'
-SOCIAL_AUTH_TWITTER_SECRET = 'rLaXPg1Mr2CAQo2ZUoOivQBK3U1gYr8xxToZ3HQdMqHyFoSUCl'
+SOCIAL_AUTH_TWITTER_KEY = env('SOCIAL_AUTH_TWITTER_KEY')
+SOCIAL_AUTH_TWITTER_SECRET = env('SOCIAL_AUTH_TWITTER_SECRET')
 
 SOCIAL_AUTH_TWITTER_EXTRA_DATA = [                 # add this
     ('name', 'name'),
