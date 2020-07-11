@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  storylinkdev:
+    image: storylinkdev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000

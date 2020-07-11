@@ -18,19 +18,13 @@ from django.template.loader import render_to_string
 from .token import account_activation_token
 from django.core.mail import EmailMessage
 
+
 class ReactV(generic.TemplateView):
     template_name = 'test.html'
 
-<<<<<<< HEAD
-    def get_context_data(self, **kwargs):
-        context = super(ReactV, self).get_context_data(**kwargs)
-        return context
-
-
-#retorna el perfil del usuario
-=======
 # retorna el perfil del usuario
->>>>>>> master
+
+
 class ListUserPerfil(LoginRequiredMixin, generic.DetailView):
     model = CustomUser
     template_name = 'users/user_profile.html'
