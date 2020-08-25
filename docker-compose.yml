@@ -15,6 +15,7 @@ services:
     image: postgres:11
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+      - ./initdb/initdb.sql:/docker-entrypoint-initdb.d/init-setup.sql
     environment:
       - POSTGRES_USER=nk_user
       - POSTGRES_PASSWORD=1234

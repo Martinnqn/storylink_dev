@@ -79,7 +79,7 @@ ROOT_URLCONF = 'storylink_dev.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['./static/templates'],
+        'DIRS': ['./templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -153,14 +153,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    './static',
+STATICFILES_DIRS = [
     './st-front/bundles',
-)
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+]
+
+# collectstatic copiara los archivos de STATICFILES_DIRS en $APP_HOME/static.
+# $APP_HOME se define en el Dockerfile
+STATIC_ROOT = os.path.join(env('APP_HOME'), 'static')
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = './media'
+MEDIA_ROOT = os.path.join(env('APP_HOME'), 'media')
 
 CSRF_COOKIE_SECURE = not DEBUG
 
