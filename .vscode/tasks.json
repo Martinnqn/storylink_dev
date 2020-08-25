@@ -18,12 +18,18 @@
 			"dependsOn": [
 				"docker-build"
 			],
+			"dockerRun": {
+				"volumes": [
+					{
+						"containerPath": "/app",
+						"localPath": "${workspaceFolder}"
+					}
+				]
+			},
 			"python": {
 				"args": [
 					"runserver",
 					"0.0.0.0:8000",
-					"--nothreading",
-					"--noreload"
 				],
 				"file": "manage.py"
 			}

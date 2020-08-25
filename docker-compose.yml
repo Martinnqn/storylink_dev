@@ -6,5 +6,30 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
+  db:
+    image: postgres:11
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=nk_user
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=nk_db
+  nginx:
+    build: ./nginx
     ports:
-      - 8000
+      - 1337:80
+    depends_on:
+      - storylinkdev
+    volumes:
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

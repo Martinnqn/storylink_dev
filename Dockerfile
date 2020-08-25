@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.8-slim-buster
+FROM python:3.7
 
 EXPOSE 8000
 
@@ -19,12 +19,22 @@ RUN python -m pip install -r requirements.txt
 
 RUN apt-get autoremove -y gcc
 
-WORKDIR /app
-ADD . /app
+# create directory for the app user
+RUN mkdir -p /home/app
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
+RUN mkdir $APP_HOME/media
+WORKDIR $APP_HOME
+
+ADD . $APP_HOME
+
 
 # Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
-RUN useradd appuser && chown -R appuser /app
+RUN useradd appuser && chown -R appuser $APP_HOME
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "storylink_dev.wsgi"]
+
