@@ -32,9 +32,9 @@ ADD . $APP_HOME
 
 
 #entry point debe hacer collectstatic y ejecutar las migraciones de la db.
-ADD initDocker.sh .
-RUN ["chmod", "+x", "initDocker.sh"]
-ENTRYPOINT ["./initDocker.sh"]
+ADD init.sh .
+RUN ["chmod", "+x", "init.sh"]
+ENTRYPOINT ["./init.sh"]
 
 # Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
 RUN useradd appuser && chown -R appuser $APP_HOME
