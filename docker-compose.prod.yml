@@ -5,7 +5,7 @@ services:
     image: storylinkdev
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     depends_on:
       - db
     volumes:
