@@ -1,5 +1,5 @@
 #!/bin/sh
-#source env/bin/activate
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver 0.0.0.0:8000
+./manage.py collectstatic --noinput
+./manage.py makemigrations
+./manage.py migrate
+gunicorn --bind 0.0.0.0:8000 storylink_dev.wsgi --reload
