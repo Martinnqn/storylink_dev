@@ -13,4 +13,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker-compose -f docker-compose.test.yml up -d --tag test:$(date +%s)
+      run: docker-compose -f docker-compose.test.yml up --force-recreate -d --tag test:$(date +%s)
