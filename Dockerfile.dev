@@ -27,6 +27,9 @@ RUN mkdir $APP_HOME/media
 WORKDIR $APP_HOME
 
 #ADD . $APP_HOME
+#los statics se deben copiar porque el servicio storylinkdev tiene acceso a ellos
+#(por el volumen .:/home/app/web), pero el servicio nginx no.
+ADD ./static $APP_HOME/static
 
 #entry point debe hacer collectstatic y ejecutar las migraciones de la db.
 ADD init.dev.sh .
