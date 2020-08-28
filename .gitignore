@@ -2,3 +2,6 @@
 env/
 env/*
 /media/
+/st-front/node_modules/
+/st-front/webpack-stats-local.json
+.env
