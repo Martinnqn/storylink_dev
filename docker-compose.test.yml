@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  storylinkdev:
+    image: storylinkdev
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    depends_on:
+      - db
+    volumes:
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
+  db:
+    image: postgres:11
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./initdb/initdb.sql:/docker-entrypoint-initdb.d/init-setup.sql
+    environment: 
+      - POSTGRES_USER=nk_user
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=nk_db
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - storylinkdev
+    volumes:
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

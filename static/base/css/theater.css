@@ -31,6 +31,15 @@ to {
     position: fixed;
     background: black;
     font-family: sans-serif, sans-serif, "Sans-Pro-Regular","Helvetica Neue",Helvetica,Arial;
+    color: white;
+}
+
+#index-tree {
+    position: fixed;
+    background: black;
+    max-height: 100vh;
+    max-width: 100vh;
+    overflow: scroll;
 }
 
 .publication-node {

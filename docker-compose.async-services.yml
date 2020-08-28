@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+    #celery from https://github.com/chrisk314/django-celery-docker-example
+    celery:
+        command: sh "celery -A storylink_dev worker -l info"
+        depends_on:
+        - rabbitmq
+        entrypoint: ""
+        image: storylinkdev
+        restart: on-failure
+
+    rabbitmq:
+        image: rabbitmq:3.8.7
+        ports:
+        - "5672:5672"
+        restart: on-failure

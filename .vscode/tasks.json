@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "docker-run",
+			"label": "docker-run: debug",
+			"dependsOn": [
+				"docker-build"
+			],
+			"dockerRun": {
+				"volumes": [
+					{
+						"containerPath": "/home/app/web",
+						"localPath": "${workspaceFolder}"
+					}
+				]
+			},
+			"python": {
+				"args": [
+					"runserver",
+					"0.0.0.0:8000",
+				],
+				"file": "manage.py"
+			}
+		}
+	]
+}

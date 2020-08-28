@@ -1,0 +1,159 @@
+{%comment%}
+Theater mode para mostrar publicacion y continuaciones
+{%endcomment%}
+{%load static%}
+<div class="container">
+  <div id="display-pub-detail" class="">
+    <nav id="theater-header" class="sticky-top container-fluid">
+      <div class="container">
+        <div class="row justify-content-between">
+          <div id="tree-react"></div>
+        <a id="open-menu-pub" class="btn-menu-pub" href="javascript: void(0)" onclick="showMenuPub()">
+          <span class="material-icons">description</span>
+        </a>
+        <a id="unsubscribe-story" class="btn-custom-1" href="javascript: void(0)">
+          Desuscribirse 
+        </a>
+        <a id="subscribe-story" class="btn-custom-2" href="javascript: void(0)">
+          Suscribirse
+        </a>
+        <a class="btn-close" href="javascript: void(0)" onclick="hideTheater()">
+          Cerrar visor <span class="material-icons">settings_backup_restore</span>
+        </a>
+        <div id="menu-pub" class="container hided-menu-pub">
+          <div class="content-menu-pub">
+            <a id="close-menu-pub" class="" href="javascript: void(0)" onclick="hideMenuPub()">
+              <span class="material-icons">highlight_off</span>
+            </a>
+            <h3 id="title-pub-detail" class="title-pub-detail"></h3>
+            <div class="container pub-data-init">
+              <div class="row">
+                <div class="col-sm-4 data-autor">
+                  Autor inicial: 
+                  <a href="" id="name-autor-init"></a>
+                </div>
+                <div class="col-sm-8">
+                  <div id="header-image" class="header-image"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <div class="container clearfix" id="theater-main">
+        <div class="theater-view" id="theater-view-template">
+          <div class="container publication-node">
+            <div class="row justify-content-between limit-publication">
+              <div class="content-card col-12 col-lg-8">
+                <div class="content-pub">
+                  <div class="publication-container">
+                    <div class="publication-header d-flex justify-content-between">
+                      <a id="link-autor-profile" href=""><img src="" id="img-owner" class="img-autor-mini" alt=""></a>
+                      <div class="dropdown" id="card-options-owner">
+                        <button class="dropbtn"><span class="material-icons">settings_applications</span></button>
+                        <div class="dropdown-content" style="right: 0;left: initial;">
+                          <a id="btn-delete" class='btn-delete'>Eliminar</a>
+                          <a id="btn-edit" class='btn-edit'>Editar</a>
+                        </div>
+                      </div>              
+                    </div>  
+                    <h3 id="answer-chapter" class="title-theater-view"></h3>
+                    <div class="body-publication">
+                      <div id="publication-content" class="publication-content"></div>
+                    </div>
+                    <div class="card-options">
+                      <div class="like">
+                        <span id="cant-likes" class="cant-likes"></span>
+                        <a id="like-pub" class="btn-like" href="javascript: void(0)">
+                          Me gusta 
+                          <span class="material-icons">thumb_up</span>
+                        </a>
+                        <a id="unlike-pub" class="btn-liked" href="javascript: void(0)">
+                          Me gusta 
+                          <span class="material-icons">thumb_up</span>
+                        </a>
+                      </div>
+                      <a href="javascript: void(0)" class="btn-custom-2" data-toggle="modal" data-target="#story-read-mode" id="btn-read-mode">
+                        Leer
+                      </a>
+                    </div>
+                    <div class="container tags" id="tags">
+                      <div class="tags-story"></div>
+                    </div>
+                  </div>
+                </div>
+                <div id="displacement-menu" class="displacement-menu">
+                  <a id="first-story" class="scroll-smooth-left" href="javascript: void(0)">
+                    Ir al comienzo
+                  </a>
+                  <a class="btn-previous scroll-smooth-left" id="pre-story" href="javascript: void(0)">
+                    Storylink Anterior
+                  </a>
+                </div>
+              </div>
+              {%block mini-preview%}
+              <div class="col-12 col-lg-4 content-previews">
+                <h3 class="title-center">Continuaciones</h3>
+                <div id="scroll-previews" class="scroll-previews-container">
+                </div>
+                <div class="container">
+                  <div class="row create-continuation">
+                    <a class="btn-custom-2" href="#" id="btn-create-continuation">
+                      Continuar Storylink <span class="material-icons">rate_review</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              {% endblock %} 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%block modal-read-mode%}
+{% include "publications/story/read_story_modal.html" %}
+{% endblock %}
+
+{%block modal-delete-story%}
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="modal-delete">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modal-delete-title">¿Eliminar Storylink?</h4>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-sm-8">
+            <ul>
+              <p>¿Confirma que desea eliminar la storylink?</p>
+              <li>
+                Tenga en cuenta que esta acción no se puede deshacer.
+              </li>
+              <li>
+                Si encontró un error o desea actualizar el contenido, pruebe la opción <a id="redirect-edit" href="">modificar storylink</a>.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" id="modal-btn-si">Eliminar</button>
+        <button type="button" class="btn btn-primary" id="modal-btn-no">Cancelar</button>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <small>Si la publicación tiene continuaciones, aún podrá ser accedida, pero su contenido no será visible.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

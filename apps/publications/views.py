@@ -301,11 +301,6 @@ class CreateStory(LoginRequiredMixin, generic.CreateView):
         addTags(form.cleaned_data.get('tag').split(), story)
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': self.request.user.username}))
 
-    def form_invalid(self, form):
-        context = dict()
-        context.update({'customuser': {'username':self.kwargs["username"]}})
-        context.update({'form':form});
-        return render(self.request, 'publications/story/create_story.html', context)
 
 #para dar de alta un chapter. Esta clase requiere detail y create view. create para obtener
 #un formulario correspondiente al StoryContinuationCreationForm, junto con su form_isvalid().
@@ -456,58 +451,33 @@ class ListStories(LoginRequiredMixin, FormMixin, generic.ListView):
         return self.render_to_response(context)
 
 
-#RESOURCES
+#API DESDE ACA
 
-#listar los resources creados por un usuario
-class ListUserResources(LoginRequiredMixin, generic.DetailView):
-    template_name = 'publications/resource/resource_list.html'
-    paginate_by = 10
-
-    def get_context_data(self, **kwargs):
-        context = super(ListUserResources, self).get_context_data(**kwargs)
-        context.update({'customuser': {'username':self.kwargs["username"]}})
-        return context
-
-#listar el contenido de un resource
-class JSONContentResource(LoginRequiredMixin, generic.DetailView):
-    def get(self, request, username, pk):
-        resource = get_object_or_404(ResourcePublication, id=pk, active=True)
-        data =  dict()
-        data['content_pub'] = model_to_dict(resource, exclude=['tag'])
-        data['content_pub'].update({'own_username': resource.own_user.user.username})
-        data['content_pub'].update({'own_user': resource.own_user.id})
-        tags = []
-        for x in resource.tag.all():
-            tags.append(x.tag)
-        data['content_pub'].update({'tags': tags})
-        return JsonResponse(data)
-
-
-#Editar resource.
-class EditResource(ListUserPerfil, generic.edit.UpdateView):
-    model = ResourcePublication
-    form_class = ResourceEditForm
-    template_name = 'publications/resource/edit_resource.html'
-
-    def get_query_set(self):
-        qs1 = ResourcePublication.objects.filter(active=True, id=self.kwargs.get('pk'))
-        return qs1
-
-    def get_success_url(self):
-        pubid=self.kwargs['pk']
-        username=self.kwargs['username']
-        return reverse_lazy('user:pub:user_resources_own', kwargs={'username': username})
-
-
-#para dar de alta un resource
-class CreateResource(ListUserPerfil, generic.CreateView):
-    form_class = ResourceCreationForm
-    template_name = 'publications/resource/create_resource.html'
-
-    def form_valid(self, form):
-        res = form.save(commit=False)
-        res.own_user = self.request.user
-        res.user_name = self.request.user.first_name
-        res.user_lastname = self.request.user.last_name
-        form.save()
-        return redirect(reverse_lazy('user:pub:user_resources_own', kwargs={'username': self.request.user.username}))
+class StoryContinuationsTitle(LoginRequiredMixin, View):
+    model = StoryChapter
+    
+    def get(self, *args, **kwargs):
+        if (self.request.is_ajax()):
+            conts = self.model.objects.story_continuations(self.kwargs["pk"], self.request.user)
+            data = {'childs':[]}
+            for c in conts:
+                data['childs']+=[{'pubId': c.id, 'title': c.quest_answ}]
+            return JsonResponse(data)
+        else:
+            raise Http404()
+            
+        
+class ChapterContinuationsTitle(LoginRequiredMixin, generic.DetailView):
+    model = StoryChapter
+    
+    def get(self, *args, **kwargs):
+        if (self.request.is_ajax()):
+            conts = self.model.objects.chapter_continuations(self.kwargs["pk"], self.request.user)
+            data = {'childs':[]}
+            for c in conts:
+                data['childs']+=[{'pubId': c.id, 'title': c.quest_answ}]
+            return JsonResponse(data)
+        else:
+            raise Http404()
+            
+        

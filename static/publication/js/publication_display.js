@@ -1,8 +1,12 @@
-var isTheaterOn = false;
+window.isTheaterOn = false;
 var first_story;
+
 function showTheater() {
-    if (!isTheaterOn){
-        isTheaterOn = true;
+
+    //par mantener consistencia con react
+    $('#index-tree').removeClass('hided-menu-pub');
+    if (!window.isTheaterOn){
+        window.isTheaterOn = true;
         $("#display-pub-detail").css({
             'display': 'flex',
         });
@@ -13,7 +17,9 @@ function showTheater() {
 }
 
 function hideTheater() {
-    isTheaterOn = false;
+    window.isTheaterOn = false;
+    //par mantener consistencia con react
+    $('#index-tree').addClass('hided-menu-pub');
     $("#display-pub-detail").css({
         'opacity': '0',
     })
@@ -341,6 +347,9 @@ function loadTheater(cont, user_id, url, typePubli, idParent, position) {
         }
     }
     $("#publication-content_"+pubid).html(cont.text_content);
+
+    $("#view-tree-story").attr('data-pubid', cont.id.replace(typePubli+'_',''));
+    $("#view-tree-story").attr('data-username', cont.own_username);
 
     if ((typePubli == 'story' && cont.own_user != user_id) || (typePubli == 'chapter' && cont.own_first_story != user_id)){
         $("#unsubscribe-story").attr('onclick', `subUnsubToStory('`+cont.url_unsubscribe+`')`);
