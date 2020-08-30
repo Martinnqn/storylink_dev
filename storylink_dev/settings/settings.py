@@ -19,7 +19,7 @@ env = environ.Env(
 )
 
 # reading .env file
-if (not os.environ.get('TEST_CI')):
+if (not os.environ.get('CI')):
     environ.Env.read_env()
 
 
