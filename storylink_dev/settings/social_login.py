@@ -1,14 +1,10 @@
+import os
 import environ
 
 env = environ.Env()
 
-env = environ.Env(
-    # set casting, default value
-    TEST_CI=(bool, False),
-)
-
 # reading .env file
-if (not env('TEST_CI')):
+if (not os.environ.get('TEST_CI')):
     environ.Env.read_env()
 
 
