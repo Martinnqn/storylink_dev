@@ -5,6 +5,6 @@ echo 'terminaa'
 #coverage report
 coverage erase
 echo 'borra'
-#chmod -R +rwx /home/app/web/coverage_report/
+chmod -R +rwx /home/app/web/coverage_report/
 echo 'permisos'
 coverage xml -o /home/app/web/coverage_report/coverage.xml
