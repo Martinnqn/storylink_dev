@@ -3,4 +3,3 @@
 coverage run manage.py test
 #coverage report
 coverage xml -o ./coverage_report/coverage.xml
-chmod +rwx ./coverage_report/coverage.xml
