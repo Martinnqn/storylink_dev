@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: satackey/action-docker-layer-caching@v0.0.8
-      continue-on-error: true
     - name: Build the Docker image
       run: docker-compose -f docker-compose.test.yml build
     - name: Run Docker image
@@ -34,11 +32,5 @@ jobs:
         EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
         CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        file: ./coverage/coverage.xml
-        flags: unittests
-        env_vars: OS,PYTHON
-        name: codecov-storylink
-        fail_ci_if_error: true
+      run: curl -s https://codecov.io/bash > codecov.sh && \
+          bash codecov.sh -t ${{ secrets.CODECOV_TOKEN }}
