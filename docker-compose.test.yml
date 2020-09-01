@@ -15,6 +15,7 @@ services:
     environment: 
       - CI
       - DEBUG
+      - CODECOV_TOKEN
       - SECRET_KEY
       - DATABASE_URL
       - SOCIAL_AUTH_FACEBOOK_KEY

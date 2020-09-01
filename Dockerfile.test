@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y libpq-dev gcc
 # Install pip requirements
 ADD requirements.txt .
 RUN python -m pip install -r requirements.txt
-
+RUN python pip install coverage
 RUN apt-get autoremove -y gcc
 
 # create directory for the app user

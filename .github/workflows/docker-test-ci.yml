@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: CI
 
 on:
   push:
@@ -18,6 +18,7 @@ jobs:
       run: docker-compose -f docker-compose.test.yml run --no-deps --rm storylinkdev --tag test:$(date +%s)
       env: 
         DEBUG: ${{ secrets.DEBUG }}
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         SOCIAL_AUTH_FACEBOOK_KEY: ${{ secrets.SOCIAL_AUTH_FACEBOOK_KEY }}
@@ -30,3 +31,15 @@ jobs:
         EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
         EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
         CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        files: ./coverage1.xml,./coverage2.xml
+        directory: ./coverage/reports/
+        flags: unittests
+        env_vars: OS,PYTHON
+        name: codecov-storylink
+        fail_ci_if_error: true
+        path_to_write_report: ./coverage/codecov_report.gz
