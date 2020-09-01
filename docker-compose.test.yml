@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   storylinkdev:
+    container_name: storylinkdev
     image: storylinkdev
     build:
       context: .
@@ -9,6 +10,7 @@ services:
     depends_on:
       - db
     volumes:
+      - ./coverage/:/home/app/web/coverage_report
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
     #command: bash -c "/home/app/web/wait-for-it.sh --timeout=0 db:5432 && /home/app/web/init.test.sh"
