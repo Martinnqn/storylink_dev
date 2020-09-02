@@ -1,5 +1,6 @@
 #!/bin/sh
 #coverage xml -o /home/app/web/coverage_report/coverage.xml
+echo $CI
 if [ ! -z $CI]
 then
 coverage run manage.py test apps/users/

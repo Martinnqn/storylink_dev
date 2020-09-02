@@ -17,6 +17,7 @@ jobs:
     - name: Run Docker image
       run: docker-compose -f docker-compose.test.yml run -v /github/home/:/home/app/web/coverage_report --rm storylinkdev --tag test:$(date +%s)
       env: 
+        CI: ${{ env.CI }}
         DEBUG: ${{ secrets.DEBUG }}
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
