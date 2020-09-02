@@ -34,7 +34,10 @@ jobs:
         EMAIL_PORT: ${{ secrets.EMAIL_PORT }}
         CELERY_BROKER_URL: ${{ secrets.CELERY_BROKER_URL }}
     - name: dirrrr22
-      run: ls
+      run: pwd
+    - name: Copy files
+      run: |
+        cp -r /home/runner/work/_temp/_github_home/ pwd
     - name: Upload coverage to Codecov
       run: curl -s https://codecov.io/bash > codecov.sh && \
-          sh codecov.sh -t ${{ secrets.CODECOV_TOKEN }}
+          ./codecov.sh -t ${{ secrets.CODECOV_TOKEN }}
