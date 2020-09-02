@@ -1,9 +1,11 @@
+import os
 import environ
 
 env = environ.Env()
 
 # reading .env file
-environ.Env.read_env()
+if (not os.environ.get('CI')):
+    environ.Env.read_env()
 
 # configuracion correo
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

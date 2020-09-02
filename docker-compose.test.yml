@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   storylinkdev:
+    container_name: storylinkdev
     image: storylinkdev
     build:
       context: .
@@ -11,6 +12,23 @@ services:
     volumes:
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
+    #command: bash -c "/home/app/web/wait-for-it.sh --timeout=0 db:5432 && /home/app/web/init.test.sh"
+    environment: 
+      - CI
+      - DEBUG
+      - CODECOV_TOKEN
+      - SECRET_KEY
+      - DATABASE_URL
+      - SOCIAL_AUTH_FACEBOOK_KEY
+      - SOCIAL_AUTH_FACEBOOK_SECRET
+      - SOCIAL_AUTH_TWITTER_KEY
+      - SOCIAL_AUTH_TWITTER_SECRET
+      - EMAIL_HOST
+      - EMAIL_HOST_USER
+      - DEFAULT_FROM_EMAIL
+      - EMAIL_HOST_PASSWORD
+      - EMAIL_PORT
+      - CELERY_BROKER_URL
   db:
     image: postgres:11
     volumes:

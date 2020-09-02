@@ -1,4 +1,4 @@
-#!/home/martin/Escritorio/storylink_dev/env/bin/python3.7
+#!/home/martin/Escritorio/storylink_dev/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
