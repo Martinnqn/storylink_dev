@@ -1,6 +1,4 @@
 #!/bin/sh
-echo "initv"
-pwd
 ./manage.py collectstatic --noinput
 ./manage.py makemigrations
 ./manage.py migrate
