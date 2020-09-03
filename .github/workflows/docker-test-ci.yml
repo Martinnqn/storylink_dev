@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ master, react_webp_redux, dockerizando ]
+    branches: [ master, dockerizando ]
   pull_request:
     branches: [ master ]
 
