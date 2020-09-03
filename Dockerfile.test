@@ -32,7 +32,6 @@ WORKDIR $APP_HOME
 
 ADD . $APP_HOME
 
-
 #entry point debe hacer collectstatic y ejecutar las migraciones de la db.
 COPY init.test.sh .
 #COPY wait-for-it.sh .
