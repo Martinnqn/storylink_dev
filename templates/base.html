@@ -2,47 +2,51 @@
 {% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>{% block title-page %}S{% endblock %}</title>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-162832086-1"></script>
-    
+
     <link rel="stylesheet" href="{% static 'bootstrap-4.3.1-dist/css/bootstrap.min.css' %}">
     <!-- Required meta tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Material icons -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'base/css/theater.css' %}">
     <link rel="stylesheet" href="{% static 'base/css/custom.css' %}">
-    <link rel="icon"  type="image/png" href="{% static 'imgs/story_minim.png' %}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{% static 'imgs/story_minim.png' %}" sizes="32x32">
     {% block head-page %}{% endblock %}
     <script>
-    {% if user.is_authenticated %}
-    js_user_id = {{user.profile.get.id}};
-    {%endif%}
+        {% if user.is_authenticated %}
+        js_user_id = {{ user.profile.get.id }};
+        {% endif %}
     </script>
     <!-- Facebook Pixel Code -->
     <noscript><img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=2674235692866237&ev=PageView&noscript=1"/></noscript>
+            src="https://www.facebook.com/tr?id=2674235692866237&ev=PageView&noscript=1" /></noscript>
     <!-- End Facebook Pixel Code -->
 </head>
+
 <body>
     <div id="page-container">
         {%block primary-navbar%}
         <div id="header-base" class="sticky-top">
             <small style="color:white; margin:auto;">Beta</small>
-            <!-- navBar primario -->   
+            <!-- navBar primario -->
             <div class="container">
                 <nav id="primary-navbar" class="navbar navbar-expand-lg navbar-dark">
                     <!-- Brand -->
-                    <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}" alt="Story Link logo"></a>
+                    <a class="navbar-brand" href="/"><img id="logo" src="{% static 'imgs/ostorylink_blank.png' %}"
+                            alt="Story Link logo"></a>
                     <!-- Collapse button -->
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbarPrimary">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#collapsibleNavbarPrimary">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <!-- Links -->            
+                    <!-- Links -->
                     {% if user.is_authenticated %}
                     <div class="collapse navbar-collapse" id="collapsibleNavbarPrimary">
                         <form id="form-search" class="form-inline" action="">
@@ -50,57 +54,66 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="material-icons">search</i></span>
                                 </div>
-                                <input id="input-search" autocomplete="off" onkeyup="searchUser('{% url 'user:user_profile' user.username %}')" onfocus="searchUser('{% url 'user:user_profile' user.username %}')" type="text" class="form-control" placeholder="Nombre de usuario">
-                            <div id="users-found"></div>
+                                <input id="input-search" autocomplete="off"
+                                    onkeyup="searchUser('{% url 'user:user_profile' user.username %}')"
+                                    onfocus="searchUser('{% url 'user:user_profile' user.username %}')" type="text"
+                                    class="form-control" placeholder="Nombre de usuario">
+                                <div id="users-found"></div>
                             </div>
                         </form>
                         <a class="nav-link nav-hall" href="/">Hall</a>
-                    </div>  
+                    </div>
                     {%endif%}
                     <div id="login-div">
                         {% if user.is_authenticated %}
-                                <a href="{%url 'user:user_profile' user.username %}">
-                                    <img class="nav-img-perfil" src="{{ user.profile.get.link_img_perfil.url }}" alt="img perfil">
-                                    {{user.username}}
-                                </a>
-                                <div class="dropdown">
-                                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  </button>
-                                  <div class="dropdown-menu" style="right: 0;left: initial;" aria-labelledby="dropdownMenuLink">
-                                   <a href="{% url 'user:edit_account' user.username %}">Configuración</a>
-                                   <div class="dropdown-divider"></div>
-                                   <a href="{% url 'logout' %}">Cerrar sesión</a>
-                                  </div>
-                                </div>
+                        <a href="{%url 'user:user_profile' user.username %}">
+                            <img class="nav-img-perfil" src="{{ user.profile.get.link_img_perfil.url }}"
+                                alt="img perfil">
+                            {{user.username}}
+                        </a>
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu" style="right: 0;left: initial;"
+                                aria-labelledby="dropdownMenuLink">
+                                <a href="{% url 'user:edit_account' user.username %}">Configuración</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="{% url 'logout' %}">Cerrar sesión</a>
+                            </div>
+                        </div>
                         {% else %}
-                                <a class="" href="{% url 'sign_up' %}">Registrarse</a>
-                                <a class="" href="{% url 'login' %}">Iniciar Sesión</a>
+                        <a class="" href="{% url 'sign_up' %}">Registrarse</a>
+                        <a class="" href="{% url 'login' %}">Iniciar Sesión</a>
                         {% endif %}
                     </div>
-                </nav> 
+                </nav>
             </div>
         </div>
-        {%endblock%} <!--primary-navbar-->
+        {%endblock%}
+        <!--primary-navbar-->
 
         <div id="base-div">
             {% block main-content%}
 
-            {%endblock%} <!--main-content -->
+            {%endblock%}
+            <!--main-content -->
             {% block display-pub-detail %}
             {% include "publications/story/theater_mode.html" %}
             {% endblock %}
         </div>
         {% include "modal_alert.html" %}
     </div>
-        
+
     <footer id="footer">
         <div class="container d-flex">
-        <img id="storylink-pin" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
-        <ul id="data-contact">
-            <li>Contacto: storylink@hotmail.com</li>
-        </ul>
+            <img id="storylink-pin" src="{% static 'imgs/storylink_ulti_opt.svg' %}" alt="Storylink logo">
+            <ul id="data-contact">
+                <li>Contacto: storylink@hotmail.com</li>
+            </ul>
         </div>
-        <p style="text-align: center"><small>Este sitio está en Beta, estamos trabajando continuamente para mejorarlo.</small></p>
+        <p style="text-align: center"><small>Este sitio está en Beta, estamos trabajando continuamente para
+                mejorarlo.</small></p>
     </footer>
     <script src="{% static 'base/js/jquery-3.5.1.min.js' %}"></script>
     <script src="{% static 'base/js/popper.min.js' %}"></script>
@@ -108,22 +121,23 @@
     <!-- Smooth Scroll to Link -->
     <script src="{% static 'publication/js/scroll_smooth.js' %}"></script>
     <script src="{% static 'base/js/base.js' %}"></script>
-    
+
     {% block extra-script%}
 
-    {%endblock%} <!--extras scripts -->
-    {% render_bundle 'main' %}
+    {%endblock%}
+    <!--extras scripts -->
 
     <div class="cookies">
         <div class="container">
-        <h4 class="cookies__titulo">Aceptar Cookies?</h4> 
-        <p class="cookies__texto">Usamos cookies para mejorar tu experiencia en la web.</p>
+            <h4 class="cookies__titulo">Aceptar Cookies?</h4>
+            <p class="cookies__texto">Usamos cookies para mejorar tu experiencia en la web.</p>
         </div>
         <div class="container d-flex justify-content-around">
             <a href="javascript: void(0)" class="cookies__boton cookies__boton--no">Declinar</a>
             <a href="javascript: void(0)" class="cookies__boton cookies__boton--si">Aceptar</a>
         </div>
-    </div> 
-    
+    </div>
+
 </body>
+
 </html>
