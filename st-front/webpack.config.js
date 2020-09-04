@@ -7,18 +7,17 @@ module.exports = {
   //mode: 'production',
   entry: {
     main: ['babel-polyfill', './src/js/index'],
-    otra: '../static/publication/js/publication_display.js'
   },
 
   output: {
-      path: path.resolve('./bundles/'),
-      //filename: "[name]-[hash].js",
-      filename: "[name].js",
-      publicPath: '/static/', //path relativo donde se sirven los archivos estaticos (127.0.0.1:8000/static/)
+    path: path.resolve('./bundles/'),
+    //filename: "[name]-[hash].js",
+    filename: "[name].js",
+    publicPath: '/static/', //path relativo donde se sirven los archivos estaticos (127.0.0.1:8000/static/)
   },
 
   plugins: [
-    new BundleTracker({filename: './webpack-stats.json'}),
+    new BundleTracker({ filename: './webpack-stats.json' }),
   ],
   module: {
     rules: [

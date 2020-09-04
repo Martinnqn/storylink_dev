@@ -8,7 +8,6 @@ const StoryTreeMain = () => {
   const [title, setTitle] = useState('')
   const [isShowed, setIsShowed] = useState(false)
 
-
   const show = () => {
     setIsShowed(true);
     const data = document.getElementById('view-tree-story').dataset;
