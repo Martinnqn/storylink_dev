@@ -4,6 +4,28 @@
 /st-front/bundles/
 /st-front/node_modules/
 /st-front/webpack-stats-local.json
+# dependencies
+/storylink_front/node_modules
+/storylink_front/.pnp
+/storylink_front/.pnp.js
+
+# testing
+/storylink_front/coverage
+
+# production
+/storylink_front/build
+
+# misc
+/storylink_front/.DS_Store
+/storylink_front/.env.local
+/storylink_front/.env.development.local
+/storylink_front/.env.test.local
+/storylink_front/.env.production.local
+
+/storylink_front/npm-debug.log*
+/storylink_front/yarn-debug.log*
+/storylink_front/yarn-error.log*
+
 
 # Python.gitignore from https://github.com/github/gitignore
 
