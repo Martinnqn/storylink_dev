@@ -14,16 +14,6 @@ services:
       - media_volume:/home/app/web/media
     command: bash -c "/home/app/web/wait-for-it.sh --timeout=0 db:5432 && /home/app/web/init.dev.sh"
     
-  storylinkdev_front:
-    image: storylinkdev_front
-    build:
-      context: .
-      dockerfile: Dockerfile.dev.front
-    volumes:
-      - ./st-front:/usr/src/app
-    ports:
-      - 8080:8080
-
   db:
     image: postgres:11
     volumes:
