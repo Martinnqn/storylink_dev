@@ -3,6 +3,7 @@
 /media/
 /st-front/node_modules/
 /st-front/webpack-stats-local.json
+/st-front/webpack-stats.json
 
 # Python.gitignore from https://github.com/github/gitignore
 
