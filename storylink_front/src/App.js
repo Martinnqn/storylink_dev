@@ -1,18 +1,28 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import MenuResponsive from './components/menuResponsive'
+import ResponsiveContainer from './components/ContainerResponsive'
 function App() {
 
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <MenuResponsive >
-        </MenuResponsive>
+    <>
+      <ResponsiveContainer >
         <img src={logo} className="App-logo" alt="logo" />
-      </header>
-    </div>
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />
+      </ResponsiveContainer>
+    </>
   );
 }
 
