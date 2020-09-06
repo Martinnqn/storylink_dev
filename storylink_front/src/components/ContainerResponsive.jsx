@@ -39,29 +39,9 @@ const ResponsiveContainer = ({ children }) => (
 
 const DesktopContainer = ({ children }) => {
 
-    const [calculations, setCalculations] = useState({
-        direction: 'up',
-        height: 0,
-        width: 0,
-        topPassed: false,
-        bottomPassed: false,
-        pixelsPassed: 0,
-        percentagePassed: 0,
-        topVisible: false,
-        bottomVisible: false,
-        fits: false,
-        passing: false,
-        onScreen: false,
-        offScreen: false,
-    });
-
-    const updateCalculations = (e, { calculations }) => {
-        setCalculations(calculations);
-    }
-
     return (
         <Media greaterThan='mobile'>
-            <DesktopMenu direction={calculations.direction} updateCalculations={updateCalculations} />
+            <DesktopMenu />
             {children}
         </Media>
     )
@@ -79,7 +59,9 @@ const MobileContainer = ({ children }) => {
             <SidebarMobile handleSidebarHide={handleSidebarHide} sidebarOpened={sidebarOpened}></SidebarMobile>
 
             <Sidebar.Pusher dimmed={sidebarOpened}>
-                <MobileMenu handleToggle={handleToggle} />
+                <MobileMenu
+                    handleToggle={handleToggle}
+                />
                 {children}
             </Sidebar.Pusher>
         </Media >
