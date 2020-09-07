@@ -1,18 +1,24 @@
 import React, { useState } from 'react'
-import logo from '../assets/story_minim.svg'
+import Logo from '../assets/story_minim.svg'
+import LogoCompleto from '../assets/ostorylink_blank.png'
 import SearchUser from './SearchUser'
 import imgUser from '../assets/img1.png'
 import {
+    Button,
     Container,
+    Dropdown,
+    Grid,
+    Header,
     Icon,
+    Image,
     Item,
     Menu,
+    Popup,
+    Radio,
     Sidebar,
-    Dropdown,
-    Image,
-    Visibility,
-    Transition,
     Sticky,
+    Transition,
+    Visibility,
 } from 'semantic-ui-react'
 
 import {
@@ -46,36 +52,50 @@ const DesktopMenu = () => {
         <Visibility onUpdate={updateCalculations}>
             <Transition visible={calculations.direction === "up"} animation='slide down' duration={300}>
                 <Menu fixed='top' inverted>
-                    <Container>
+                    <Container style={{ height: 60 }} >
                         <Menu.Menu position='left'>
-                            <Menu.Item as={Link} to='/home'>
-                                <Image size='mini' src={logo} />
+                            <Menu.Item as={Link} to='/'>
+                                <Image size='mini' src={Logo} />
                             </Menu.Item>
                             <Menu.Item>
                                 <SearchUser at='desktop'></SearchUser>
                             </Menu.Item>
                         </Menu.Menu>
-                        <Menu.Item as={Link} to='/'>Home</Menu.Item>
+                        <Menu.Menu icon='labeled'>
+                            <Menu.Item as={Link} to='/'>
+                                <Icon name='home' size='big' />
+                            </Menu.Item>
+                        </Menu.Menu>
                         <Menu.Menu position='right'>
                             <Menu.Item as={Link} to='/user/Username'>
-                                <Item.Header>Username</Item.Header>
                                 <Item.Image size='mini' src={imgUser} />
+                                <Item.Header>Username</Item.Header>
                             </Menu.Item>
-                            <Dropdown item simple icon='settings' text='Configuracion'>
+                            <Dropdown item icon='plus' text=''>
                                 <Dropdown.Menu>
-                                    <Dropdown.Item>List Item</Dropdown.Item>
-                                    <Dropdown.Item>List Item</Dropdown.Item>
+                                    <Dropdown.Header>Crear</Dropdown.Header>
+                                    <Menu.Item as={Link} to='/'>
+                                        <Icon name='sitemap' size='big' />
+                                        Storylink
+                                    </Menu.Item>
                                     <Dropdown.Divider />
-                                    <Dropdown.Header>Header Item</Dropdown.Header>
+                                    <Menu.Item as={Link} to='/'>
+                                        <Icon name='group' size='big' />
+                                        Grupo
+                                    </Menu.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                            <Dropdown item simple icon='caret down' text=''>
+                                <Dropdown.Menu>
+                                    <Dropdown.Header>Configuración</Dropdown.Header>
+                                    <Dropdown.Item>Perfil</Dropdown.Item>
+                                    <Dropdown.Item>General</Dropdown.Item>
+                                    <Dropdown.Divider />
                                     <Dropdown.Item>
-                                        <i className='dropdown icon' />
-                                        <span className='text'>Submenu</span>
-                                        <Dropdown.Menu>
-                                            <Dropdown.Item>List Item</Dropdown.Item>
-                                            <Dropdown.Item>List Item</Dropdown.Item>
-                                        </Dropdown.Menu>
+                                        <Radio toggle label='Modo oscuro' />
                                     </Dropdown.Item>
-                                    <Dropdown.Item>List Item</Dropdown.Item>
+                                    <Dropdown.Divider />
+                                    <Dropdown.Item>Cerrar sesión</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Menu.Menu>
@@ -87,13 +107,38 @@ const DesktopMenu = () => {
 }
 
 const MobileMenu = () => {
+
+    const handleItemPlus = () => {
+
+    }
+
     return (
         <Sticky>
             <Menu fixed='bottom' inverted widths={4}>
-
                 <Menu.Item as={Link} to='/settings'>
                     <Icon name='sidebar' size='large' />
                 </Menu.Item>
+                <Popup trigger={<Menu.Item ><Icon name='plus' size='large' />
+                </Menu.Item>}
+                    flowing hoverable offset='0, 25px' position='top center'>
+                    <Header>Crear</Header>
+                    <Grid centered divided columns={2} relaxed>
+                        <Grid.Column textAlign='center'>
+                            <Menu.Item as={Link} to='/'>
+                                <Icon name='sitemap' size='big' />
+                                <br />
+                                Storylink
+                            </Menu.Item>
+                        </Grid.Column>
+                        <Grid.Column textAlign='center'>
+                            <Menu.Item as={Link} to='/' >
+                                <Icon name='group' size='big' />
+                                <br />
+                                Grupo
+                            </Menu.Item>
+                        </Grid.Column>
+                    </Grid>
+                </Popup>
                 <Menu.Item as={Link} to='/'>
                     <Icon name='home' size='large' />
                 </Menu.Item>
@@ -134,7 +179,7 @@ const TopBarMobile = () => {
                 <Menu fixed='top' inverted>
                     <Menu.Menu>
                         <Menu.Item as='a' header>
-                            <Image size='mini' src={logo} />
+                            <Image size='small' src={LogoCompleto} />
                         </Menu.Item>
                         <Menu.Item as='a'>
                             <SearchUser />

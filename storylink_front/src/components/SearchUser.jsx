@@ -11,7 +11,7 @@ const SearchUser = ({ at }) => {
 
     return (
         <Menu.Item >
-            <Input icon='search' iconPosition='left' placeholder='Buscar...' loading={loading} />
+            <Input icon='search' iconPosition='left' placeholder='Buscar en Storylink' loading={loading} />
         </Menu.Item>
     )
 }

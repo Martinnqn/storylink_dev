@@ -16,8 +16,8 @@ const { MediaContextProvider, Media } = createMedia({
 
 const ResponsiveMenu = () => (
     <MediaContextProvider>
-        <DesktopContainer></DesktopContainer>
-        <MobileContainer></MobileContainer>
+        <DesktopContainer />
+        <MobileContainer />
     </MediaContextProvider>
 )
 
