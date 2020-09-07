@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import logo from '../assets/story_minim.svg'
 import SearchUser from './SearchUser'
-
+import imgUser from '../assets/img1.png'
 import {
     Container,
     Icon,
+    Item,
     Menu,
     Sidebar,
     Dropdown,
@@ -13,6 +14,11 @@ import {
     Transition,
     Sticky,
 } from 'semantic-ui-react'
+
+import {
+    Link,
+} from "react-router-dom"
+
 
 const DesktopMenu = () => {
 
@@ -42,16 +48,19 @@ const DesktopMenu = () => {
                 <Menu fixed='top' inverted>
                     <Container>
                         <Menu.Menu position='left'>
-                            <Menu.Item as='a' header>
+                            <Menu.Item as={Link} to='/home'>
                                 <Image size='mini' src={logo} />
                             </Menu.Item>
-                            <Menu.Item as='a'>
-                                <SearchUser at='d esktop'></SearchUser>
+                            <Menu.Item>
+                                <SearchUser at='desktop'></SearchUser>
                             </Menu.Item>
                         </Menu.Menu>
-                        <Menu.Item as='a'>Home</Menu.Item>
-                        <Menu.Item as='a'>Home</Menu.Item>
+                        <Menu.Item as={Link} to='/'>Home</Menu.Item>
                         <Menu.Menu position='right'>
+                            <Menu.Item as={Link} to='/user/Username'>
+                                <Item.Header>Username</Item.Header>
+                                <Item.Image size='mini' src={imgUser} />
+                            </Menu.Item>
                             <Dropdown item simple icon='settings' text='Configuracion'>
                                 <Dropdown.Menu>
                                     <Dropdown.Item>List Item</Dropdown.Item>
@@ -77,7 +86,26 @@ const DesktopMenu = () => {
     )
 }
 
-const MobileMenu = ({ handleToggle }) => {
+const MobileMenu = () => {
+    return (
+        <Sticky>
+            <Menu fixed='bottom' inverted widths={4}>
+
+                <Menu.Item as={Link} to='/settings'>
+                    <Icon name='sidebar' size='large' />
+                </Menu.Item>
+                <Menu.Item as={Link} to='/'>
+                    <Icon name='home' size='large' />
+                </Menu.Item>
+                <Menu.Item as={Link} to='/user/UsernameMobile'>
+                    <Item.Image size='mini' src={imgUser} />
+                </Menu.Item>
+            </Menu>
+        </Sticky>
+    )
+}
+
+const TopBarMobile = () => {
 
     const [calculations, setCalculations] = useState({
         direction: 'up',
@@ -101,7 +129,8 @@ const MobileMenu = ({ handleToggle }) => {
 
     return (
         <Visibility onUpdate={updateCalculations}>
-            <Transition visible={calculations.direction === "up"} animation='slide down' duration={300}>
+            <Transition visible={calculations.direction === "up" || calculations.topVisible}
+                animation='slide down' duration={300}>
                 <Menu fixed='top' inverted>
                     <Menu.Menu>
                         <Menu.Item as='a' header>
@@ -113,24 +142,9 @@ const MobileMenu = ({ handleToggle }) => {
                     </Menu.Menu>
                 </Menu>
             </Transition>
-            <Transition visible={calculations.direction === "up"} duration={300}>
-                <Sticky>
-                    <Menu fixed='bottom' inverted animation='slide up'>
-                        <Menu.Menu>
-                            <Menu.Item onClick={handleToggle}>
-                                <Icon name='home' />
-                            </Menu.Item>
-                            <Menu.Item onClick={handleToggle}>
-                                <Icon name='sidebar' />
-                            </Menu.Item>
-                        </Menu.Menu>
-                    </Menu>
-                </Sticky>
-            </Transition>
         </Visibility>
     )
 }
-
 const SidebarMobile = ({ handleSidebarHide, sidebarOpened }) => (
     <Sidebar
         as={Menu}
@@ -152,4 +166,4 @@ const SidebarMobile = ({ handleSidebarHide, sidebarOpened }) => (
     </Sidebar>
 )
 
-export { DesktopMenu, MobileMenu, SidebarMobile }
+export { DesktopMenu, MobileMenu, TopBarMobile }
