@@ -3,6 +3,16 @@
 /media/
 /st-front/node_modules/
 /st-front/webpack-stats-local.json
+# dependencies
+/storylink_front/node_modules
+/storylink_front/.pnp
+/storylink_front/.pnp.js
+
+# testing
+/storylink_front/coverage
+
+# production
+/storylink_front/build
 
 # Python.gitignore from https://github.com/github/gitignore
 
