@@ -16,9 +16,9 @@ A user can write a story (aka *__storylink__*) and allow others to continue the 
 - [Technologies](#technologies)
 - [Environments](#environment)
 - [Backend](#backend)
-    -[How to run Backend](#How-to-Run-backend-for-develop)
+    - [How to run Backend](#How-to-Run-backend-for-develop)
 - [Frontend](#frontend)
-
+    - [How to run Frontend](#How-to-Run-frontend-for-develop) 
 
 ## General info
 Storylink is a platform of interactive stories creation in collaboration.
