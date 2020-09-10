@@ -46,7 +46,7 @@ Project is created with:
 * Postgresql version: 11
 * Nginx
 * Docker, Docker-compose
-* Frontend is actually migrating from Templates, Bootstrap 4 and CSS to React 16.13.1 (With hooks and functional components) and Semantic-UI (see react branch).
+* Frontend is currently migrating from Templates, Bootstrap 4 and CSS to React 16.13.1 (With hooks and functional components) and Semantic-UI (see react branch).
 * Celery and RabbitMQ
 * Social Login: Facebook and Twitter.
 * Github Actions
@@ -65,7 +65,7 @@ In development environment, the **Data Base** is created with a user admin for D
 
 ## Backend
 Backend is built inside Docker containers.
-In the beginning, the application was built with a monolithic arquitecture, but now use microservices through Docker containers. There are four containers:
+There are four containers:
 * Postgresql
 * Django app with Gunicorn
 * Nginx
