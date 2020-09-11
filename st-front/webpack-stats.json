@@ -1,1 +1,1 @@
-{"status":"done","publicPath":"/static/","chunks":{"main":[{"name":"main.js","publicPath":"/static/main.js","path":"/usr/src/app/bundles/main.js"}]}}
+{"status":"done","publicPath":"/static/","chunks":{"main":[{"name":"main.js","publicPath":"/static/main.js","path":"/home/martin/Escritorio/storylink_dev/st-front/bundles/main.js"}],"otra":[{"name":"otra.js","publicPath":"/static/otra.js","path":"/home/martin/Escritorio/storylink_dev/st-front/bundles/otra.js"}]}}
