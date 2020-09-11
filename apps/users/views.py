@@ -4,7 +4,8 @@ from django.views import generic, View
 from django.contrib.auth import login, authenticate
 from apps.publications.models import StoryPublication, StoryChapter
 from apps.users.models import CustomUser, UserProfile
-from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck, CreateUserProfile, AuthenticationFormWithInactiveUsersOkay
+from apps.users.forms import CustomUserCreationForm, MailCheck, UsernameCheck,\
+    CreateUserProfile, AuthenticationFormWithInactiveUsersOkay
 from apps.users.forms import EditUserProfile, EditAccount
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
@@ -22,10 +23,11 @@ from django.core.mail import EmailMessage
 class ReactV(generic.TemplateView):
     template_name = 'test.html'
 
-# retorna el perfil del usuario
-
 
 class ListUserPerfil(LoginRequiredMixin, generic.DetailView):
+    """Return UserProfile visited. (username of the visited profile is obtained
+     from the url parameter)"""
+
     model = CustomUser
     template_name = 'users/user_profile.html'
     slug_field = 'username'
@@ -50,10 +52,10 @@ class ListUserPerfil(LoginRequiredMixin, generic.DetailView):
         context.update({'storychapter_list': chaps})
         return context
 
-# para listar los followers
-
 
 class ListUserFollowers(LoginRequiredMixin, generic.DetailView):
+    """List followers from username url kwarg"""
+
     template_name = 'users/followers.html'
     model = CustomUser
     slug_field = 'username'
@@ -66,8 +68,9 @@ class ListUserFollowers(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-# para listar los followings
 class ListUserFollowing(LoginRequiredMixin, generic.DetailView):
+    """List followings from username url kwarg"""
+
     template_name = 'users/following.html'
     model = CustomUser
     slug_field = 'username'
@@ -80,8 +83,9 @@ class ListUserFollowing(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-# para listar las subscripciones a stories de un usuario
 class ListStoriesSubscription(LoginRequiredMixin, generic.ListView):
+    """List the user stories subscriptions"""
+
     template_name = 'publications/story/story_subscription.html'
     models = StoryPublication
     paginate_by = 10
@@ -91,10 +95,10 @@ class ListStoriesSubscription(LoginRequiredMixin, generic.ListView):
         qs = user.profile.get().pub_subscription.filter(active=True)
         return qs
 
-# agregar seguidor a user.
-
 
 class FollowUser(LoginRequiredMixin, generic.DetailView):
+    """Add follower to user."""
+
     model = CustomUser
     slug_field = 'username'
     slug_url_kwarg = 'username'
@@ -104,10 +108,10 @@ class FollowUser(LoginRequiredMixin, generic.DetailView):
             self.get_object().profile.get())
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': username}))
 
-# unfollow user
-
 
 class UnfollowUser(LoginRequiredMixin, generic.DetailView):
+    """unfollow user"""
+
     model = CustomUser
     slug_field = 'username'
     slug_url_kwarg = 'username'
@@ -117,10 +121,10 @@ class UnfollowUser(LoginRequiredMixin, generic.DetailView):
             self.get_object().profile.get())
         return redirect(reverse_lazy('user:user_profile', kwargs={'username': username}))
 
-# para dar de alta un usuario. Cuando crea el usuario le envia un mail para verificar la cuenta.
-
 
 class SignUpView(generic.CreateView):
+    """User SignUp. After create user, sends a email for verify user and email."""
+
     model = CustomUser
     form_class = CustomUserCreationForm
     template_name = 'registration/login.html'
@@ -139,16 +143,18 @@ class SignUpView(generic.CreateView):
         return redirect(reverse_lazy('hall_s', kwargs={'success': True}))
 
 
-'''
-CustomloginView permite iniciar sesion solo si un usuario tiene el email verificado y ademas tiene el UserProfile creado
-(no checkea is_active en CustomUser).
-Si el email no esta verificado el formulario lanza is_invalid. Si el mail esta verificado y el usuario aun no tiene creado
-su UserProfile, entonces se lo redirige a FillProfile para que pueda crear su profile.
-Si el usuario tiene el mail verificado, y se inicia sesion, se verifica si su estado era activo o inactivo,
-para actualizarlo.'''
-
-
 class CustomLoginView(generic.edit.FormView):
+    '''
+    CustomloginView allow login only if the user has the verified email and has
+    created UserProfile (this custom login does not checks is_active in CustomUser,
+    like default login).
+    If the email is not verified, the form returns ValidationError with 
+    code=email_not_verified. 
+    If email is verified and the user has not yet created their UserProfile,
+    it redirects you to FillProfile View so they can create their profile.
+    If the user has email verified and do log in, verifies if their status was
+    active or inactive, for update it.'''
+
     form_class = AuthenticationFormWithInactiveUsersOkay
     template_name = 'registration/login.html'
     success_url = '/'
@@ -187,15 +193,18 @@ class CustomLoginView(generic.edit.FormView):
         return super().form_invalid(form)
 
 
-'''Permite cargar los datos de un perfil si su email ya fue verificado. Luego de cargar los datos inicia sesion.
-Si el perfil ya existia entonces omite la consulta. Si se intenta acceder a la url sin estar el mail verificado 
-redirige al /. Resulta un poco inseguro permitir que un usuario se loguee, ya que no se esta pidiendo la password,
-y no se esta accediendo desde una url con token de seguridad. Pero las probabilidades de que alguien intersecte 
-el uid de un usuario nuevo que acaba de verificar el mail son muy pequenias.
-'''
-
-
 class FillProfile(generic.CreateView):
+    '''Allow load the profile data, if you email has already been verified verified.
+
+    After loading the data, log in.
+    If the profile already exists, then skip the query.
+    If you try to access the url without the email being verified, it redirects 
+    you to /.
+    This url should have a token of security, because doesn't require password 
+    to reach this View. (A hacker can try fillprofile/<uidb64>/ until discover a
+    valid URL).
+    '''
+
     model = UserProfile
     form_class = CreateUserProfile
     template_name = 'registration/fill_user_profile.html'
@@ -235,10 +244,10 @@ class FillProfile(generic.CreateView):
         else:
             return redirect('/')
 
-# verificar si es necesario calcular el uid de nuevo para el fillprofile. Creo es siempre el mismo.
 
+class VerifyMail(View):
+    """Verify the email associated to a user"""
 
-class VerifiedMail(View):
     def get(self, request, uidb64, token):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
@@ -270,8 +279,9 @@ def send_mail_confirm(request, user):
     email.send()
 
 
-# Eliminar usuario. No se eliminan, se ponen inactivos
 class DeleteUser(LoginRequiredMixin, generic.DeleteView):
+    """Soft delete user. They are not deleted, they just become inactive"""
+
     def get(self, request, username, id):
         user = CustomUser.objects.get(id=request.user.id)
         userDel = CustomUser.objects.get(id=id)
@@ -280,8 +290,6 @@ class DeleteUser(LoginRequiredMixin, generic.DeleteView):
             user.save(update_fields=['is_active'])
 
         return redirect(request.GET.get('logout'))  # revisar ese get(logout)
-
-# buscar un usuario
 
 
 class SearchUser(LoginRequiredMixin, generic.DetailView):
@@ -301,10 +309,10 @@ class SearchUser(LoginRequiredMixin, generic.DetailView):
             return JsonResponse(res_users)
 
 
-'''renderiza el template para pedir el email, en caso de qeu destilde la casilla cuando inicie sesion con fb, o si el mail es duplicado.'''
-
-
 class mail_check(generic.edit.FormView):
+    '''Requests the email, in case it is not sent by the provider, or if the 
+    email is duplicated.'''
+
     form_class = MailCheck
     template_name = 'registration/force_get_email.html'
     success_url = reverse_lazy('social:complete', kwargs={
@@ -327,10 +335,9 @@ class mail_check(generic.edit.FormView):
         return super().form_valid(form)
 
 
-'''renderiza el template para pedir un nuevo username, en caso que sea duplicado.'''
-
-
 class username_check(generic.edit.FormView):
+    '''Request for a new username, in case it is already in use.'''
+
     form_class = UsernameCheck
     template_name = 'registration/new_username.html'
     success_url = reverse_lazy('social:complete', kwargs={

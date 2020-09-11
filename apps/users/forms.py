@@ -8,10 +8,11 @@ from django.contrib.auth.forms import AuthenticationForm
 from .widgets import CustomImageField
 from social_django.models import UserSocialAuth
 
-# permite usuarios inactivos ser autenticados. no significa que les permita loguearse.
-
 
 class AuthenticationFormWithInactiveUsersOkay(AuthenticationForm):
+    """allows you to authenticate inactive users. Doesn't mean that allows them
+    to log in."""
+
     def confirm_login_allowed(self, user):
         if (not user.email_verified):
             raise forms.ValidationError(
@@ -51,10 +52,10 @@ class CreateUserProfile(ModelForm):
         self.fields['description'].label = "Cuéntanos sobre ti"
         self.fields['description'].help_text = "150 caracteres como máximo"
 
-# para el nombre y apellido solo letras y espacios.
-
 
 def only_chars(value):
+    # para el nombre y apellido solo letras y espacios.
+
     regex = re.compile('[a-zA-ZáéíóúÁÉÍÓÚ\s]+$')
     if (not regex.match(value)):
         raise ValidationError(

@@ -9,12 +9,14 @@ from django.http import HttpResponseRedirect
 from urllib.request import urlopen, HTTPError
 from django.core.files.base import ContentFile
 
+
 def setPicture(backend, strategy, details, response, user=None, *args, **kwargs):
     if (user):
         print(user)
         print(response.get('picture').get('data').get('url'))
         user.link_img_perfil = response.get('picture').get('data').get('url')
         user.save()
+
 
 @partial
 def require_email(backend, strategy, details, user=None, is_new=False, *args, **kwargs):
@@ -28,7 +30,8 @@ def require_email(backend, strategy, details, user=None, is_new=False, *args, **
             if (exist):
                 current_partial = kwargs.get('current_partial')
                 return strategy.redirect(
-                '/re_email?partial_token={0}&used=True'.format(current_partial.token)
+                    '/re_email?partial_token={0}&used=True'.format(
+                        current_partial.token)
                 )
             else:
                 details['email'] = email
@@ -39,22 +42,27 @@ def require_email(backend, strategy, details, user=None, is_new=False, *args, **
             )
     elif is_new and details.get('email'):
         if (strategy.session_get('email', None)):
-            exist = CustomUser.objects.filter(email__iexact=strategy.session_get('email')).exists()
+            exist = CustomUser.objects.filter(
+                email__iexact=strategy.session_get('email')).exists()
             if (exist):
                 current_partial = kwargs.get('current_partial')
                 return strategy.redirect(
-                '/re_email?partial_token={0}&used=True'.format(current_partial.token)
+                    '/re_email?partial_token={0}&used=True'.format(
+                        current_partial.token)
                 )
             else:
                 details['email'] = strategy.session_get('email')
         else:
-            exist = CustomUser.objects.filter(email__iexact=details.get('email')).exists()
+            exist = CustomUser.objects.filter(
+                email__iexact=details.get('email')).exists()
             if (exist):
                 current_partial = kwargs.get('current_partial')
                 return strategy.redirect(
-                '/re_email?partial_token={0}&used=True'.format(current_partial.token)
+                    '/re_email?partial_token={0}&used=True'.format(
+                        current_partial.token)
                 )
-                
+
+
 @partial
 def get_username(backend, strategy, details, user=None, is_new=False, *args, **kwargs):
     if user and user.username:
@@ -62,21 +70,25 @@ def get_username(backend, strategy, details, user=None, is_new=False, *args, **k
     elif strategy.session_get('username'):
         new_username = strategy.session_get('username')
     elif details.get('username'):
-            new_username = details.get('username').replace(" ", ".")
+        new_username = details.get('username').replace(" ", ".")
     else:
         if (details.get('first_name') and details.get('last_name')):
-            new_username = details.get('first_name')+'.'+details.get('last_name')
+            new_username = details.get(
+                'first_name')+'.'+details.get('last_name')
         else:
             new_username = 'username'
 
     if new_username:
-        exist = CustomUser.objects.filter(username__iexact=new_username).exists()
+        exist = CustomUser.objects.filter(
+            username__iexact=new_username).exists()
         if (exist):
             current_partial = kwargs.get('current_partial')
             return strategy.redirect(
-            '/re_username?partial_token={0}&used=True'.format(current_partial.token)
+                '/re_username?partial_token={0}&used=True'.format(
+                    current_partial.token)
             )
     return {'username': new_username}
+
 
 @partial
 def check_unique_username(backend, strategy, details, user=None, is_new=False, *args, **kwargs):
@@ -87,12 +99,14 @@ def check_unique_username(backend, strategy, details, user=None, is_new=False, *
     elif kwargs.get('username'):
         new_username = kwargs.get('username')
     if new_username:
-        exist = CustomUser.objects.filter(username__iexact=new_username).exists()
+        exist = CustomUser.objects.filter(
+            username__iexact=new_username).exists()
         if (exist):
             current_partial = kwargs.get('current_partial')
             print("denuevo")
             return strategy.redirect(
-            '/re_username?partial_token={0}&used=True'.format(current_partial.token)
+                '/re_username?partial_token={0}&used=True'.format(
+                    current_partial.token)
             )
         else:
             print("ahorasi")
@@ -100,11 +114,13 @@ def check_unique_username(backend, strategy, details, user=None, is_new=False, *
             details['username'] = new_username
             kwargs.update({'username': new_username})
     else:
-        print("elelse")        
+        print("elelse")
         current_partial = kwargs.get('current_partial')
         return strategy.redirect(
             '/re_username?partial_token={0}'.format(current_partial.token)
         )
+
+
 '''@partial
 def check_unique_username(backend, strategy, details, user=None, is_new=False, *args, **kwargs):
     if user and user.username:
@@ -144,20 +160,23 @@ def check_unique_username(backend, strategy, details, user=None, is_new=False, *
                 )
 '''
 
-#lo usaba antes de social_core.pipeline.social_auth.social_user porque lanzaba error twitter AuthAlreadyAssociated
+# lo usaba antes de social_core.pipeline.social_auth.social_user porque lanzaba error twitter AuthAlreadyAssociated
+
+
 def userExist(backend, strategy, details, response, user=None, *args, **kwargs):
     if (user):
         print(user)
         return redirect(reverse_lazy('hall'))
 
 
-#Si el usuario es nuevo crea un Profile, sino actualiza los datos del profile con los del provider (actualmente solo la imagen de perfil). Asi, si un usuario actualiza
-#un dato en el provider, tambien se actualiza en su perfil cuando inicia sesion.
+# Si el usuario es nuevo crea un Profile, sino actualiza los datos del profile con los del provider (actualmente solo la imagen de perfil). Asi, si un usuario actualiza
+# un dato en el provider, tambien se actualiza en su perfil cuando inicia sesion.
 def update_or_create_userProfile(backend, strategy, details, response, user=None, *args, **kwargs):
     if (user and kwargs.get('is_new')):
         if (backend.name == "twitter"):
             profile = UserProfile(user=user)
-            saveImage(response.get('profile_image_url_https'), profile, user.id)
+            saveImage(response.get('profile_image_url_https'),
+                      profile, user.id)
             profile.save()
         elif (backend.name == "facebook"):
             profile = UserProfile(user=user)
@@ -190,4 +209,4 @@ def get_avatar_url(request, backend, response,  user=None, *args, **kwargs):
             print("ENCONTRO IMAGEN")
             print(avatar_url)
             print(user)
-            #aca deberia guardar la imagen en el user.
+            # aca deberia guardar la imagen en el user.

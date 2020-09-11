@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.views.generic.base import TemplateView
-from apps.users.views import SignUpView, mail_check, username_check, FillProfile, VerifiedMail, CustomLoginView
+from apps.users.views import SignUpView, mail_check, username_check,\
+    FillProfile, VerifyMail, CustomLoginView
 from apps.users.views import ReactV
 from apps.publications.views import ListStories
 
@@ -47,7 +48,7 @@ urlpatterns = [
     path('fillprofile/<uidb64>/', FillProfile.as_view(), name='fill_profile'),
     path('fillprofile/<uidb64>/<email_verified>',
          FillProfile.as_view(), name='fill_profile'),
-    path('activate/<uidb64>/<token>', VerifiedMail.as_view(), name='activate'),
+    path('activate/<uidb64>/<token>', VerifyMail.as_view(), name='activate'),
     path('test', ReactV.as_view(), name='activate'),
 
 ]
