@@ -19,9 +19,9 @@ services:
       - postgres_data:/var/lib/postgresql/data/
       - ./initdb/initdb.sql:/docker-entrypoint-initdb.d/init-setup.sql
     environment: 
-      - POSTGRES_USER=nk_user
-      - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=nk_db
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
   nginx:
     build: ./nginx
     ports:

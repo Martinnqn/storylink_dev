@@ -91,12 +91,6 @@ class ListStoriesSubscription(LoginRequiredMixin, generic.ListView):
         qs = user.profile.get().pub_subscription.filter(active=True)
         return qs
 
-    def get_context_data(self, **kwargs):
-        context = super(ListStoriesSubscription,
-                        self).get_context_data(**kwargs)
-        context.update({'customuser': {'username': self.kwargs["username"]}})
-        return context
-
 # agregar seguidor a user.
 
 
