@@ -1,4 +1,4 @@
-# Storylink.club - ![alt text](https://raw.githubusercontent.com/Martinnqn/storylink_dev/master/static/imgs/ostorylink.png "Storylink")
+# Storylink.club - ![Storylink.logo](https://raw.githubusercontent.com/Martinnqn/storylink_dev/master/static/imgs/ostorylink.png "Storylink")
 
 | Build Github Action | Coverage backend Codecov |
 | ------------- | ------------- |
@@ -16,17 +16,16 @@ A user can write a story (aka *__storylink__*) and allow others to continue the 
 - [Technologies](#technologies)
 - [Environments](#environment)
 - [Backend](#backend)
-    -[How to run Backend](#How-to-Run-backend-for-develop)
+    - [How to run Backend](#How-to-Run-backend-for-develop)
 - [Frontend](#frontend)
-
+    - [How to run Frontend](#How-to-Run-frontend-for-develop) 
 
 ## General info
 Storylink is a platform of interactive stories creation in collaboration.
 
-It is collaborative because a user (writer) can create content (Stories - *__a node__*) and allow others to continue the plot (linking nodes - *__edges__*). This way, different branches are created from one node, forming a tree of stories.
-     o
-     /\
-    o  o
+It is collaborative because a user (writer) can create content (Stories - *__a node__*) and allow others to continue the plot (linking nodes - *__edges__*). This way, different branches are created from one node, forming a tree of stories, like figure:
+
+![Storylink.logo](https://raw.githubusercontent.com/Martinnqn/storylink_dev/master/static/imgs/ejemplo.png "Storylink Tree")
 
 It is interactive because the user (reader) can advance through the branches answering questions or reading subtitles of the Stories.
 
