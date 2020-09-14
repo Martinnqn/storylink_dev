@@ -10,6 +10,7 @@ import Home from './components/Home'
 import Profile from './components/Profile'
 import Settings from './components/Setting'
 import { Container } from 'semantic-ui-react';
+import { urls as urlDomain } from './components/url/URLDomain'
 
 
 function App() {
@@ -19,9 +20,9 @@ function App() {
       <ResponsiveMenu />
       <Container style={{ marginTop: '7em' }}>
         <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/user/:username" component={Profile} />
-          <Route path="/settings" component={Settings} />
+          <Route exact path={urlDomain.home} component={Home} />
+          <Route path={`${urlDomain.user_site}`} component={Profile} />
+          <Route path={urlDomain.settings} component={Settings} />
         </Switch>
       </Container>
     </>

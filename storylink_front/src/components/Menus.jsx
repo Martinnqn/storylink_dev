@@ -22,7 +22,11 @@ import {
     Transition,
     Visibility,
 } from 'semantic-ui-react'
+import { urls as urlDomain } from './url/URLDomain'
+import { urls as urlUser } from './url/URLUser'
+import ManagerURL from './url/ManagerURL'
 
+const managerURl = new ManagerURL('http://localhost:3000/');
 
 /**Menu for desktop screens */
 const DesktopMenu = () => {
@@ -53,7 +57,7 @@ const DesktopMenu = () => {
                 <Menu fixed='top' inverted>
                     <Container style={{ height: 60 }} >
                         <Menu.Menu position='left'>
-                            <Menu.Item as={Link} to='/'>
+                            <Menu.Item as={Link} to={managerURl.getPath(urlDomain.home)}>
                                 <Image size='mini' src={Logo} />
                             </Menu.Item>
                             <Menu.Item>
@@ -61,12 +65,12 @@ const DesktopMenu = () => {
                             </Menu.Item>
                         </Menu.Menu>
                         <Menu.Menu icon='labeled'>
-                            <Menu.Item as={Link} to='/'>
+                            <Menu.Item as={Link} to={managerURl.getPath(urlDomain.home)}>
                                 <Icon name='home' size='big' />
                             </Menu.Item>
                         </Menu.Menu>
                         <Menu.Menu position='right'>
-                            <Menu.Item as={Link} to='/user/Username'>
+                            <Menu.Item as={Link} to={managerURl.getPath(`${urlDomain.user_site}`, { username: "username" })}>
                                 <MenuItemImageProfile src={imgUser} />
                                 <Item.Header>Username</Item.Header>
                             </Menu.Item>
@@ -121,7 +125,6 @@ const DesktopMenuItemSettings = () => {
 
 /**Menu for mobile screens */
 const MobileMenu = () => {
-
     return (
         <Sticky>
             <Menu fixed='bottom' inverted widths={4}>
@@ -129,10 +132,10 @@ const MobileMenu = () => {
                     <Icon name='sidebar' size='large' />
                 </Menu.Item>
                 <MobileMenuItemCreate />
-                <Menu.Item as={Link} to='/'>
+                <Menu.Item as={Link} to={managerURl.getPath(urlDomain.home)}>
                     <Icon name='home' size='large' />
                 </Menu.Item>
-                <Menu.Item as={Link} to='/user/UsernameMobile'>
+                <Menu.Item as={Link} to={managerURl.getPath(`${urlDomain.user_site}`, { username: "MobileUsername" })}>
                     <MenuItemImageProfile src={imgUser} />
                 </Menu.Item>
             </Menu>
