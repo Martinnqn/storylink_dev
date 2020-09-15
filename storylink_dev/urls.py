@@ -1,29 +1,31 @@
-"""storylink_dev URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 
 from django.views.generic.base import TemplateView
-from apps.users.views import SignUpView, mail_check, username_check, FillProfile, VerifiedMail, CustomLoginView
+from apps.users.views import SignUpView, mail_check, username_check, \
+    FillProfile, VerifiedMail, CustomLoginView
+from apps.users.api.views import UserViewSet
+
 from apps.users.views import ReactV
 from apps.publications.views import ListStories
 
 
 from django.conf import settings
 from django.conf.urls.static import static
+
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView,
+)
+# import routers 
+from rest_framework import routers 
+
+# define the router 
+router = routers.DefaultRouter() 
+  
+# define the router path and viewset to be used 
+router.register('users', UserViewSet) 
 
 urlpatterns = [
     path('success/<success>', CustomLoginView.as_view(),
@@ -48,7 +50,10 @@ urlpatterns = [
     path('fillprofile/<uidb64>/<email_verified>',
          FillProfile.as_view(), name='fill_profile'),
     path('activate/<uidb64>/<token>', VerifiedMail.as_view(), name='activate'),
-    path('test', ReactV.as_view(), name='activate'),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+     path('api/', include(router.urls)), 
 
 ]
 

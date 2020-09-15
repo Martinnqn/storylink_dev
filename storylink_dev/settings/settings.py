@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'corsheaders',
     'django_extensions',
+    'rest_framework',
 ]
 
 if DEBUG:
@@ -194,4 +195,10 @@ WEBPACK_LOADER = {
 GRAPH_MODELS = {
     'all_applications': True,
     'group_models': True,
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
