@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "/usr/local/bin/python3.7"
+    "python.pythonPath": "/home/martin/Escritorio/env/bin/python3.7",
+    "python.linting.enabled": true,
+    "python.formatting.provider": "autopep8"
 }

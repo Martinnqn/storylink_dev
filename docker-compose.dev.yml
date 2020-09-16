@@ -1,4 +1,4 @@
-version: '3.4'
+version: "3.4"
 
 services:
   storylinkdev:
@@ -13,18 +13,18 @@ services:
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
     command: bash -c "/home/app/web/wait-for-it.sh --timeout=0 db:5432 && /home/app/web/init.dev.sh"
-  
+
   db:
     image: postgres:11
     volumes:
       - postgres_data:/var/lib/postgresql/data/
       - ./initdb/initdb.sql:/docker-entrypoint-initdb.d/init-setup.sql
-    env_file: 
+    env_file:
       - .env
   nginx:
     build: ./nginx
     ports:
-      - 1337:80
+      - 8000:80
     depends_on:
       - storylinkdev
     volumes:

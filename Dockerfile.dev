@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends libpq-dev=11.7-
 
 # Install pip requirements
 COPY requirements.txt .
-RUN python -m pip install -r requirements.txt --use-feature=2020-resolver
+RUN python -m pip install -r requirements.txt 
 
 RUN apt-get autoremove -y gcc
 

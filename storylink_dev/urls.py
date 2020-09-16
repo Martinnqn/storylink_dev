@@ -4,7 +4,12 @@ from django.urls import path, include
 from django.views.generic.base import TemplateView
 from apps.users.views import SignUpView, mail_check, username_check, \
     FillProfile, VerifiedMail, CustomLoginView
-from apps.users.api.views import UserViewSet
+
+from apps.users.api.views import UserViewSet, UserProfileViewSet, \
+    FullUserDataViewSet
+
+from apps.publications.api.views import StoryPublicationViewSet, \
+    StoryChapterViewSet
 
 from apps.users.views import ReactV
 from apps.publications.views import ListStories
@@ -18,14 +23,19 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-# import routers 
-from rest_framework import routers 
+# import routers
+from rest_framework import routers
 
-# define the router 
-router = routers.DefaultRouter() 
-  
-# define the router path and viewset to be used 
-router.register('users', UserViewSet) 
+# define the router
+router = routers.DefaultRouter()
+
+# define the router path and viewset to be used
+router.register('users', UserViewSet)
+router.register('profiles', UserProfileViewSet)
+router.register('full-users', FullUserDataViewSet)
+router.register('stories', StoryPublicationViewSet)
+router.register('chapters', StoryChapterViewSet)
+
 
 urlpatterns = [
     path('success/<success>', CustomLoginView.as_view(),
@@ -52,8 +62,8 @@ urlpatterns = [
     path('activate/<uidb64>/<token>', VerifiedMail.as_view(), name='activate'),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-     path('api/', include(router.urls)), 
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api/', include(router.urls)),
 
 ]
 

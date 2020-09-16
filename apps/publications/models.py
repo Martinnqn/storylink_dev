@@ -14,6 +14,8 @@ conectar como nodo intermedio entre otros dos. Hasta encontrar una solucion que 
 de las busquedas, cada consulta debe asegurarse de retornar registros no eliminados segun corresponda.'''
 
 ''' ChapterQuery sirve para abstraer los filtros que se usan en ChapterManager'''
+
+
 class ChapterQuery(models.QuerySet):
     def public(self):
         return self.filter(~Q(mainStory__status=Permission.NR))
@@ -27,30 +29,37 @@ class ChapterQuery(models.QuerySet):
     def tags(self, tag):
         q = Q()
         for t in tag.split():
-            q |= Q(tag__tag__icontains = t)
+            q |= Q(tag__tag__icontains=t)
         return self.filter(q)
 
     '''Filtra los primeros capitulos. (los que no tienen capitulos previos).'''
+
     def first_chapter(self):
-        return self.filter(prevChapter__isnull = True)
-    
+        return self.filter(prevChapter__isnull=True)
+
     '''Filtra los capitulo pertenecientes a una story con id = idStory'''
+
     def by_story(self, idStory):
-        return self.filter(mainStory = idStory)
+        return self.filter(mainStory=idStory)
 
     '''Filtra los chapters pertenecientes a otro chapter con prevChapter = idChapter.
     (Las continuaciones de un chapters)'''
-    def by_chapter(self, idChapter):
-        return self.filter(prevChapter = idChapter)
 
-    '''retorna los chapter de un usuario'''    
+    def by_chapter(self, idChapter):
+        return self.filter(prevChapter=idChapter)
+
+    '''retorna los chapter de un usuario'''
+
     def by_user(self, userProfile):
         return self.filter(own_user=userProfile)
 
+
 '''La clase ChapterManager sirve para abstraer las consultas que se usan en las views'''
+
+
 class ChapterManager(models.Manager):
     def get_queryset(self):
-        return ChapterQuery(self.model, using=self._db)  
+        return ChapterQuery(self.model, using=self._db)
 
     def get_by_title(self, title):
         return self.get_queryset().active().title(title)
@@ -58,21 +67,27 @@ class ChapterManager(models.Manager):
     '''Retorna los chapter de ownerUser. Si ownerUser y user son el mismo, entonces
     retorna todos los chapters de ownerUser, en caso contrario solo retorna 
     los chapters publicos.'''
+
     def get_chapters_by_user(self, ownerUser, user):
-        if (ownerUser==user):
+        if (ownerUser == user):
             return self.get_queryset().by_user(ownerUser.profile.get()).active()
         else:
             return self.get_queryset().by_user(ownerUser.profile.get()).active().public()
 
     '''Retorna los primeros capitulos de una Story (las primeras continuaciones)'''
+
     def story_continuations(self, idStory, user):
         return self.get_queryset().by_story(idStory).first_chapter().active()
 
     '''Retorna las continuaciones de un chapter'''
+
     def chapter_continuations(self, idChapter, user):
         return self.get_queryset().by_chapter(idChapter).active()
 
+
 ''' StoryPublicationQuery sirve para abstraer los filtros que se usan en StoryPublicationManager'''
+
+
 class StoryPublicationQuery(models.QuerySet):
 
     '''Retorna las stories publicas.
@@ -80,12 +95,14 @@ class StoryPublicationQuery(models.QuerySet):
     Si se conocen ambos usuarios antes de ejecutar la consulta entonces no usar este filtro
      porque es mas ineficiente que preguntar si los usuarios son los mismos.
     Ver get_stories_by_user() como ejemplo.'''
+
     def publicOrOwner(self, userProfile):
         q1 = ~Q(status=Permission.NR)
         q2 = Q(own_user=userProfile)
-        return self.filter(q1|q2)
+        return self.filter(q1 | q2)
 
-    '''retorna las stories de un usuario'''    
+    '''retorna las stories de un usuario'''
+
     def by_user(self, userProfile):
         return self.filter(own_user=userProfile)
 
@@ -101,22 +118,25 @@ class StoryPublicationQuery(models.QuerySet):
     def tags(self, tag):
         q = Q()
         for t in tag.split():
-            q |= Q(tag__tag__icontains = t)
+            q |= Q(tag__tag__icontains=t)
         return self.filter(q)
 
+
 '''StoryPublicationManager sirve para abstraer las consultas que se usan en las views'''
+
+
 class StoryPublicationManager(models.Manager):
     def get_queryset(self):
-        return StoryPublicationQuery(self.model, using=self._db)  
+        return StoryPublicationQuery(self.model, using=self._db)
 
     def get_by_title(self, title):
         return self.get_queryset().active().title(title)
 
-    #retorna las stories de ownerUser. Si ownerUser y user son el mismo, entonces
-    #retorna todas las stories de ownerUser, en caso contrario solo retorna 
-    #las stories publicas.
+    # retorna las stories de ownerUser. Si ownerUser y user son el mismo, entonces
+    # retorna todas las stories de ownerUser, en caso contrario solo retorna
+    # las stories publicas.
     def get_stories_by_user(self, ownerUser, user):
-        if (ownerUser==user):
+        if (ownerUser == user):
             return self.get_queryset().by_user(ownerUser.profile.get()).active()
         else:
             return self.get_queryset().by_user(ownerUser.profile.get()).active().public()
@@ -127,6 +147,7 @@ class StoryPublicationManager(models.Manager):
     un tag. Se ordenan por cantidad de tags que tenga cada story de manera descendente y por fecha.
     Osea las que tienen igual cantidad de tags se organizan entre si por fecha, las
     menos recientes primero'''
+
     def publications_hall(self, title, tags):
         qs = self.get_queryset().active().public()
         if (title is not '' and title is not None):
@@ -136,94 +157,124 @@ class StoryPublicationManager(models.Manager):
             qs = qs.annotate(count=Count('tag')).order_by('-count')
         qs = qs.order_by('date_time')
         return qs.distinct()
-        
+
+
 def get_upload_path(instance, filename):
-      return 'publications/user_profile_{0}/{1}'.format(instance.own_user.id, filename)
+    return 'publications/user_profile_{0}/{1}'.format(instance.own_user.id, filename)
 
 
 class Permission(models.TextChoices):
-    WR = 'WR', _('Leer y Continuar: permite que otros usuarios puedan leer la publicación y continuar la trama.')
-    R = 'R', _('Solo leer: permite que otros usuarios solo puedan leer la publicación.')
+    WR = 'WR', _(
+        'Leer y Continuar: permite que otros usuarios puedan leer la publicación y continuar la trama.')
+    R = 'R', _(
+        'Solo leer: permite que otros usuarios solo puedan leer la publicación.')
     NR = 'NR', _('No ver: solo tú podrás ver esta publicación.')
 
 # publicacion tipo historia
+
+
 class StoryPublication(models.Model):
-    #datos usuario
+    # datos usuario
     own_user = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
-    #contenido
+    # contenido
     title = models.CharField(max_length=120)
     text_content = models.TextField(max_length=2000)
     #img_content_link = models.URLField(max_length=500)
-    img_content_link = models.ImageField(upload_to = get_upload_path, default = 'gallery/no-img.png')
-    active = models.BooleanField(default=True) # si es una publicacion activa o no.
+    img_content_link = models.ImageField(
+        upload_to=get_upload_path, default='gallery/no-img.png')
+    # si es una publicacion activa o no.
+    active = models.BooleanField(default=True)
     date_time = models.DateField(auto_now_add=True)
-    views = models.IntegerField(default=0) #cantidad de visitas
+    views = models.IntegerField(default=0)  # cantidad de visitas
     valoration = models.IntegerField(default=0)
     tag = models.ManyToManyField('Tag')
     color = models.CharField(max_length=7, default="#4a4a4a")
-    like = models.ManyToManyField(UserProfile, through='StoryLike', related_name='storyLikes', symmetrical=False)
-    status = models.CharField(max_length=2, choices=Permission.choices, default=Permission.WR)
+    like = models.ManyToManyField(
+        UserProfile, through='StoryLike', related_name='storyLikes', symmetrical=False)
+    status = models.CharField(
+        max_length=2, choices=Permission.choices, default=Permission.WR)
 
     objects = StoryPublicationManager()
 
     def __str__(self):
         return self.title+' '+str(self.id)
 
-#capitulos
+    def get_cant_likes(self):
+        return self.like.count()
+
+# capitulos
+
+
 class StoryChapter(models.Model):
-    #story principal a la que hace referencia el capitulo (para obtener el titulo, imagen, etc)
+    # story principal a la que hace referencia el capitulo (para obtener el titulo, imagen, etc)
     mainStory = models.ForeignKey(StoryPublication, on_delete=models.PROTECT)
-    #datos usuario
+    # datos usuario
     own_user = models.ForeignKey(UserProfile, on_delete=models.PROTECT)
-    #contenido
+    # contenido
     text_content = models.TextField(max_length=2000)
-    active = models.BooleanField(default=True) # si es una publicacion activa o no.
+    # si es una publicacion activa o no.
+    active = models.BooleanField(default=True)
     date_time = models.DateField(auto_now_add=True)
-    views = models.IntegerField(default=0) #cantidad de visitas
+    views = models.IntegerField(default=0)  # cantidad de visitas
     valoration = models.IntegerField(default=0)
     tag = models.ManyToManyField('Tag')
-    prevChapter = models.ForeignKey('self', null=True, blank=True, on_delete=models.PROTECT) #capitulo anterior.
-    #responde a pregunta
+    # capitulo anterior.
+    prevChapter = models.ForeignKey(
+        'self', null=True, blank=True, on_delete=models.PROTECT)
+    # responde a pregunta
     quest_answ = models.CharField(max_length=100, null=False)
-    like = models.ManyToManyField(UserProfile, through='ChapterLike', related_name='chapterLikes', symmetrical=False)
-    
+    like = models.ManyToManyField(
+        UserProfile, through='ChapterLike', related_name='chapterLikes', symmetrical=False)
+
     objects = ChapterManager()
 
     def __str__(self):
         return self.mainStory.title+' - '+str(self.quest_answ)
 
+    def get_cant_likes(self):
+        return self.like.count()
+
+
 class StoryLike(models.Model):
     date_time = models.DateField(auto_now_add=True)
-    from_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='likeToStory')
-    to_story = models.ForeignKey(StoryPublication, on_delete=models.CASCADE, related_name='storyLikedBy')
+    from_user = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name='likeToStory')
+    to_story = models.ForeignKey(
+        StoryPublication, on_delete=models.CASCADE, related_name='storyLikedBy')
+
 
 class ChapterLike(models.Model):
     date_time = models.DateField(auto_now_add=True)
-    from_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='likeToChapter')
-    to_chapter = models.ForeignKey(StoryChapter, on_delete=models.CASCADE, related_name='chapterLikedBy')
-        
+    from_user = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name='likeToChapter')
+    to_chapter = models.ForeignKey(
+        StoryChapter, on_delete=models.CASCADE, related_name='chapterLikedBy')
+
 
 # publicacion tipo recurso
 class ResourcePublication(models.Model):
-    #datos usuario
+    # datos usuario
     own_user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     user_name = models.CharField(max_length=45)
     user_lastname = models.CharField(max_length=45)
-    #contenido
+    # contenido
     text_content = models.TextField()
     title = models.CharField(max_length=500, default='a Title')
     img_content_link = models.CharField(max_length=500)
-    privacity = models.IntegerField(default=0) # privado=1 o publico=0
-    active = models.BooleanField(default=True) # si es una publicacion activa o no.
+    privacity = models.IntegerField(default=0)  # privado=1 o publico=0
+    # si es una publicacion activa o no.
+    active = models.BooleanField(default=True)
     date_time = models.DateField(auto_now_add=True)
-    views = models.IntegerField(default=0) #cantidad de visitas
-    tag  = models.ManyToManyField('Tag')
+    views = models.IntegerField(default=0)  # cantidad de visitas
+    tag = models.ManyToManyField('Tag')
     valoration = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title+' '+str(self.id)
 
 # Tags
+
+
 class Tag(models.Model):
     tag = models.CharField(max_length=80)
     creation_date_time = models.DateField(auto_now_add=True)
