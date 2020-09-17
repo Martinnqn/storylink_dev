@@ -7,19 +7,15 @@ from .serializers import StoryChapterSerializer, StoryPublicationSerializer
 
 from ..models import StoryChapter, StoryPublication
 
+from rest_framework.permissions import IsAuthenticated
+
 
 class StoryPublicationViewSet(viewsets.ModelViewSet):
-    # define queryset
     queryset = StoryPublication.objects.all()
-
-    # specify serializer to be used
     serializer_class = StoryPublicationSerializer
-
-# create a viewset
+    permission_classes = (IsAuthenticated,)
 
 
 class StoryChapterViewSet(viewsets.ModelViewSet):
     queryset = StoryChapter.objects.all()
-
-    # specify serializer to be used
     serializer_class = StoryChapterSerializer

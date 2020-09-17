@@ -1,6 +1,8 @@
 from ..models import CustomUser, UserProfile, UserSubscriptionModelAux, \
     PubSubscriptionModelAux
 
+from apps.publications.api.serializers import StoryPublicationSerializer
+
 from rest_framework import serializers
 
 
@@ -19,7 +21,7 @@ class UserSubscriptionModelAuxSerializer(serializers.Serializer):
 
 
 class PubSubscriptionModelAuxSerializer(serializers.Serializer):
-    pub = serializers.CharField(source='pub.title')
+    pub = StoryPublicationSerializer()
 
     class Meta:
         model = PubSubscriptionModelAux

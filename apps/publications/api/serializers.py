@@ -28,4 +28,4 @@ class StoryChapterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = StoryChapter
         fields = ['url', 'title', 'text_content', 'date_time',
-                  'status', 'cant_likes', 'color', 'tag']
+                  'cant_likes', 'color', 'tag']
