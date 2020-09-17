@@ -158,7 +158,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    './st-front/bundles',
 ]
 
 # collectstatic copiara los archivos de STATICFILES_DIRS en $APP_HOME/static.
@@ -181,15 +180,6 @@ CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8000',
     'http://localhost:3000'
 )
-
-
-# WEBPACK LOADER
-WEBPACK_LOADER = {
-    'DEFAULT': {
-        'BUNDLE_DIR_NAME': '',
-        'STATS_FILE': './st-front/webpack-stats.json',
-    }
-}
 
 # graphviz
 GRAPH_MODELS = {

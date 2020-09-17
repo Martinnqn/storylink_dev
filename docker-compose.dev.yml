@@ -2,10 +2,10 @@ version: "3.4"
 
 services:
   storylinkdev:
-    image: storylinkdev
+    image: storylinkdev_back
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.dev.back
     depends_on:
       - db
     volumes:

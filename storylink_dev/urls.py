@@ -45,7 +45,7 @@ urlpatterns = [
     path('', ListStories.as_view(), name='hall'),  # pagina principal
     path('admin/site/', admin.site.urls),
     # matchea con un string despues del .com/ y termina de procesarlo en el archivo urls de users
-    path('user/<str:username>/', include('apps.users.urls')),
+    path('users/<str:username>/', include('apps.users.urls')),
     # para iniciar sesion con el formulario que permite usuarios inactivos
     path('accounts/login/', CustomLoginView.as_view(), name="custom_login"),
     # para la administracion de la cuenta de usuario

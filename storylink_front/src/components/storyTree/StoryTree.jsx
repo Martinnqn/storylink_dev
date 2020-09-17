@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import getCookie from './handleCookie';
+import getCookie from '../handleCookie';
 
 const StoryTree = (props) => {
 
