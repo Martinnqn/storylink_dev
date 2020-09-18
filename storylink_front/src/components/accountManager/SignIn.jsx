@@ -37,15 +37,6 @@ const SignIn = ({ handleIsLogged, handleUsername, handleImg }) => {
       localStorage.setItem("refreshToken", data.refresh);
     }
     handleIsLogged(true);
-    await fillProfile();
-  }
-
-  async function fillProfile() {
-    const { data } = await CustomAxios.get(
-      managerURL.getPath(urlDomain.whoami)
-    );
-    handleUsername(data.username);
-    handleImg(data.imgProfile);
   }
 
   return (

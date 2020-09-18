@@ -63,7 +63,7 @@ const DesktopMenu = () => {
         <Menu fixed="top" inverted>
           <Container style={{ height: 60 }}>
             <Menu.Menu position="left">
-              <Menu.Item as={Link} to={managerURL.getPath(urlDomain.home)}>
+              <Menu.Item as={Link} link to={managerURL.getPath(urlDomain.home)}>
                 <Image size="mini" src={Logo} />
               </Menu.Item>
               <Menu.Item>

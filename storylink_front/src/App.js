@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import "./App.css";
@@ -8,7 +8,7 @@ import Profile from "./components/Profile";
 import Settings from "./components/Setting";
 import { Container } from "semantic-ui-react";
 import { urls as urlDomain } from "./components/url/URLDomain";
-
+import CustomAxios from "./components/http/CustomAxios";
 import BaseContext from "./contexts/BaseContext";
 
 import SignIn from "./components/accountManager/SignIn";
@@ -17,6 +17,21 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [username, setUsername] = useState(null);
   const [imgProfile, setImgProfile] = useState(null);
+
+  const managerURL = useContext(BaseContext);
+
+  useEffect(() => {
+    fillProfile();
+    setIsLogged(true);
+  }, []);
+
+  async function fillProfile() {
+    const { data } = await CustomAxios.get(
+      managerURL.getPath(urlDomain.whoami)
+    );
+    setUsername(data.username);
+    setImgProfile(data.imgProfile);
+  }
 
   return isLogged ? (
     <>
@@ -30,11 +45,7 @@ function App() {
       </Container>
     </>
   ) : (
-    <SignIn
-      handleIsLogged={setIsLogged}
-      handleUsername={setUsername}
-      handleImg={setImgProfile}
-    />
+    <SignIn handleIsLogged={setIsLogged} />
   );
 }
 
