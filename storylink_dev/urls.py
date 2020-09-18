@@ -6,7 +6,7 @@ from apps.users.views import SignUpView, mail_check, username_check, \
     FillProfile, VerifiedMail, CustomLoginView
 
 from apps.users.api.views import UserViewSet, UserProfileViewSet, \
-    FullUserDataViewSet
+    FullUserDataViewSet, WhoamiViewSet
 
 from apps.publications.api.views import StoryPublicationViewSet, \
     StoryChapterViewSet
@@ -35,7 +35,16 @@ router.register('profiles', UserProfileViewSet)
 router.register('full-users', FullUserDataViewSet)
 router.register('stories', StoryPublicationViewSet)
 router.register('chapters', StoryChapterViewSet)
+router.register('whoami', WhoamiViewSet, basename='whoami')
 
+API_VERSION = 1
+
+api_urls = [
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('', include(router.urls)),
+]
 
 urlpatterns = [
     path('success/<success>', CustomLoginView.as_view(),
@@ -60,12 +69,9 @@ urlpatterns = [
     path('fillprofile/<uidb64>/<email_verified>',
          FillProfile.as_view(), name='fill_profile'),
     path('activate/<uidb64>/<token>', VerifiedMail.as_view(), name='activate'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/', include(router.urls)),
-
+    path('api/v%d/' % (API_VERSION), include(api_urls)),
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,

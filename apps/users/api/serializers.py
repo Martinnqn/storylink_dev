@@ -46,3 +46,12 @@ class FullUserDataSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['url', 'username', 'email', 'profile']
+
+
+class WhoamiSerializer(serializers.ModelSerializer):
+    link_img_perfil = serializers.CharField(
+        source='profile.get.link_img_perfil', read_only=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['url', 'username', 'link_img_perfil']

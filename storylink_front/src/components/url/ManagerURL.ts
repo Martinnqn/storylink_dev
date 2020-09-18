@@ -1,16 +1,15 @@
-import { reverse } from 'named-urls'
+import { reverse } from "named-urls";
 
 class ManagerURL {
-    baseUrl: string;
+  private backendURL: string;
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
-    }
+  constructor(backendURL: string) {
+    this.backendURL = backendURL;
+  }
 
-    getPath(url: string, params?: JSON) {
-        return reverse(url, params);
-    }
-
+  public getPath(url: string, params: JSON = JSON.parse("{}")) {
+    return reverse(`${this.backendURL}${url}`, params);
+  }
 }
 
 export default ManagerURL;
