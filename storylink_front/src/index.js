@@ -15,7 +15,7 @@ const managerURL = new ManagerURL(
 
 ReactDOM.render(
   <Router>
-    <BaseContext.Provider value={managerURL}>
+    <BaseContext.Provider value={{ managerURL }}>
       <App />
     </BaseContext.Provider>
   </Router>,

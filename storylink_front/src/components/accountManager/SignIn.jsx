@@ -19,7 +19,7 @@ const SignIn = ({ handleIsLogged, handleUsername, handleImg }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const managerURL = useContext(BaseContext);
+  const managerURL = useContext(BaseContext).managerURL;
 
   async function login(e) {
     const { data } = await CustomAxios.post(

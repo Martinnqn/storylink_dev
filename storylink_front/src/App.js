@@ -10,6 +10,7 @@ import { Container } from "semantic-ui-react";
 import { urls as urlDomain } from "./components/url/URLDomain";
 import CustomAxios from "./components/http/CustomAxios";
 import BaseContext from "./contexts/BaseContext";
+import UserContext from "./contexts/UserContext";
 
 import SignIn from "./components/accountManager/SignIn";
 
@@ -18,7 +19,7 @@ function App() {
   const [username, setUsername] = useState(null);
   const [imgProfile, setImgProfile] = useState(null);
 
-  const managerURL = useContext(BaseContext);
+  const managerURL = useContext(BaseContext).managerURL;
 
   useEffect(() => {
     fillProfile();
@@ -27,22 +28,24 @@ function App() {
 
   async function fillProfile() {
     const { data } = await CustomAxios.get(
-      managerURL.getPath(urlDomain.whoami)
+      managerURL.getAbsolutePath(urlDomain.whoami)
     );
-    setUsername(data.username);
-    setImgProfile(data.imgProfile);
+    setUsername(data[0].username);
+    setImgProfile(data[0].link_img_perfil);
   }
 
   return isLogged ? (
     <>
-      <ResponsiveMenu />
-      <Container style={{ marginTop: "7em" }}>
-        <Switch>
-          <Route exact path={urlDomain.home} component={Home} />
-          <Route path={`${urlDomain.user_site}`} component={Profile} />
-          <Route path={urlDomain.settings} component={Settings} />
-        </Switch>
-      </Container>
+      <UserContext.Provider value={{ username, imgProfile }}>
+        <ResponsiveMenu />
+        <Container style={{ marginTop: "7em" }}>
+          <Switch>
+            <Route exact path={urlDomain.home} component={Home} />
+            <Route exact path={`${urlDomain.user_site}`} component={Profile} />
+            <Route exact path={urlDomain.settings} component={Settings} />
+          </Switch>
+        </Container>
+      </UserContext.Provider>
     </>
   ) : (
     <SignIn handleIsLogged={setIsLogged} />

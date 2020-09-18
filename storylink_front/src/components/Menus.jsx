@@ -25,7 +25,9 @@ import {
 import { urls as urlDomain } from "./url/URLDomain";
 import { urls as urlUser } from "./url/URLUser";
 import ManagerURL from "./url/ManagerURL";
+
 import BaseContext from "../contexts/BaseContext";
+import UserContext from "../contexts/UserContext";
 
 const managerURL = new ManagerURL("http://localhost:3000/");
 
@@ -47,51 +49,54 @@ const DesktopMenu = () => {
     offScreen: false,
   });
 
-  const username = useContext(BaseContext);
+  const username = useContext(UserContext).username;
+  const imgProfile = useContext(UserContext).imgProfile;
 
   const updateCalculations = (e, { calculations }) => {
     setCalculations(calculations);
   };
 
   return (
-    <Visibility onUpdate={updateCalculations}>
-      <Transition
-        visible={calculations.direction === "up"}
-        animation="slide down"
-        duration={300}
-      >
-        <Menu fixed="top" inverted>
-          <Container style={{ height: 60 }}>
-            <Menu.Menu position="left">
-              <Menu.Item as={Link} link to={managerURL.getPath(urlDomain.home)}>
-                <Image size="mini" src={Logo} />
-              </Menu.Item>
-              <Menu.Item>
-                <SearchUser at="desktop"></SearchUser>
-              </Menu.Item>
-            </Menu.Menu>
-            <Menu.Menu icon="labeled">
-              <Menu.Item as={Link} to={managerURL.getPath(urlDomain.home)}>
-                <Icon name="home" size="big" />
-              </Menu.Item>
-            </Menu.Menu>
-            <Menu.Menu position="right">
-              <Menu.Item
-                as={Link}
-                to={managerURL.getPath(`${urlDomain.user_site}`, {
-                  username: username,
-                })}
-              >
-                <MenuItemImageProfile src={imgUser} />
-                <Item.Header>Username</Item.Header>
-              </Menu.Item>
-              <DesktopMenuItemCreate />
-              <DesktopMenuItemSettings />
-            </Menu.Menu>
-          </Container>
-        </Menu>
-      </Transition>
-    </Visibility>
+    username && (
+      <Visibility onUpdate={updateCalculations}>
+        <Transition
+          visible={calculations.direction === "up"}
+          animation="slide down"
+          duration={300}
+        >
+          <Menu fixed="top" inverted>
+            <Container style={{ height: 60 }}>
+              <Menu.Menu position="left">
+                <Menu.Item as={Link} to={urlDomain.home}>
+                  <Image size="mini" src={Logo} />
+                </Menu.Item>
+                <Menu.Item>
+                  <SearchUser at="desktop"></SearchUser>
+                </Menu.Item>
+              </Menu.Menu>
+              <Menu.Menu icon="labeled">
+                <Menu.Item as={Link} to={urlDomain.home}>
+                  <Icon name="home" size="big" />
+                </Menu.Item>
+              </Menu.Menu>
+              <Menu.Menu position="right">
+                <Menu.Item
+                  as={Link}
+                  to={managerURL.getRelativePath(`${urlDomain.user_site}`, {
+                    username: username,
+                  })}
+                >
+                  <MenuItemImageProfile src={imgProfile} />
+                  <Item.Header>Username</Item.Header>
+                </Menu.Item>
+                <DesktopMenuItemCreate />
+                <DesktopMenuItemSettings />
+              </Menu.Menu>
+            </Container>
+          </Menu>
+        </Transition>
+      </Visibility>
+    )
   );
 };
 
@@ -101,12 +106,12 @@ const DesktopMenuItemCreate = () => {
     <Dropdown item icon="plus" text="">
       <Dropdown.Menu>
         <Dropdown.Header>Crear</Dropdown.Header>
-        <Menu.Item as={Link} to="/">
+        <Menu.Item as={Link} to={urlDomain.home}>
           <Icon name="sitemap" size="big" />
           <span>Storylink</span>
         </Menu.Item>
         <Dropdown.Divider />
-        <Menu.Item as={Link} to="/">
+        <Menu.Item as={Link} to={urlDomain.home}>
           <Icon name="group" size="big" />
           <span>Grupo</span>
         </Menu.Item>
@@ -139,16 +144,16 @@ const MobileMenu = () => {
   return (
     <Sticky>
       <Menu fixed="bottom" inverted widths={4}>
-        <Menu.Item as={Link} to="/settings">
+        <Menu.Item as={Link} to={urlDomain.settings}>
           <Icon name="sidebar" size="large" />
         </Menu.Item>
         <MobileMenuItemCreate />
-        <Menu.Item as={Link} to={managerURL.getPath(urlDomain.home)}>
+        <Menu.Item as={Link} to={urlDomain.home}>
           <Icon name="home" size="large" />
         </Menu.Item>
         <Menu.Item
           as={Link}
-          to={managerURL.getPath(`${urlDomain.user_site}`, {
+          to={managerURL.getRelativePath(`${urlDomain.user_site}`, {
             username: "MobileUsername",
           })}
         >
