@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 
 import "./App.css";
 import ResponsiveMenu from "./components/MenuResponsive";
+import LoadingApp from "./components/LoadingApp";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
 import Settings from "./components/Setting";
@@ -14,8 +15,14 @@ import UserContext from "./contexts/UserContext";
 
 import SignIn from "./components/accountManager/SignIn";
 
+const STATUS = {
+  loading: "Loading",
+  loggedIn: "Logged",
+  loggedOut: "NoLogged",
+};
+
 function App() {
-  const [isLogged, setIsLogged] = useState(false);
+  const [statusApp, setStatus] = useState(STATUS.loading);
   const [username, setUsername] = useState(null);
   const [imgProfile, setImgProfile] = useState(null);
 
@@ -23,21 +30,54 @@ function App() {
 
   useEffect(() => {
     fillProfile();
-    setIsLogged(true);
-  }, []);
+  }, [statusApp]);
 
-  async function fillProfile() {
-    const { data } = await CustomAxios.get(
-      managerURL.getAbsolutePath(urlDomain.whoami)
-    );
-    setUsername(data[0].username);
-    setImgProfile(data[0].link_img_perfil);
+  function fillProfile() {
+    if (localStorage.getItem("refreshToken") != null) {
+      const res = CustomAxios.get(managerURL.getAbsolutePath(urlDomain.whoami));
+      res
+        .then(({ data }) => {
+          setUsername(data[0].username);
+          setImgProfile(data[0].link_img_perfil);
+        })
+        .then(() => {
+          setStatus(STATUS.loggedIn);
+        });
+    } else {
+      setStatus(STATUS.loggedOut);
+    }
   }
 
-  return isLogged ? (
+  async function login(username, password) {
+    const { data } = await CustomAxios.post(
+      managerURL.getAbsolutePath(urlDomain.token_obtain_pair),
+      {
+        username: username,
+        password: password,
+      }
+    );
+
+    if (data?.access !== "") {
+      localStorage.setItem("accessToken", data.access);
+    }
+    if (data?.refresh !== "") {
+      localStorage.setItem("refreshToken", data.refresh);
+    }
+    setStatus(STATUS.loggedIn);
+  }
+
+  async function logout() {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setStatus(STATUS.loggedOut);
+  }
+
+  return statusApp === STATUS.loading ? (
+    <LoadingApp />
+  ) : statusApp === STATUS.loggedIn ? (
     <>
       <UserContext.Provider value={{ username, imgProfile }}>
-        <ResponsiveMenu />
+        <ResponsiveMenu logout={logout} />
         <Container style={{ marginTop: "7em" }}>
           <Switch>
             <Route exact path={urlDomain.home} component={Home} />
@@ -48,7 +88,7 @@ function App() {
       </UserContext.Provider>
     </>
   ) : (
-    <SignIn handleIsLogged={setIsLogged} />
+    <SignIn login={login} />
   );
 }
 

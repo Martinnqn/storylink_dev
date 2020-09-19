@@ -32,7 +32,7 @@ import UserContext from "../contexts/UserContext";
 const managerURL = new ManagerURL("http://localhost:3000/");
 
 /**Menu for desktop screens */
-const DesktopMenu = () => {
+const DesktopMenu = ({ logout }) => {
   const [calculations, setCalculations] = useState({
     direction: "up",
     height: 0,
@@ -87,10 +87,10 @@ const DesktopMenu = () => {
                   })}
                 >
                   <MenuItemImageProfile src={imgProfile} />
-                  <Item.Header>Username</Item.Header>
+                  <Item.Header>{username}</Item.Header>
                 </Menu.Item>
                 <DesktopMenuItemCreate />
-                <DesktopMenuItemSettings />
+                <DesktopMenuItemSettings logout={logout} />
               </Menu.Menu>
             </Container>
           </Menu>
@@ -121,7 +121,7 @@ const DesktopMenuItemCreate = () => {
 };
 
 /**Item for Settings option in DesktopMenu */
-const DesktopMenuItemSettings = () => {
+const DesktopMenuItemSettings = ({ logout }) => {
   return (
     <Dropdown item simple icon="caret down" text="">
       <Dropdown.Menu>
@@ -133,7 +133,7 @@ const DesktopMenuItemSettings = () => {
           <Radio toggle label="Modo oscuro" />
         </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item>Cerrar sesión</Dropdown.Item>
+        <Dropdown.Item onClick={logout}>Cerrar sesión</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -141,6 +141,9 @@ const DesktopMenuItemSettings = () => {
 
 /**Menu for mobile screens */
 const MobileMenu = () => {
+  const username = useContext(UserContext).username;
+  const imgProfile = useContext(UserContext).imgProfile;
+
   return (
     <Sticky>
       <Menu fixed="bottom" inverted widths={4}>
@@ -154,10 +157,10 @@ const MobileMenu = () => {
         <Menu.Item
           as={Link}
           to={managerURL.getRelativePath(`${urlDomain.user_site}`, {
-            username: "MobileUsername",
+            username: username,
           })}
         >
-          <MenuItemImageProfile src={imgUser} />
+          <MenuItemImageProfile src={imgProfile} />
         </Menu.Item>
       </Menu>
     </Sticky>

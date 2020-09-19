@@ -15,29 +15,9 @@ import { urls as urlDomain } from "../url/URLDomain";
 
 import BaseContext from "../../contexts/BaseContext";
 
-const SignIn = ({ handleIsLogged, handleUsername, handleImg }) => {
+const SignIn = ({ login }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const managerURL = useContext(BaseContext).managerURL;
-
-  async function login(e) {
-    const { data } = await CustomAxios.post(
-      managerURL.getPath(urlDomain.token_obtain_pair),
-      {
-        username: username,
-        password: password,
-      }
-    );
-
-    if (data?.access !== "") {
-      localStorage.setItem("accessToken", data.access);
-    }
-    if (data?.refresh !== "") {
-      localStorage.setItem("refreshToken", data.refresh);
-    }
-    handleIsLogged(true);
-  }
 
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
@@ -62,7 +42,12 @@ const SignIn = ({ handleIsLogged, handleUsername, handleImg }) => {
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button color="teal" fluid size="large" onClick={login}>
+            <Button
+              color="teal"
+              fluid
+              size="large"
+              onClick={() => login(username, password)}
+            >
               Login
             </Button>
           </Segment>
