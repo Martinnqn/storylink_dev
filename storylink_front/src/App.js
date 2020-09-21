@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Switch, Route } from "react-router-dom";
+import AuthRoute from "./components/accountSign/AuthRoute";
 
 import "./App.css";
-import ResponsiveMenu from "./components/MenuResponsive";
+import ResponsiveMenu from "./components/menu/MenuResponsive";
 import LoadingApp from "./components/LoadingApp";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
@@ -12,59 +13,37 @@ import { urls as urlDomain } from "./components/url/URLDomain";
 import CustomAxios from "./components/http/CustomAxios";
 import BaseContext from "./contexts/BaseContext";
 import UserContext from "./contexts/UserContext";
+import AppContext from "./contexts/AppContext";
 
-import SignIn from "./components/accountManager/SignIn";
-
-const STATUS = {
-  loading: "Loading",
-  loggedIn: "Logged",
-  loggedOut: "NoLogged",
-};
+import STATUS from "./contexts/StatusApp";
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   const [statusApp, setStatus] = useState(STATUS.loading);
   const [username, setUsername] = useState(null);
   const [imgProfile, setImgProfile] = useState(null);
-
   const managerURL = useContext(BaseContext).managerURL;
 
   useEffect(() => {
-    fillProfile();
-  }, [statusApp]);
-
-  function fillProfile() {
-    if (localStorage.getItem("refreshToken") != null) {
+    const fillProfile = () => {
       const res = CustomAxios.get(managerURL.getAbsolutePath(urlDomain.whoami));
       res
-        .then(({ data }) => {
-          setUsername(data[0].username);
-          setImgProfile(data[0].link_img_perfil);
+        .then(({ data, status }) => {
+          if (status === 200) {
+            setUsername(data[0].username);
+            setImgProfile(data[0].link_img_perfil);
+            setStatus(STATUS.loggedIn);
+          }
         })
-        .then(() => {
-          setStatus(STATUS.loggedIn);
+        .catch(({ error }) => {
+          setStatus(STATUS.loggedOut);
         });
-    } else {
-      setStatus(STATUS.loggedOut);
+    };
+    if (statusApp !== STATUS.loggedOut) {
+      fillProfile();
     }
-  }
-
-  async function login(username, password) {
-    const { data } = await CustomAxios.post(
-      managerURL.getAbsolutePath(urlDomain.token_obtain_pair),
-      {
-        username: username,
-        password: password,
-      }
-    );
-
-    if (data?.access !== "") {
-      localStorage.setItem("accessToken", data.access);
-    }
-    if (data?.refresh !== "") {
-      localStorage.setItem("refreshToken", data.refresh);
-    }
-    setStatus(STATUS.loggedIn);
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statusApp]);
 
   async function logout() {
     localStorage.removeItem("accessToken");
@@ -74,21 +53,24 @@ function App() {
 
   return statusApp === STATUS.loading ? (
     <LoadingApp />
-  ) : statusApp === STATUS.loggedIn ? (
-    <>
+  ) : (
+    <AppContext.Provider value={{ statusApp, setStatus }}>
       <UserContext.Provider value={{ username, imgProfile }}>
         <ResponsiveMenu logout={logout} />
         <Container style={{ marginTop: "7em" }}>
           <Switch>
-            <Route exact path={urlDomain.home} component={Home} />
-            <Route exact path={`${urlDomain.user_site}`} component={Profile} />
-            <Route exact path={urlDomain.settings} component={Settings} />
+            <AuthRoute exact path={urlDomain.home} component={Home} />
+            <AuthRoute
+              exact
+              path={`${urlDomain.user_site}`}
+              component={Profile}
+            />
+            <AuthRoute exact path={urlDomain.settings} component={Settings} />
+            <Route component={NotFoundPage} />
           </Switch>
         </Container>
       </UserContext.Provider>
-    </>
-  ) : (
-    <SignIn login={login} />
+    </AppContext.Provider>
   );
 }
 

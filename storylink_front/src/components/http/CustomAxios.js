@@ -37,8 +37,9 @@ axiosApiInstance.interceptors.response.use(
       axiosApiInstance.defaults.headers.common["Authorization"] =
         "Bearer " + localStorage.getItem("accessToken");
       return axiosApiInstance(originalRequest);
+    } else {
+      return Promise.reject(error);
     }
-    return Promise.reject(error);
   }
 );
 
@@ -60,10 +61,9 @@ async function refreshAccessToken() {
 }
 
 function updateTokens(data) {
-  console.log("update with");
-  console.log(data);
   localStorage.setItem("refreshToken", data.refresh);
   localStorage.setItem("accessToken", data.access);
 }
 
 export default axiosApiInstance;
+export { updateTokens };

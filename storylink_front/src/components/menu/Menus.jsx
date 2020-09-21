@@ -2,10 +2,9 @@
 
 import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import Logo from "../assets/story_minim.svg";
-import FullLogo from "../assets/ostorylink_blank.png";
+import Logo from "../../assets/story_minim.svg";
+import FullLogo from "../../assets/ostorylink_blank.png";
 import SearchUser from "./SearchUser";
-import imgUser from "../assets/img1.png";
 import styled from "styled-components/macro";
 import {
   Container,
@@ -22,12 +21,13 @@ import {
   Transition,
   Visibility,
 } from "semantic-ui-react";
-import { urls as urlDomain } from "./url/URLDomain";
-import { urls as urlUser } from "./url/URLUser";
-import ManagerURL from "./url/ManagerURL";
+import { urls as urlDomain } from "../url/URLDomain";
+import { urls as urlUser } from "../url/URLUser";
+import ManagerURL from "../url/ManagerURL";
 
-import BaseContext from "../contexts/BaseContext";
-import UserContext from "../contexts/UserContext";
+import UserContext from "../../contexts/UserContext";
+import AppContext from "../../contexts/AppContext";
+import STATUS from "../../contexts/StatusApp";
 
 const managerURL = new ManagerURL("http://localhost:3000/");
 
@@ -51,13 +51,14 @@ const DesktopMenu = ({ logout }) => {
 
   const username = useContext(UserContext).username;
   const imgProfile = useContext(UserContext).imgProfile;
+  const statusApp = useContext(AppContext).statusApp;
 
   const updateCalculations = (e, { calculations }) => {
     setCalculations(calculations);
   };
 
   return (
-    username && (
+    statusApp === STATUS.loggedIn && (
       <Visibility onUpdate={updateCalculations}>
         <Transition
           visible={calculations.direction === "up"}
@@ -144,26 +145,33 @@ const MobileMenu = () => {
   const username = useContext(UserContext).username;
   const imgProfile = useContext(UserContext).imgProfile;
 
+  const statusApp = useContext(AppContext).statusApp;
+
   return (
-    <Sticky>
-      <Menu fixed="bottom" inverted widths={4}>
-        <Menu.Item as={Link} to={urlDomain.settings}>
-          <Icon name="sidebar" size="large" />
-        </Menu.Item>
-        <MobileMenuItemCreate />
-        <Menu.Item as={Link} to={urlDomain.home}>
-          <Icon name="home" size="large" />
-        </Menu.Item>
-        <Menu.Item
-          as={Link}
-          to={managerURL.getRelativePath(`${urlDomain.user_site}`, {
-            username: username,
-          })}
-        >
-          <MenuItemImageProfile src={imgProfile} />
-        </Menu.Item>
-      </Menu>
-    </Sticky>
+    statusApp === STATUS.loggedIn && (
+      <>
+        <TopBarMobile />
+        <Sticky>
+          <Menu fixed="bottom" inverted widths={4}>
+            <Menu.Item as={Link} to={urlDomain.settings}>
+              <Icon name="sidebar" size="large" />
+            </Menu.Item>
+            <MobileMenuItemCreate />
+            <Menu.Item as={Link} to={urlDomain.home}>
+              <Icon name="home" size="large" />
+            </Menu.Item>
+            <Menu.Item
+              as={Link}
+              to={managerURL.getRelativePath(`${urlDomain.user_site}`, {
+                username: username,
+              })}
+            >
+              <MenuItemImageProfile src={imgProfile} />
+            </Menu.Item>
+          </Menu>
+        </Sticky>
+      </>
+    )
   );
 };
 
@@ -256,4 +264,4 @@ const MenuItemImageProfile = styled(Item.Image).attrs((props) => ({
   background-color: white !important;
 `;
 
-export { DesktopMenu, MobileMenu, TopBarMobile };
+export { DesktopMenu, MobileMenu };

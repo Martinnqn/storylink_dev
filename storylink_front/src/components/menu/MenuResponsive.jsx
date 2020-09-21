@@ -3,8 +3,7 @@
 
 import { createMedia } from "@artsy/fresnel";
 import React from "react";
-import { DesktopMenu, MobileMenu, TopBarMobile } from "./Menus";
-import PropTypes from "prop-types";
+import { DesktopMenu, MobileMenu } from "./Menus";
 
 const { MediaContextProvider, Media } = createMedia({
   breakpoints: {
@@ -20,7 +19,6 @@ const ResponsiveMenu = ({ logout }) => (
       <DesktopMenu logout={logout} />
     </Media>
     <Media at="mobile">
-      <TopBarMobile />
       <MobileMenu logout={logout} />
     </Media>
   </MediaContextProvider>
