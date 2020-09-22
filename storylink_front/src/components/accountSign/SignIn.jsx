@@ -27,6 +27,7 @@ const SignIn = () => {
   const [title, setTitle] = useState("Iniciando sesion");
   const [msg, setMsg] = useState("");
   const [isInfo, setIsInfo] = useState(true);
+  const [svProblem, setSvProblem] = useState(false);
   const [showMessageSinging, setShowMessageSinging] = useState(false);
 
   const setStatus = useContext(AppContext).setStatus;
@@ -35,12 +36,16 @@ const SignIn = () => {
   useEffect(() => {
     if (!isInfo) {
       setTitle("No es posible iniciar sesion.");
-      setMsg("El usuario o contrasena no son correctos.");
+      if (!svProblem) {
+        setMsg("El usuario o contrasena no son correctos.");
+      } else {
+        setMsg("Tenemos un problema con nuestro servicio de inicio de sesion.");
+      }
     } else {
       setTitle("Iniciando sesion");
       setMsg("");
     }
-  }, [isInfo]);
+  }, [isInfo, svProblem]);
 
   async function login(username, password) {
     setShowMessageSinging(true);
@@ -60,9 +65,12 @@ const SignIn = () => {
           setStatus(STATUS.loggedIn);
         }
       })
-      .catch((error) => {
-        if (error.response.status === 401) {
+      .catch((error, b) => {
+        if (error.response?.status === 401) {
           setIsInfo(false);
+        } else {
+          setIsInfo(false);
+          setSvProblem(true);
         }
       });
   }

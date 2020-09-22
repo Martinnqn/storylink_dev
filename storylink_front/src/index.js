@@ -10,12 +10,13 @@ import ManagerURL from "./components/url/ManagerURL";
 
 const API_VERSION = 1;
 const managerURL = new ManagerURL(
-  `http://dev-storylink.club:8000/api/v${API_VERSION}/`
+  `http://192.168.1.39:8000/api/v${API_VERSION}/`
 );
+const managerMediaFiles = new ManagerURL(`http://192.168.1.39:8000/media/`);
 
 ReactDOM.render(
   <Router>
-    <BaseContext.Provider value={{ managerURL }}>
+    <BaseContext.Provider value={{ managerURL, managerMediaFiles }}>
       <App />
     </BaseContext.Provider>
   </Router>,

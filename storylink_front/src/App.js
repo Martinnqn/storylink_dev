@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Switch, Route } from "react-router-dom";
 import AuthRoute from "./components/accountSign/AuthRoute";
+import styled from "styled-components/macro";
 
 import "./App.css";
 import ResponsiveMenu from "./components/menu/MenuResponsive";
 import LoadingApp from "./components/LoadingApp";
 import Home from "./components/Home";
-import Profile from "./components/Profile";
+import Profile from "./components/userProfile/Profile";
 import Settings from "./components/Setting";
 import { Container } from "semantic-ui-react";
 import { urls as urlDomain } from "./components/url/URLDomain";
@@ -23,6 +24,7 @@ function App() {
   const [username, setUsername] = useState(null);
   const [imgProfile, setImgProfile] = useState(null);
   const managerURL = useContext(BaseContext).managerURL;
+  const managerMediaFiles = useContext(BaseContext).managerMediaFiles;
 
   useEffect(() => {
     const fillProfile = () => {
@@ -31,7 +33,9 @@ function App() {
         .then(({ data, status }) => {
           if (status === 200) {
             setUsername(data[0].username);
-            setImgProfile(data[0].link_img_perfil);
+            setImgProfile(
+              managerMediaFiles.getAbsolutePath(data[0].link_img_perfil)
+            );
             setStatus(STATUS.loggedIn);
           }
         })
@@ -57,7 +61,7 @@ function App() {
     <AppContext.Provider value={{ statusApp, setStatus }}>
       <UserContext.Provider value={{ username, imgProfile }}>
         <ResponsiveMenu logout={logout} />
-        <Container style={{ marginTop: "7em" }}>
+        <ContainerApp>
           <Switch>
             <AuthRoute exact path={urlDomain.home} component={Home} />
             <AuthRoute
@@ -68,10 +72,16 @@ function App() {
             <AuthRoute exact path={urlDomain.settings} component={Settings} />
             <Route component={NotFoundPage} />
           </Switch>
-        </Container>
+        </ContainerApp>
       </UserContext.Provider>
     </AppContext.Provider>
   );
 }
+
+const ContainerApp = styled(Container).attrs((props) => ({
+  fluid: true,
+}))`
+  margin-top: 7em;
+`;
 
 export default App;

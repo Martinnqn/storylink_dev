@@ -179,7 +179,9 @@ LOGOUT_REDIRECT_URL = '/'
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'http://192.168.1.39:3000',
+    'http://192.168.1.39:8000',
 )
 
 # graphviz
