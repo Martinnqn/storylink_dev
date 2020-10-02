@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Placeholder } from "semantic-ui-react";
+import { Divider, Placeholder } from "semantic-ui-react";
 import styled from "styled-components/macro";
 
-const Story = ({ dataStory, cantInCart }) => {
-  const { photo, title, content, id } = dataStory;
-
+const Story = ({ dataStory }) => {
+  const { img_content_link, title, text_content, id } = dataStory;
+  console.log(dataStory);
   return (
     <CardPublication>
-      <Img src={photo} alt={title} />
+      <Img src={img_content_link} alt={title} />
       <TitleProduct>{title}</TitleProduct>
+      <TitleProduct>{text_content}</TitleProduct>
       <Footer></Footer>
+      <Divider section></Divider>
     </CardPublication>
   );
 };

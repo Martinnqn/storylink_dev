@@ -22,4 +22,5 @@ export const urls = {
   token_refresh: "token/refresh/",
   token_verify: "token/verify/",
   whoami: "whoami/",
+  stories_home: "stories/",
 };

@@ -16,7 +16,7 @@ class StoryPublicationSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = StoryPublication
-        fields = ['url', 'title', 'text_content', 'img_content_link',
+        fields = ['id', 'url', 'title', 'text_content', 'img_content_link',
                   'date_time', 'status', 'cant_likes', 'color', 'tag']
 
 
