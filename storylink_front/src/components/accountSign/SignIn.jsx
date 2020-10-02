@@ -50,12 +50,14 @@ const SignIn = () => {
   async function login(username, password) {
     setShowMessageSinging(true);
     setIsInfo(true);
-
     const res = Axios.post(
       managerURL.getAbsolutePath(urlDomain.token_obtain_pair),
       {
-        username: username,
-        password: password,
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        username: `${username}`,
+        password: `${password}`,
       }
     );
     res
@@ -67,6 +69,8 @@ const SignIn = () => {
       })
       .catch((error, b) => {
         if (error.response?.status === 401) {
+          setIsInfo(false);
+        } else if (error.response?.status === 400) {
           setIsInfo(false);
         } else {
           setIsInfo(false);

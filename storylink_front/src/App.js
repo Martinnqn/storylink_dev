@@ -82,6 +82,10 @@ const ContainerApp = styled(Container).attrs((props) => ({
   fluid: true,
 }))`
   margin-top: 7em;
+  &&& {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
 `;
 
 export default App;

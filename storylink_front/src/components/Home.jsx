@@ -1,22 +1,11 @@
-import React from 'react';
-import logo from '../assets/logo.svg';
+import React from "react";
+import logo from "../assets/logo.svg";
+import StoriesList from "./Publications/StoriesList";
 
 const Home = () => (
-    <>
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <img src={logo} className="App-logo" alt="logo" />
-    </>
-)
+  <>
+    <StoriesList />
+  </>
+);
 
-export default Home
+export default Home;
