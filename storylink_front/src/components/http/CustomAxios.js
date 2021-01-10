@@ -1,7 +1,7 @@
 import { create } from "axios";
 import { urls as urlDomain } from "../url/URLDomain";
 
-const DOMAIN = "http://dev-storylink.club:8000/";
+const DOMAIN = "http://localhost:8000/api/v1/";
 
 const axiosApiInstance = create();
 
