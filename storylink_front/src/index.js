@@ -7,12 +7,12 @@ import "semantic-ui-css/semantic.min.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import BaseContext from "./contexts/BaseContext";
 import ManagerURL from "./components/url/ManagerURL";
+import { API_VERSION } from "./contexts/StatusApp";
 
-const API_VERSION = 1;
 const managerURL = new ManagerURL(
-  `http://192.168.1.39:8000/api/v${API_VERSION}/`
+  `http://dev-storylink.club:8000/api/v${API_VERSION}/`
 );
-const managerMediaFiles = new ManagerURL(`http://192.168.1.39:8000/media/`);
+const managerMediaFiles = new ManagerURL(`http://dev-storylink.club:8000/media/`);
 
 ReactDOM.render(
   <Router>

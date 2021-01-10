@@ -182,6 +182,8 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://192.168.1.39:3000',
     'http://192.168.1.39:8000',
+    'http://dev-storylink.club:8000',
+    'http://dev-storylink.club:3000',
 )
 
 # graphviz
