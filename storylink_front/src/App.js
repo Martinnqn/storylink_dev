@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AuthRoute from "./components/accountSign/AuthRoute";
 import styled from "styled-components/macro";
 
 import "./App.css";
 import ResponsiveMenu from "./components/menu/MenuResponsive";
 import LoadingApp from "./components/LoadingApp";
-import Home from "./components/Home";
-import Profile from "./components/userProfile/Profile";
+//import Home from "./components/Home";
+//import Profile from "./components/userProfile/Profile";
+import { Profile } from "./components/AzureAuth/Profile";
 import Settings from "./components/Setting";
 import { Container } from "semantic-ui-react";
 import { urls as urlDomain } from "./components/url/URLDomain";
@@ -19,14 +20,24 @@ import AppContext from "./contexts/AppContext";
 import STATUS from "./contexts/StatusApp";
 import NotFoundPage from "./components/NotFoundPage";
 
-function App() {
+import { Button } from "semantic-ui-react";
+// MSAL imports
+import {
+  MsalProvider,
+  AuthenticatedTemplate,
+  UnauthenticatedTemplate,
+} from "@azure/msal-react";
+import SignInSignOutButton from "./components/AzureAuth/ui-components/SignInSignOutButton";
+import WelcomeName from "./components/AzureAuth/ui-components/WelcomeName";
+
+function App({ pca }) {
   const [statusApp, setStatus] = useState(STATUS.loading);
   const [username, setUsername] = useState(null);
   const [imgProfile, setImgProfile] = useState(null);
   const managerURL = useContext(BaseContext).managerURL;
   const managerMediaFiles = useContext(BaseContext).managerMediaFiles;
 
-  useEffect(() => {
+  /*useEffect(() => {
     const fillProfile = () => {
       const res = CustomAxios.get(managerURL.getAbsolutePath(urlDomain.whoami));
       res
@@ -47,7 +58,7 @@ function App() {
       fillProfile();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusApp]);
+  }, [statusApp]);*/
 
   async function logout() {
     localStorage.removeItem("accessToken");
@@ -55,7 +66,14 @@ function App() {
     setStatus(STATUS.loggedOut);
   }
 
-  return statusApp === STATUS.loading ? (
+  return (
+    <Router>
+      <MsalProvider instance={pca}>
+        <Pages />
+      </MsalProvider>
+    </Router>
+  );
+  /*  return statusApp === STATUS.loading ? (
     <LoadingApp />
   ) : (
     <AppContext.Provider value={{ statusApp, setStatus }}>
@@ -75,6 +93,36 @@ function App() {
         </ContainerApp>
       </UserContext.Provider>
     </AppContext.Provider>
+  );*/
+}
+
+function Pages() {
+  return (
+    <Switch>
+      <Route path="/profile">
+        <Profile />
+      </Route>
+      <Route path="/">
+        <Home />
+      </Route>
+    </Switch>
+  );
+}
+
+function Home() {
+  return (
+    <>
+        <SignInSignOutButton />
+      <br />
+      <br />
+      <AuthenticatedTemplate>
+        <WelcomeName />
+      </AuthenticatedTemplate>
+
+      <UnauthenticatedTemplate>
+        Please sign-in to see your profile information
+      </UnauthenticatedTemplate>
+    </>
   );
 }
 

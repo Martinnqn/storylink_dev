@@ -4,11 +4,15 @@
   "private": true,
   "dependencies": {
     "@artsy/fresnel": "^1.2.1",
+    "@azure/msal-browser": "^2.9.0",
+    "@azure/msal-react": "^1.0.0-alpha.2",
+    "@microsoft/microsoft-graph-client": "^2.0.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/microsoft-graph": "^1.18.0",
     "@types/react-router-dom": "^5.1.5",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "babel-plugin-styled-components": "^1.11.1",
     "named-urls": "^2.0.0",
     "path-to-regexp": "^6.1.0",
@@ -20,7 +24,8 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.2.1",
     "styled-components": "^5.2.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "windows-iana": "^4.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
