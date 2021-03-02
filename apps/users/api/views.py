@@ -8,7 +8,7 @@ from .serializers import UserSerializer, UserProfileSerializer, \
 from ..models import CustomUser, UserProfile
 
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.response import Response
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = CustomUser.objects.all()

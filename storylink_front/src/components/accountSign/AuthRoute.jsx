@@ -1,22 +1,20 @@
 import React, { useContext } from "react";
 import { Redirect, Route, Switch } from "react-router";
 
-import STATUS from "../../contexts/StatusApp";
-import AppContext from "../../contexts/AppContext";
-
 import { urls as urlDomain } from "../url/URLDomain";
 import SignIn from "./SignIn";
+import { useIsAuthenticated } from "@azure/msal-react";
 
 const AuthRoute = (props) => {
-  const statusApp = useContext(AppContext).statusApp;
+  const isAuthenticated = useIsAuthenticated();
 
-  if (statusApp === STATUS.loggedIn) {
+  if (isAuthenticated) {
     return <Route {...props} />;
   } else {
     return (
       <Switch>
         <Route exact path={urlDomain.home} render={() => <SignIn />} />
-        <Redirect to={urlDomain.home} />;
+        <Redirect to={urlDomain.home} />
       </Switch>
     );
   }

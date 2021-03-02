@@ -46,7 +46,7 @@ const SignIn = () => {
       setMsg("");
     }
   }, [isInfo, svProblem]);
-
+/*
   async function login(username, password) {
     setShowMessageSinging(true);
     setIsInfo(true);
@@ -77,7 +77,7 @@ const SignIn = () => {
           setSvProblem(true);
         }
       });
-  }
+  }*/
 
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
@@ -111,14 +111,7 @@ const SignIn = () => {
               type="password"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button
-              color="teal"
-              fluid
-              size="large"
-              onClick={() => login(username, password)}
-            >
-              Login
-            </Button>
+            
           </Segment>
         </Form>
         <Message>

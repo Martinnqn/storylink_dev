@@ -21,6 +21,8 @@ services:
       - ./initdb/initdb.sql:/docker-entrypoint-initdb.d/init-setup.sql
     env_file:
       - .env
+    ports:
+      - 5432:5432
   nginx:
     build: ./nginx
     ports:

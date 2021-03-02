@@ -11,9 +11,7 @@ export const SignOutButton = () => {
 
     const handleLogout = () => {
         setAnchorEl(null);
-        instance.logout({
-            extraQueryParameters: {'p': apiConfig.signInPolicy}
-        });
+        instance.logout();
     }
 
     return (

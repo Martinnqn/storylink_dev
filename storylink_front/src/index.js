@@ -10,6 +10,9 @@ import ManagerURL from "./components/url/ManagerURL";
 import { API_VERSION } from "./contexts/StatusApp";
 
 // MSAL imports
+import {
+  MsalProvider,
+} from "@azure/msal-react";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./components/AzureAuth/AuthConfig";
 
@@ -18,17 +21,20 @@ const msalInstance = new PublicClientApplication(msalConfig);
 const managerURL = new ManagerURL(
   `http://dev-storylink.club:8000/api/v${API_VERSION}/`
 );
-const managerMediaFiles = new ManagerURL(`http://dev-storylink.club:8000/media/`);
+const managerMediaFiles = new ManagerURL(
+  `http://dev-storylink.club:8000/media/`
+);
 
 ReactDOM.render(
   <Router>
     <BaseContext.Provider value={{ managerURL, managerMediaFiles }}>
-      <App pca={msalInstance}/>
+      <MsalProvider instance={msalInstance}>
+        <App />
+      </MsalProvider>
     </BaseContext.Provider>
   </Router>,
   document.getElementById("root")
 );
-
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

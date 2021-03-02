@@ -15,7 +15,7 @@ const StoriesList = () => {
   const [loading, setLoading] = useState(false);
   const managerURL = useContext(BaseContext).managerURL;
 
-  /**Request Product endpoint and updates products list*/
+  /**Request Stories endpoint and updates stories list*/
   const getStories = () => {
     setLoading(true);
     const res = CustomAxios.get(

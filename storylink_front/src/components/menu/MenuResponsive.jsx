@@ -13,13 +13,13 @@ const { MediaContextProvider, Media } = createMedia({
   },
 });
 
-const ResponsiveMenu = ({ logout }) => (
+const ResponsiveMenu = () => (
   <MediaContextProvider>
     <Media greaterThan="mobile">
-      <DesktopMenu logout={logout} />
+      <DesktopMenu />
     </Media>
     <Media at="mobile">
-      <MobileMenu logout={logout} />
+      <MobileMenu />
     </Media>
   </MediaContextProvider>
 );

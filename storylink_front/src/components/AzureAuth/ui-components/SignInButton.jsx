@@ -4,41 +4,17 @@ import { Button, Menu, MenuItem } from "semantic-ui-react";
 import { loginRequest } from "../AuthConfig";
 
 export const SignInButton = () => {
-    const { instance } = useMsal();
+  const { instance } = useMsal();
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+  const handleLogin = () => {
+    instance.loginRedirect(loginRequest);
+  };
 
-    const handleLogin = (loginType) => {
-        setAnchorEl(null);
-
-        if (loginType === "popup") {
-            instance.loginPopup();
-        } else if (loginType === "redirect") {
-            instance.loginRedirect(loginRequest);
-        }
-    }
-
-    return (
-        <div>
-            <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-                }}
-                open={open}
-                onClose={() => setAnchorEl(null)}
-            >
-                <MenuItem onClick={() => handleLogin("popup")} key="loginPopup">Sign in using Popup</MenuItem>
-                <MenuItem onClick={() => handleLogin("redirect")} key="loginRedirect">Sign in using Redirect</MenuItem>
-            </Menu>
-        </div>
-    )
+  return (
+    <Menu.Menu position="right">
+      <Menu.Item onClick={() => handleLogin()} key="loginRedirect">
+        Iniciar Sesion
+      </Menu.Item>
+    </Menu.Menu>
+  );
 };

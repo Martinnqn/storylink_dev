@@ -30,7 +30,7 @@ const ProfileContent = () => {
         .acquireTokenSilent({
           ...tokenRequest,
           account: account,
-          authority: apiConfig.authority,
+          authority: process.env.REACT_APP_AUTH_AUTHORITY,
         })
         .then((response) => {
           console.log(response);

@@ -11,7 +11,7 @@ from apps.users.api.views import UserViewSet, UserProfileViewSet, \
 from apps.publications.api.views import StoryPublicationViewSet, \
     StoryChapterViewSet
 
-from apps.users.views import ReactV
+from apps.users.views import ReactV, B2CViewSet
 from apps.publications.views import ListStories
 
 
@@ -69,6 +69,7 @@ urlpatterns = [
     path('fillprofile/<uidb64>/<email_verified>',
          FillProfile.as_view(), name='fill_profile'),
     path('activate/<uidb64>/<token>', VerifiedMail.as_view(), name='activate'),
+    path('api/v%d/b2c' % (API_VERSION), B2CViewSet.as_view(), name='b2c'),
     path('api/v%d/' % (API_VERSION), include(api_urls)),
 ]
 

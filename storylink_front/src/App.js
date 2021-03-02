@@ -6,13 +6,12 @@ import styled from "styled-components/macro";
 import "./App.css";
 import ResponsiveMenu from "./components/menu/MenuResponsive";
 import LoadingApp from "./components/LoadingApp";
-//import Home from "./components/Home";
+import Home from "./components/Home";
 //import Profile from "./components/userProfile/Profile";
 import { Profile } from "./components/AzureAuth/Profile";
 import Settings from "./components/Setting";
 import { Container } from "semantic-ui-react";
 import { urls as urlDomain } from "./components/url/URLDomain";
-import CustomAxios from "./components/http/CustomAxios";
 import BaseContext from "./contexts/BaseContext";
 import UserContext from "./contexts/UserContext";
 import AppContext from "./contexts/AppContext";
@@ -20,65 +19,46 @@ import AppContext from "./contexts/AppContext";
 import STATUS from "./contexts/StatusApp";
 import NotFoundPage from "./components/NotFoundPage";
 
-import { Button } from "semantic-ui-react";
 // MSAL imports
-import {
-  MsalProvider,
-  AuthenticatedTemplate,
-  UnauthenticatedTemplate,
-} from "@azure/msal-react";
-import SignInSignOutButton from "./components/AzureAuth/ui-components/SignInSignOutButton";
-import WelcomeName from "./components/AzureAuth/ui-components/WelcomeName";
+import { useMsal, useIsAuthenticated } from "@azure/msal-react";
+import { loginRequest, tokenRequest } from "./components/AzureAuth/AuthConfig";
 
-function App({ pca }) {
+function App() {
   const [statusApp, setStatus] = useState(STATUS.loading);
   const [username, setUsername] = useState(null);
   const [imgProfile, setImgProfile] = useState(null);
   const managerURL = useContext(BaseContext).managerURL;
   const managerMediaFiles = useContext(BaseContext).managerMediaFiles;
+  const { instance, accounts, inProgress } = useMsal();
+  const isAuthenticated = useIsAuthenticated();
 
-  /*useEffect(() => {
+  useEffect(() => {
     const fillProfile = () => {
-      const res = CustomAxios.get(managerURL.getAbsolutePath(urlDomain.whoami));
-      res
-        .then(({ data, status }) => {
-          if (status === 200) {
-            setUsername(data[0].username);
-            setImgProfile(
-              managerMediaFiles.getAbsolutePath(data[0].link_img_perfil)
-            );
-            setStatus(STATUS.loggedIn);
-          }
+      if (accounts.length > 0) {
+        instance
+        .acquireTokenSilent({
+          ...tokenRequest,
+          account: accounts[0],
+          authority: process.env.REACT_APP_AUTH_AUTHORITY,
         })
-        .catch(({ error }) => {
-          setStatus(STATUS.loggedOut);
+        .then((response) => {
+          console.log(response);
+          console.log(response.accessToken);
         });
+        setUsername(accounts[0].given_name);
+        //setImgProfile(managerMediaFiles.getAbsolutePath(data[0].link_img_perfil));
+      }
     };
-    if (statusApp !== STATUS.loggedOut) {
+    if (isAuthenticated) {
       fillProfile();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [statusApp]);*/
-
-  async function logout() {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    setStatus(STATUS.loggedOut);
-  }
+  }, [isAuthenticated]);
 
   return (
-    <Router>
-      <MsalProvider instance={pca}>
-        <Pages />
-      </MsalProvider>
-    </Router>
-  );
-  /*  return statusApp === STATUS.loading ? (
-    <LoadingApp />
-  ) : (
     <AppContext.Provider value={{ statusApp, setStatus }}>
       <UserContext.Provider value={{ username, imgProfile }}>
-        <ResponsiveMenu logout={logout} />
+        <ResponsiveMenu />
         <ContainerApp>
           <Switch>
             <AuthRoute exact path={urlDomain.home} component={Home} />
@@ -93,36 +73,6 @@ function App({ pca }) {
         </ContainerApp>
       </UserContext.Provider>
     </AppContext.Provider>
-  );*/
-}
-
-function Pages() {
-  return (
-    <Switch>
-      <Route path="/profile">
-        <Profile />
-      </Route>
-      <Route path="/">
-        <Home />
-      </Route>
-    </Switch>
-  );
-}
-
-function Home() {
-  return (
-    <>
-        <SignInSignOutButton />
-      <br />
-      <br />
-      <AuthenticatedTemplate>
-        <WelcomeName />
-      </AuthenticatedTemplate>
-
-      <UnauthenticatedTemplate>
-        Please sign-in to see your profile information
-      </UnauthenticatedTemplate>
-    </>
   );
 }
 

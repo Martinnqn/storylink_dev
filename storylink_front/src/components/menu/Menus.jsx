@@ -28,11 +28,13 @@ import ManagerURL from "../url/ManagerURL";
 import UserContext from "../../contexts/UserContext";
 import AppContext from "../../contexts/AppContext";
 import STATUS from "../../contexts/StatusApp";
+import { useIsAuthenticated, useMsal } from "@azure/msal-react";
+import { SignInButton } from "../AzureAuth/ui-components/SignInButton";
 
 const managerURL = new ManagerURL("http://localhost:3000/");
 
 /**Menu for desktop screens */
-const DesktopMenu = ({ logout }) => {
+const DesktopMenu = () => {
   const [calculations, setCalculations] = useState({
     direction: "up",
     height: 0,
@@ -49,16 +51,14 @@ const DesktopMenu = ({ logout }) => {
     offScreen: false,
   });
 
-  const username = useContext(UserContext).username;
-  const imgProfile = useContext(UserContext).imgProfile;
-  const statusApp = useContext(AppContext).statusApp;
+  const isAuthenticated = useIsAuthenticated();
 
   const updateCalculations = (e, { calculations }) => {
     setCalculations(calculations);
   };
 
   return (
-    statusApp === STATUS.loggedIn && (
+    <>
       <Visibility onUpdate={updateCalculations}>
         <Transition
           visible={calculations.direction === "up"}
@@ -71,33 +71,14 @@ const DesktopMenu = ({ logout }) => {
                 <Menu.Item as={Link} to={urlDomain.home}>
                   <Image size="mini" src={Logo} />
                 </Menu.Item>
-                <Menu.Item>
-                  <SearchUser at="desktop"></SearchUser>
-                </Menu.Item>
               </Menu.Menu>
-              <Menu.Menu icon="labeled">
-                <Menu.Item as={Link} to={urlDomain.home}>
-                  <Icon name="home" size="big" />
-                </Menu.Item>
-              </Menu.Menu>
-              <Menu.Menu position="right">
-                <Menu.Item
-                  as={Link}
-                  to={managerURL.getRelativePath(`${urlDomain.user_site}`, {
-                    username: username,
-                  })}
-                >
-                  <MenuItemImageProfile src={imgProfile} />
-                  <Item.Header>{username}</Item.Header>
-                </Menu.Item>
-                <DesktopMenuItemCreate />
-                <DesktopMenuItemSettings logout={logout} />
-              </Menu.Menu>
+              {isAuthenticated && <LoggedInMenu />}
+              {!isAuthenticated && <SignInButton />}
             </Container>
           </Menu>
         </Transition>
       </Visibility>
-    )
+    </>
   );
 };
 
@@ -121,8 +102,49 @@ const DesktopMenuItemCreate = () => {
   );
 };
 
+/**
+ * Menu section for users logged in desktop
+ */
+const LoggedInMenu = () => {
+  const username = useContext(UserContext).username;
+  const imgProfile = useContext(UserContext).imgProfile;
+
+  return (
+    <>
+      <Menu.Menu position="left">
+        <Menu.Item>
+          <SearchUser at="desktop"></SearchUser>
+        </Menu.Item>
+      </Menu.Menu>
+      <Menu.Menu icon="labeled">
+        <Menu.Item as={Link} to={urlDomain.home}>
+          <Icon name="home" size="big" />
+        </Menu.Item>
+      </Menu.Menu>
+      <Menu.Menu position="right">
+        <Menu.Item
+          as={Link}
+          to={managerURL.getRelativePath(`${urlDomain.user_site}`, {
+            username: username,
+          })}
+        >
+          <MenuItemImageProfile src={imgProfile} />
+          <Item.Header>{username}</Item.Header>
+        </Menu.Item>
+        <DesktopMenuItemCreate />
+        <DesktopMenuItemSettings />
+      </Menu.Menu>
+    </>
+  );
+};
+
 /**Item for Settings option in DesktopMenu */
-const DesktopMenuItemSettings = ({ logout }) => {
+const DesktopMenuItemSettings = () => {
+  const { instance } = useMsal();
+
+  const handleLogout = () => {
+    instance.logout();
+  };
   return (
     <Dropdown item simple icon="caret down" text="">
       <Dropdown.Menu>
@@ -134,7 +156,7 @@ const DesktopMenuItemSettings = ({ logout }) => {
           <Radio toggle label="Modo oscuro" />
         </Dropdown.Item>
         <Dropdown.Divider />
-        <Dropdown.Item onClick={logout}>Cerrar sesión</Dropdown.Item>
+        <Dropdown.Item onClick={()=>handleLogout}>Cerrar sesión</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

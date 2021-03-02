@@ -1,5 +1,11 @@
 {
   "python.pythonPath": "C:\\Python38\\python.exe",
   "python.linting.enabled": true,
-  "python.formatting.provider": "autopep8"
+  "python.formatting.provider": "autopep8",
+  "python.linting.flake8Enabled": true,
+  "azureFunctions.deploySubpath": "apps\\users\\az-functions",
+  "azureFunctions.postDeployTask": "npm install",
+  "azureFunctions.projectLanguage": "JavaScript",
+  "azureFunctions.projectRuntime": "~3",
+  "azureFunctions.preDeployTask": "npm prune"
 }

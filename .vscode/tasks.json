@@ -1,35 +1,62 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"type": "docker-run",
-			"label": "docker-run: debug",
-			"dependsOn": [
-				"docker-build"
-			],
-			"dockerRun": {
-				"volumes": [
-					{
-						"containerPath": "/home/app/web",
-						"localPath": "${workspaceFolder}"
-					}
-				]
-			},
-			"python": {
-				"args": [
-					"runserver",
-					"0.0.0.0:8000"
-				],
-				"file": "manage.py"
-			}
-		},
-		{
-			"type": "npm",
-			"script": "start",
-			"path": "storylink_front/",
-			"problemMatcher": [],
-			"label": "npm: start - storylink_front",
-			"detail": "HOST=0.0.0.0 react-scripts start"
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "docker-run",
+      "label": "docker-run: debug",
+      "dependsOn": [
+        "docker-build"
+      ],
+      "dockerRun": {
+        "volumes": [
+          {
+            "containerPath": "/home/app/web",
+            "localPath": "${workspaceFolder}"
+          }
+        ]
+      },
+      "python": {
+        "args": [
+          "runserver",
+          "0.0.0.0:8000"
+        ],
+        "file": "manage.py"
+      }
+    },
+    {
+      "type": "npm",
+      "script": "start",
+      "path": "storylink_front/",
+      "problemMatcher": [],
+      "label": "npm: start - storylink_front",
+      "detail": "HOST=0.0.0.0 react-scripts start"
+    },
+    {
+      "type": "func",
+      "command": "host start",
+      "problemMatcher": "$func-node-watch",
+      "isBackground": true,
+      "dependsOn": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}/apps\\users\\az-functions"
+      }
+    },
+    {
+      "type": "shell",
+      "label": "npm install",
+      "command": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}/apps\\users\\az-functions"
+      }
+    },
+    {
+      "type": "shell",
+      "label": "npm prune",
+      "command": "npm prune --production",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/apps\\users\\az-functions"
+      }
+    }
+  ]
 }
