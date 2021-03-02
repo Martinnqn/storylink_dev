@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from django.views.generic.base import TemplateView
 from apps.users.views import SignUpView, mail_check, username_check, \
-    FillProfile, VerifiedMail, CustomLoginView
+    FillProfile, VerifiedMail, CustomLoginView, SignUpApiConnectorView
 
 from apps.users.api.views import UserViewSet, UserProfileViewSet, \
     FullUserDataViewSet, WhoamiViewSet
@@ -60,6 +60,7 @@ urlpatterns = [
     # para la administracion de la cuenta de usuario
     path('accounts/', include('django.contrib.auth.urls')),
     path('signup/', SignUpView.as_view(), name='sign_up'),
+    path('signup-connector/', SignUpApiConnectorView.as_view(), name='sign_up_connector'),
     path('terminos_privacidad/',
          TemplateView.as_view(template_name='term_priv.html'),  name='term_priv'),
     path('social/', include('social_django.urls', namespace='social')),

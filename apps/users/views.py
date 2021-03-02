@@ -20,7 +20,8 @@ from django.template.loader import render_to_string
 from .token import account_activation_token
 from django.core.mail import EmailMessage
 
-
+from django.conf import settings
+import base64
 from azure_ad_verify_token import verify_jwt
 
 
@@ -167,6 +168,50 @@ class SignUpView(generic.CreateView):
         user.save()
         send_mail_confirm(self.request, user)
         return redirect(reverse_lazy('hall_s', kwargs={'success': True}))
+
+
+class SignUpApiConnectorView(generic.CreateView):
+    ''' API connector para azure b2c.
+    Da de alta un usuario y retorna su userID.'''
+    model = CustomUser
+    form_class = CustomUserCreationForm
+
+    def post(self, request, *args, **kwargs):
+        #auth_header = request.META.get('HTTP_AUTHORIZATION', '')
+        #token_type, _, credentials = auth_header.partition(' ')
+        token_type, _, credentials = 'Basic YWRtaW4xOjEyMzQ1'.partition(' ')
+        username, password = base64.b64encode(credentials).decode()
+        print(username)
+        print(password)
+        if (token_type != 'Basic' or
+                username != settings.API_CONNECTOR_BASIC_AUTHENTICATION_USER or
+                password !=
+                settings.API_CONNECTOR_BASIC_AUTHENTICATION_PASSWORD):
+            return JsonResponse(status=401)
+        else:
+            return super().post(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        resp = dict()
+        resp.update({'status': 400})
+        body = dict()
+        body.update({
+            'version': 1.0,
+            'action': "ValidationError",
+            'status': 400,
+            'userMessage': form.errors.as_json(),
+            'code': "SingUp-Input-Validation-0"})
+        resp.update({'body': body})
+        return JsonResponse(form.errors, status=400)
+
+    def form_valid(self, form):
+        user = form.save()
+        resp = dict()
+        resp.update({
+            'version': 1.0,
+            'action': 'continue',
+            'extension_8fe2c4d0-5118-4a84-a0bc-04a9b8ec6a76_userID': user.pk})
+        return JsonResponse(resp)
 
 
 class CustomLoginView(generic.edit.FormView):
