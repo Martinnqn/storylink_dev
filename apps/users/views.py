@@ -10,7 +10,6 @@ from apps.users.forms import EditUserProfile as EditUserProfileForm,\
     EditAccount
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
-from social_django.utils import load_strategy
 from django.db import transaction, IntegrityError
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -162,6 +161,10 @@ class SignUpView(generic.CreateView):
         context.update({'formLogin': AuthenticationFormWithInactiveUsersOkay})
         return context
 
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        return super().post(request, *args, **kwargs)
+
     def form_valid(self, form):
         user = form.save(commit=False)
         user.is_active = False
@@ -180,9 +183,10 @@ class SignUpApiConnectorView(generic.CreateView):
         #auth_header = request.META.get('HTTP_AUTHORIZATION', '')
         #token_type, _, credentials = auth_header.partition(' ')
         token_type, _, credentials = 'Basic YWRtaW4xOjEyMzQ1'.partition(' ')
-        username, password = base64.b64encode(credentials).decode()
-        print(username)
-        print(password)
+        base64_bytes = credentials.encode('ascii')
+        message_bytes = base64.b64decode(base64_bytes)
+        message = message_bytes.decode('ascii')
+        username, password = message.split(':')
         if (token_type != 'Basic' or
                 username != settings.API_CONNECTOR_BASIC_AUTHENTICATION_USER or
                 password !=
@@ -202,7 +206,7 @@ class SignUpApiConnectorView(generic.CreateView):
             'userMessage': form.errors.as_json(),
             'code': "SingUp-Input-Validation-0"})
         resp.update({'body': body})
-        return JsonResponse(form.errors, status=400)
+        return JsonResponse(resp, status=400)
 
     def form_valid(self, form):
         user = form.save()

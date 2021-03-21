@@ -6,13 +6,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev.back
-    depends_on:
-      - db
+    #depends_on:
+    # - db
     volumes:
       - .:/home/app/web
       - static_volume:/home/app/web/static
       - media_volume:/home/app/web/media
-    command: bash -c "/home/app/web/wait-for-it.sh --timeout=0 db:5432 && /home/app/web/init.dev.sh"
+    #command: bash -c "/home/app/web/wait-for-it.sh --timeout=0 db:5432 && /home/app/web/init.dev.sh"
 
   db:
     image: postgres:11
@@ -23,6 +23,7 @@ services:
       - .env
     ports:
       - 5432:5432
+  
   nginx:
     build: ./nginx
     ports:

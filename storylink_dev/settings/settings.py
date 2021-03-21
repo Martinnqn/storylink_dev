@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_bleach',
     'ckeditor',
-    'social_django',
     'django.forms',
     'webpack_loader',
     'corsheaders',
@@ -71,11 +70,10 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 
@@ -92,8 +90,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
                 'apps.users.context_processors.customuser_info',
             ],
         },
@@ -109,7 +105,19 @@ WSGI_APPLICATION = 'storylink_dev.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db()
+    'default': {
+        'ENGINE': 'sql_server.pyodbc',
+        'NAME': 'st-main',
+        'USER': 'sa',
+        'PASSWORD': '12345',
+        'HOST': '192.168.1.39',
+        'PORT': '1433',
+
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'host_is_server': True
+        },
+    },
 }
 
 
