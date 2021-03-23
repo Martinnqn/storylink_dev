@@ -399,32 +399,6 @@ class SearchUser(LoginRequiredMixin, generic.DetailView):
             res_users.update({'users_found': us})
             return JsonResponse(res_users)
 
-from django.db import connection
-
-class UserMigration(generic.DetailView):
-    def get(self, *args, **kwargs):
-        username = self.kwargs.get('suser')
-        with connection.cursor() as cursor:
-            cursor.execute('exec CustomUser_get %s' % username)
-            rows = cursor.fetchall()
-            while rows:
-                us = []
-                res_users = dict()
-                for x in rows:
-                    user = {}
-                    user.update({'id': x[0]})
-                    user.update({'username': x[1]})
-                    user.update({'last_name': x[2]})
-                    user.update({'first_name': x[3]})
-                    user.update({'email': x[4]})
-                    us.append(user)
-                res_users.update({'users_found': us})
-                if cursor.nextset():
-                    rows = cursor.fetchall()
-                else:
-                    rows = None
-        return JsonResponse(res_users)
-
 
 class mail_check(generic.edit.FormView):
     ''' Renderiza el template para pedir el email, en caso de que
