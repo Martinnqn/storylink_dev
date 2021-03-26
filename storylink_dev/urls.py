@@ -11,7 +11,7 @@ from apps.users.api.views import UserViewSet, UserProfileViewSet, \
 from apps.publications.api.views import StoryPublicationViewSet, \
     StoryChapterViewSet
 
-from apps.users.views import ReactV, B2CViewSet, UserMigration
+from apps.users.views import ReactV, B2CViewSet
 from apps.publications.views import ListStories
 
 
@@ -55,7 +55,7 @@ urlpatterns = [
     path('admin/site/', admin.site.urls),
     # matchea con un string despues del .com/ y termina de procesarlo en el archivo urls de users
     path('users/<str:username>/', include('apps.users.urls')),
-    path('migrate/<suser>', UserMigration.as_view(), name='user_migrate'),
+    path('migrate/', include('apps.userMigrator.urls')),
     # para iniciar sesion con el formulario que permite usuarios inactivos
     path('accounts/login/', CustomLoginView.as_view(), name="custom_login"),
     # para la administracion de la cuenta de usuario
