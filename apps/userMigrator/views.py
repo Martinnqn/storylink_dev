@@ -23,7 +23,7 @@ def get_user_for_migrate(username):
         rows = cursor.fetchall()
         passwordConfig = dict()
         passwordConfig.update({'forceChangePasswordNextSignIn': False})
-        passwordConfig.update({'password': 'WwvJ]6NMw+bWH-'})
+        passwordConfig.update({'password': 'WwvJ]d6NMw+bWH-'})
         us = []
         while rows:
             for x in rows:
@@ -39,12 +39,28 @@ def get_user_for_migrate(username):
                     'issuer': 'storylinkB2C.onmicrosoft.com',
                     'issuerAssignedId': x[4]
                 })
+                if (x[5] == 'facebook'):
+                    ident.append({
+                        'signInType': 'federated',
+                        'issuer': 'facebook.com',
+                        'issuerAssignedId': x[6]
+                    })
+                if (x[5] == 'twitter'):
+                    ident.append({
+                        'signInType': 'federated',
+                        'issuer': 'twitter.com',
+                        'issuerAssignedId': x[6]
+                    })
                 user.update(
-                    {'extension_8fe2c4d0-5118-4a84-a0bc-04a9b8ec6a76_userID': x[0]})
+                    {'extension_8fe2c4d051184a84a0bc04a9b8ec6a76_userID': x[0]})
                 user.update({'displayName': x[1]})
+                user.update({'givenName': x[2]})
+                user.update({'surname': x[3]})
+                user.update({'mail': x[4]})
                 user.update({'identities': ident})
                 user.update({'passwordProfile': passwordConfig})
-                user.update({'passwordPolicies': 'DisablePasswordExpiration'})
+                user.update(
+                    {'passwordPolicies': 'DisablePasswordExpiration, DisableStrongPassword'})
                 us.append(user)
             if cursor.nextset():
                 rows = cursor.fetchall()
