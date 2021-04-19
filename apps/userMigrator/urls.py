@@ -4,5 +4,5 @@ from .views import UserMigration
 
 urlpatterns = [
   # /
-  path('<suser>', UserMigration.as_view(), name='newevent'),
+  #path('', UserMigration.as_view(), name='newevent'),
 ]

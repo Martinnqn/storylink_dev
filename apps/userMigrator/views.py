@@ -15,20 +15,23 @@ from .auth_helper import get_access_token
 from .graph_helper import create_user
 
 from django.db import connection
+from django.utils.crypto import get_random_string
 
-
-def get_user_for_migrate(username):
+def get_user_for_migrate():
     with connection.cursor() as cursor:
-        cursor.execute('exec CustomUser_get %s' % username)
+        cursor.execute('exec CustomUser_get null')
         rows = cursor.fetchall()
-        passwordConfig = dict()
-        passwordConfig.update({'forceChangePasswordNextSignIn': False})
-        passwordConfig.update({'password': 'WwvJ]d6NMw+bWH-'})
         us = []
         while rows:
             for x in rows:
                 user = dict()
                 ident = []
+                passwordConfig = dict()
+                isLocalAccount = (x[5] is None)
+                passwordConfig.update(
+                    {'forceChangePasswordNextSignIn': isLocalAccount})
+                unique_id = get_random_string(length=16)
+                passwordConfig.update({'password': unique_id})
                 ident.append({
                     'signInType': 'userName',
                     'issuer': 'storylinkB2C.onmicrosoft.com',
@@ -60,7 +63,7 @@ def get_user_for_migrate(username):
                 user.update({'identities': ident})
                 user.update({'passwordProfile': passwordConfig})
                 user.update(
-                    {'passwordPolicies': 'DisablePasswordExpiration, DisableStrongPassword'})
+                    {'passwordPolicies': 'DisablePasswordExpiration'})
                 us.append(user)
             if cursor.nextset():
                 rows = cursor.fetchall()
@@ -71,12 +74,21 @@ def get_user_for_migrate(username):
 
 class UserMigration(generic.DetailView):
     def get(self, *args, **kwargs):
-        username = self.kwargs.get('suser')
-        user = get_user_for_migrate(username)
-        if (user and user[0]):
-            access_token = get_access_token()
-            print(user[0])
-            resp = create_user(access_token, user[0])
-            print(resp)
-            return JsonResponse(resp)
+        users = get_user_for_migrate()
+        access_token = get_access_token()
+        if (users):
+            users_created = []
+            for user in users:
+                print(user)
+                resp = create_user(access_token, user)
+                users_created.append(resp)
+                if ('mail' in resp):
+                    print('SIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII')
+                    with connection.cursor() as cursor:
+                        asd = str(user['extension_8fe2c4d051184a84a0bc04a9b8ec6a76_userID'])
+                        cursor.execute('exec CustomUser_setMigration {0}'.format(asd))
+                else:
+                    print('NOOOOOOOOOO')
+                    print(resp)
+            return JsonResponse(users_created, safe=False)
         return JsonResponse({'error': 'usuario no encontrado'})
